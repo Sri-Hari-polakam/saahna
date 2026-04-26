@@ -10,7 +10,7 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 const SECRET_KEY = process.env.SECRET_KEY || 'SAHNAA_SECRET_GOLD_2026';
 
 // Middleware
@@ -267,4 +267,6 @@ app.get('/api/stats', verifyAdmin, (req, res) => {
     });
 });
 
-app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
