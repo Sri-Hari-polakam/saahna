@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Saahna Experience | About Us</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .about-section { padding: 8rem 0; }
+        .designer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; margin-top: 5rem; }
+        .designer-image { height: 600px; background-size: cover; background-position: center; border: 15px solid var(--off-white); }
+        .accessory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 5rem; }
+        .accessory-card { text-align: center; padding: 2rem; background: var(--off-white); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav id="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">SAAHNA</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="products.html">Shop</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header style="padding: 150px 0 100px; text-align: center; background: var(--off-white);">
+        <div class="container">
+            <h1 class="text-gold-gradient" style="font-size: 4rem;">The Saahna Experience</h1>
+            <p style="font-size: 1.2rem; color: var(--text-muted); max-width: 700px; margin: 1rem auto 0;">Redefining luxury through personalized fashion since 2019.</p>
+        </div>
+    </header>
+
+    <section class="about-section">
+        <div class="container">
+            <div class="designer-grid">
+                <div class="designer-image" style="background-image: url('https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&q=80&w=800');"></div>
+                <div class="designer-content">
+                    <h2 class="text-gold-gradient" style="font-size: 2.5rem; margin-bottom: 1.5rem;">Ashitha Yejju</h2>
+                    <h4 style="margin-bottom: 1.5rem; color: var(--text-muted); font-weight: 400; text-transform: uppercase; letter-spacing: 2px;">Founder & Lead Designer</h4>
+                    <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Founded in 2019 by Ashitha Yejju, SAAHNA was born from a vision to provide "complete customization from start to finish." With a deep passion for fabrics and an eye for intricate detailing, Ashitha has built SAAHNA into a premier destination for those seeking elegance and individuality.</p>
+                    <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">We specialize in <strong>Fusion, Ethnic, and Western wear</strong>, ensuring that every client finds their perfect expression of style. At SAAHNA, we don't just stitch clothes; we curate experiences tailored to your personality.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 8rem 0; background: var(--white); border-top: 1px solid #f0f0f0;">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 4rem;">Beyond Clothing: Curated Accessories</h2>
+            <p style="text-align: center; color: var(--text-muted); max-width: 800px; margin: 0 auto 3rem;">To complete your transformation, we offer a meticulously curated range of accessories tailored to your preferences.</p>
+            <div class="accessory-grid">
+                <div class="accessory-card">
+                    <i class="fas fa-shoe-prints" style="font-size: 2rem; color: var(--primary-gold); margin-bottom: 1rem;"></i>
+                    <h3>Footwear</h3>
+                </div>
+                <div class="accessory-card">
+                    <i class="fas fa-ring" style="font-size: 2rem; color: var(--primary-gold); margin-bottom: 1rem;"></i>
+                    <h3>Jewellery</h3>
+                </div>
+                <div class="accessory-card">
+                    <i class="fas fa-shopping-bag" style="font-size: 2rem; color: var(--primary-gold); margin-bottom: 1rem;"></i>
+                    <h3>Handbags</h3>
+                </div>
+                <div class="accessory-card">
+                    <i class="fas fa-magic" style="font-size: 2rem; color: var(--primary-gold); margin-bottom: 1rem;"></i>
+                    <h3>Cosmetics</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container" style="text-align: center; padding: 3rem 0;">
+            <p>&copy; 2026 SAAHNA Luxury Boutique. Crafted by Ashitha Yejju.</p>
+        </div>
+    </footer>
+
+    <script src="js/cart.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Sahnaa SA</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #f4f4f4; padding: 0; }
+        .admin-container { display: flex; min-height: 100vh; }
+        .sidebar { width: 250px; background: #fff; border-right: 1px solid #ddd; padding: 2rem; }
+        .sidebar h2 { color: var(--primary-gold); margin-bottom: 2rem; font-size: 1.5rem; }
+        .sidebar ul li { margin-bottom: 1rem; cursor: pointer; padding: 0.8rem; border-radius: 5px; transition: 0.3s; }
+        .sidebar ul li:hover, .sidebar ul li.active { background: var(--light-gold); color: var(--primary-gold); }
+        .main-content { flex: 1; padding: 3rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 3rem; }
+        .stat-card { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--primary-gold); }
+        .stat-card h3 { font-size: 0.9rem; text-transform: uppercase; color: #666; margin-bottom: 0.5rem; }
+        .stat-card p { font-size: 2rem; font-weight: 700; color: var(--text-dark); }
+        .data-table { width: 100%; background: white; border-collapse: collapse; margin-top: 2rem; }
+        .data-table th, .data-table td { padding: 1.2rem; text-align: left; border-bottom: 1px solid #eee; }
+        .data-table th { background: var(--off-white); color: var(--primary-gold); text-transform: uppercase; font-size: 0.8rem; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
+        .modal-content { background: white; width: 600px; margin: 50px auto; padding: 3rem; border-radius: 10px; max-height: 90vh; overflow-y: auto; }
+        .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; display: flex; align-items: center; justify-content: center; }
+    </style>
+</head>
+<body>
+
+    <div id="loginPage" class="login-overlay">
+        <div style="width: 400px; padding: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.1); text-align: center;">
+            <h2 class="text-gold-gradient" style="margin-bottom: 2rem;">Admin Login</h2>
+            <input type="email" id="loginEmail" placeholder="Email" style="width:100%; padding:1rem; margin-bottom:1rem; border:1px solid #ddd;">
+            <input type="password" id="loginPass" placeholder="Password" style="width:100%; padding:1rem; margin-bottom:2rem; border:1px solid #ddd;">
+            <button onclick="handleLogin()" class="btn btn-gold" style="width: 100%;">Enter Dashboard</button>
+        </div>
+    </div>
+
+    <div class="admin-container">
+        <div class="sidebar">
+            <h2 class="logo">Sahnaa SA</h2>
+            <ul>
+                <li onclick="showSection('dashboard')" class="active"><i class="fas fa-th-large"></i> Dashboard</li>
+                <li onclick="showSection('products')"><i class="fas fa-box"></i> Products</li>
+                <li onclick="showSection('orders')"><i class="fas fa-shopping-cart"></i> Orders</li>
+                <li onclick="showSection('enquiries')"><i class="fas fa-envelope"></i> Enquiries</li>
+                <li onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <!-- DASHBOARD SECTION -->
+            <div id="section-dashboard" class="section">
+                <h1 style="margin-bottom: 2rem;">Overview</h1>
+                <div class="stats-grid">
+                    <div class="stat-card"><h3>Total Revenue</h3><p id="stat-revenue">₹0</p></div>
+                    <div class="stat-card"><h3>Total Orders</h3><p id="stat-orders">0</p></div>
+                    <div class="stat-card"><h3>Products</h3><p id="stat-products">0</p></div>
+                    <div class="stat-card"><h3>Enquiries</h3><p id="stat-enquiries">0</p></div>
+                </div>
+            </div>
+
+            <!-- PRODUCTS SECTION -->
+            <div id="section-products" class="section" style="display:none;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h1>Manage Products</h1>
+                    <button onclick="openProductModal()" class="btn btn-gold">+ Add Product</button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTableBody"></tbody>
+                </table>
+            </div>
+
+            <!-- ORDERS SECTION -->
+            <div id="section-orders" class="section" style="display:none;">
+                <h1>Orders</h1>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderTableBody"></tbody>
+                </table>
+            </div>
+            
+            <!-- ENQUIRIES SECTION -->
+            <div id="section-enquiries" class="section" style="display:none;">
+                <h1>Enquiries & Requests</h1>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Name</th>
+                            <th>Contact</th>
+                            <th>Message</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="enquiryTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRODUCT MODAL -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Add Product</h2>
+            <form id="productForm">
+                <input type="text" id="pName" placeholder="Product Name" required style="width:100%; margin-bottom:1rem; padding:0.8rem;">
+                <select id="pCategory" style="width:100%; margin-bottom:1rem; padding:0.8rem;">
+                    <option>Bridal</option><option>Ethnic</option><option>Couture</option><option>Men</option>
+                </select>
+                <div style="display:flex; gap:1rem;">
+                    <input type="number" id="pPrice" placeholder="Price" required style="flex:1; margin-bottom:1rem; padding:0.8rem;">
+                    <input type="number" id="pStock" placeholder="Stock" required style="flex:1; margin-bottom:1rem; padding:0.8rem;">
+                </div>
+                <textarea id="pDesc" placeholder="Description" rows="4" style="width:100%; margin-bottom:1rem; padding:0.8rem;"></textarea>
+                <input type="text" id="pImages" placeholder="Image URL (Comma separated)" style="width:100%; margin-bottom:1rem; padding:0.8rem;">
+                <div style="display:flex; justify-content: flex-end; gap:1rem;">
+                    <button type="button" onclick="closeModal()" class="btn btn-outline">Cancel</button>
+                    <button type="submit" class="btn btn-gold">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        let token = localStorage.getItem('sahnaa_admin_token');
+
+        if (token) document.getElementById('loginPage').style.display = 'none';
+
+        async function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPass').value;
+            try {
+                const res = await fetch(`${API_URL}/admin/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+                if (data.token) {
+                    localStorage.setItem('sahnaa_admin_token', data.token);
+                    token = data.token;
+                    document.getElementById('loginPage').style.display = 'none';
+                    loadStats();
+                } else alert(data.error);
+            } catch (err) {
+                console.error(err);
+                alert('Connection to server failed. Please ensure the backend server is running on port 5000.');
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('sahnaa_admin_token');
+            location.reload();
+        }
+
+        function showSection(name) {
+            document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+            document.getElementById(`section-${name}`).style.display = 'block';
+            document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            if (name === 'products') loadProducts();
+            if (name === 'orders') loadOrders();
+            if (name === 'enquiries') loadEnquiries();
+            if (name === 'dashboard') loadStats();
+        }
+
+        async function loadStats() {
+            const res = await fetch(`${API_URL}/stats`, { headers: { 'Authorization': `Bearer ${token}` } });
+            const stats = await res.json();
+            document.getElementById('stat-revenue').innerText = `₹${stats.revenue.toLocaleString()}`;
+            document.getElementById('stat-orders').innerText = stats.totalOrders;
+            document.getElementById('stat-products').innerText = stats.totalProducts;
+            document.getElementById('stat-enquiries').innerText = stats.totalEnquiries;
+        }
+
+        async function loadProducts() {
+            const res = await fetch(`${API_URL}/products`);
+            const products = await res.json();
+            const body = document.getElementById('productTableBody');
+            body.innerHTML = products.map(p => `
+                <tr>
+                    <td><img src="${p.images[0]}" width="50"></td>
+                    <td>${p.name}</td>
+                    <td>${p.category}</td>
+                    <td>₹${p.price}</td>
+                    <td>${p.stock}</td>
+                    <td>
+                        <i class="fas fa-trash" style="color:red; cursor:pointer;" onclick="deleteProduct(${p.id})"></i>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm('Delete this product?')) return;
+            await fetch(`${API_URL}/products/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+            loadProducts();
+        }
+
+        function openProductModal() { document.getElementById('productModal').style.display = 'block'; }
+        function closeModal() { document.getElementById('productModal').style.display = 'none'; }
+
+        document.getElementById('productForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const product = {
+                name: document.getElementById('pName').value,
+                category: document.getElementById('pCategory').value,
+                price: document.getElementById('pPrice').value,
+                stock: document.getElementById('pStock').value,
+                description: document.getElementById('pDesc').value,
+                images: document.getElementById('pImages').value.split(','),
+                sizes: ['S', 'M', 'L', 'XL']
+            };
+            await fetch(`${API_URL}/products`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify(product)
+            });
+            closeModal();
+            loadProducts();
+        });
+
+        async function loadOrders() {
+            const res = await fetch(`${API_URL}/orders`, { headers: { 'Authorization': `Bearer ${token}` } });
+            const orders = await res.json();
+            document.getElementById('orderTableBody').innerHTML = orders.map(o => `
+                <tr>
+                    <td>#${o.id}</td>
+                    <td>${o.customerName}</td>
+                    <td>₹${o.totalAmount}</td>
+                    <td><span style="color:orange;">${o.status}</span></td>
+                    <td>${new Date(o.createdAt).toLocaleDateString()}</td>
+                    <td><button class="btn btn-outline" style="padding:0.3rem 0.8rem;">Update</button></td>
+                </tr>
+            `).join('');
+        }
+
+        async function loadEnquiries() {
+            const res = await fetch(`${API_URL}/enquiries`, { headers: { 'Authorization': `Bearer ${token}` } });
+            const enquiries = await res.json();
+            document.getElementById('enquiryTableBody').innerHTML = enquiries.map(e => `
+                <tr>
+                    <td>${e.type}</td>
+                    <td>${e.name}</td>
+                    <td>${e.phone}<br>${e.email}</td>
+                    <td>${e.message}</td>
+                    <td>${new Date(e.createdAt).toLocaleDateString()}</td>
+                </tr>
+            `).join('');
+        }
+
+        if (token) loadStats();
+    </script>
+</body>
+</html>

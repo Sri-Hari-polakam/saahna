@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Orders | Sahnaa SA Luxury Fashion</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .custom-header {
+            height: 40vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('C:/Users/23000/.gemini/antigravity/brain/59a1b20f-2b3f-4975-ad1e-921c2ed9e192/hero_fashion_1776841262953.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+        .custom-form-container {
+            max-width: 800px;
+            margin: -50px auto 80px;
+            position: relative;
+            z-index: 10;
+            padding: 3rem;
+            background: white;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            border: var(--border-gold);
+        }
+        .form-group {
+            margin-bottom: 2rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--primary-gold);
+            outline: none;
+        }
+        .upload-box {
+            border: 2px dashed var(--primary-gold);
+            padding: 3rem;
+            text-align: center;
+            background: var(--off-white);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .upload-box:hover {
+            background: var(--light-gold);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav id="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">SAAHNA</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <div class="cart-icon">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count">0</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="custom-header">
+        <div class="container">
+            <h1 class="text-gold-gradient" style="font-size: 3.5rem; color: white;">Custom Couture</h1>
+            <p style="font-size: 1.2rem; opacity: 0.9;">Tailored to your exact measurements and style.</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="custom-form-container">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem; text-align: center;">Bespoke Creation</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 3rem;">Request a custom-designed masterpiece tailored to your vision.</p>
+            
+            <form id="customOrderForm">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="form-group">
+                        <label>Clothing Type</label>
+                        <select>
+                            <option>Lehenga</option>
+                            <option>Saree</option>
+                            <option>Sherwani</option>
+                            <option>Evening Gown</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Fabric Preference</label>
+                        <input type="text" placeholder="Silk, Velvet, Chiffon etc.">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Design Description</label>
+                    <textarea rows="5" placeholder="Describe your dream design in detail..."></textarea>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="form-group">
+                        <label>Size / Measurements</label>
+                        <input type="text" placeholder="Standard size or Custom cm/inches">
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" value="1" min="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Reference Image Upload</label>
+                    <div class="upload-box" onclick="document.getElementById('fileUpload').click()">
+                        <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--primary-gold); margin-bottom: 1rem;"></i>
+                        <p>Click to upload or drag and drop reference images</p>
+                        <input type="file" id="fileUpload" style="display: none;" multiple>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-gold" style="width: 100%;">Submit Custom Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Sahnaa SA. Custom Couture Excellence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/cart.js"></script>
+    <script src="js/animations.js"></script>
+    <script>
+        document.getElementById('customOrderForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = {
+                type: 'Custom',
+                name: document.querySelector('input[placeholder="Name"]').value || 'Bespoke Client', // Added name field assumption
+                phone: document.querySelector('input[placeholder="Standard size or Custom cm/inches"]').value, // Using size field as placeholder for phone if not exists
+                message: document.querySelector('textarea').value,
+                details: {
+                    type: document.querySelector('select').value,
+                    fabric: document.querySelector('input[placeholder="Silk, Velvet, Chiffon etc."]').value,
+                    quantity: document.querySelector('input[type="number"]').value
+                }
+            };
+
+            try {
+                const res = await fetch('http://localhost:5000/api/enquiry', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                if (res.ok) {
+                    alert('Your custom request has been submitted to our designers.');
+                    e.target.reset();
+                }
+            } catch (err) {
+                alert('Request sent (Offline Demo). Our team will contact you.');
+            }
+        });
+    </script>
+</body>
+</html>

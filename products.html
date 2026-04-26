@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Collections | SAAHNA Luxury Boutique</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav id="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">SAAHNA</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="products.html" class="active">Shop</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-icons">
+                <div class="cart-icon" id="cartBtn">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count">0</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="category-header">
+        <div class="container">
+            <h1 class="text-gold-gradient" style="font-size: 3.5rem;">All Collections</h1>
+            <p style="color: var(--text-muted);">Discover timeless elegance across our curated categories.</p>
+            
+            <div class="category-grid">
+                <div class="cat-card active" data-category="all">
+                    <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&q=80&w=200" alt="All">
+                    <h4>All</h4>
+                </div>
+                <div class="cat-card" data-category="Fabrics">
+                    <img src="file:///C:/Users/23000/.gemini/antigravity/brain/2863ac14-dfb1-4ac9-a2ee-4e653707edf4/fabrics_category_1776856174605.png" alt="Fabrics">
+                    <h4>Fabrics</h4>
+                </div>
+                <div class="cat-card" data-category="Kurtis">
+                    <img src="file:///C:/Users/23000/.gemini/antigravity/brain/2863ac14-dfb1-4ac9-a2ee-4e653707edf4/kurtis_category_1776856195744.png" alt="Kurtis">
+                    <h4>Kurtis</h4>
+                </div>
+                <div class="cat-card" data-category="Frocks">
+                    <img src="file:///C:/Users/23000/.gemini/antigravity/brain/2863ac14-dfb1-4ac9-a2ee-4e653707edf4/frocks_category_1776856218463.png" alt="Frocks">
+                    <h4>Frocks</h4>
+                </div>
+                <div class="cat-card" data-category="Lehangas">
+                    <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=200" alt="Lehangas">
+                    <h4>Lehangas</h4>
+                </div>
+                <div class="cat-card" data-category="Sarees">
+                    <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=200" alt="Sarees">
+                    <h4>Sarees</h4>
+                </div>
+                <div class="cat-card" data-category="Co - ord sets">
+                    <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&q=80&w=200" alt="Co - ord sets">
+                    <h4>Co - ord sets</h4>
+                </div>
+                <div class="cat-card" data-category="One - Piece Dress">
+                    <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=200" alt="One - Piece Dress">
+                    <h4>One - Piece Dress</h4>
+                </div>
+                <div class="cat-card" data-category="Kid's Wear">
+                    <img src="https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80&w=200" alt="Kid's Wear">
+                    <h4>Kid's Wear</h4>
+                </div>
+                <div class="cat-card" data-category="Men's Wear">
+                    <img src="https://images.unsplash.com/photo-1621072156002-e2fccdc0b176?auto=format&fit=crop&q=80&w=200" alt="Men's Wear">
+                    <h4>Men's Wear</h4>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div id="productGrid" class="product-grid">
+            <!-- Advanced cards loaded via JS -->
+        </div>
+    </main>
+
+    <!-- QUICK VIEW MODAL -->
+    <div id="quickViewModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="modalImg" style="height: 600px; background-size: cover; background-position: center;"></div>
+            <div style="padding: 4rem;">
+                <h2 id="modalName" style="font-size: 2.5rem; margin-bottom: 1rem;"></h2>
+                <p id="modalDesc" style="color: var(--text-muted); margin-bottom: 2rem;"></p>
+                <div id="modalPrice" class="text-gold-gradient" style="font-size: 2rem; font-weight: 700; margin-bottom: 2rem;"></div>
+                <div class="size-chips" id="modalSizes"></div>
+                <button class="btn btn-gold" style="width: 100%;">Add to Collection</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container" style="text-align: center; padding: 4rem 0;">
+            <p>&copy; 2026 SAAHNA Luxury Boutique. High-end fashion solutions.</p>
+        </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script type="module">
+        const API_URL = 'http://localhost:5000/api';
+        const grid = document.getElementById('productGrid');
+        const catCards = document.querySelectorAll('.cat-card');
+
+        async function fetchProducts(category = 'all') {
+            try {
+                const res = await fetch(`${API_URL}/products`);
+                const products = await res.json();
+                renderProducts(products, category);
+            } catch (err) {
+                renderProducts(window.localProducts, category);
+            }
+        }
+
+        function renderProducts(products, filter = 'all') {
+            grid.innerHTML = '';
+            const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
+            
+            filtered.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'advanced-card';
+
+                card.innerHTML = `
+                    <div class="card-img-container">
+                        <img src="${p.image || p.images[0]}" alt="${p.name}">
+                        <button class="quick-view-btn" onclick="window.openQuickView(${JSON.stringify(p).replace(/"/g, '&quot;')})">Quick View</button>
+                    </div>
+                    <div class="card-body">
+                        <p class="category-label">${p.category}</p>
+                        <h3>${p.name}</h3>
+                        <div class="price-container">
+                            <span id="price-${p.id}" class="price">₹${p.price.toLocaleString()}</span>
+                        </div>
+                        
+                        <div class="size-chips">
+                            ${['S','M','L','XL'].map(s => `
+                                <div class="size-chip" onclick="window.selectCardSize(${p.id}, '${s}', this)">${s}</div>
+                            `).join('')}
+                        </div>
+
+                        <div class="qty-selector">
+                            <button class="qty-btn" onclick="window.updateCardQty(${p.id}, -1, ${p.price})"><i class="fas fa-minus"></i></button>
+                            <span class="qty-val" id="qty-${p.id}">1</span>
+                            <button class="qty-btn" onclick="window.updateCardQty(${p.id}, 1, ${p.price})"><i class="fas fa-plus"></i></button>
+                        </div>
+
+                        <div class="card-actions">
+                            <button class="btn btn-gold" onclick="window.handleAddToCart(${p.id}, ${JSON.stringify(p).replace(/"/g, '&quot;')})">Add to Cart</button>
+                            <button class="btn btn-outline" onclick="window.handleBuyNow(${p.id}, ${JSON.stringify(p).replace(/"/g, '&quot;')})">Buy Now</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Global functions for card interactions
+        window.selectCardSize = (pid, size, el) => {
+            const card = el.closest('.advanced-card');
+            card.querySelectorAll('.size-chip').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            card.dataset.selectedSize = size;
+        };
+
+        window.updateCardQty = (pid, delta, basePrice) => {
+            const qtyEl = document.getElementById(`qty-${pid}`);
+            const priceEl = document.getElementById(`price-${pid}`);
+            let qty = parseInt(qtyEl.innerText) + delta;
+            if (qty < 1) qty = 1;
+            qtyEl.innerText = qty;
+            priceEl.innerText = `₹${(basePrice * qty).toLocaleString()}`;
+        };
+
+        window.handleAddToCart = (pid, product) => {
+            const card = document.querySelector(`.advanced-card [id="qty-${pid}"]`).closest('.advanced-card');
+            const size = card.dataset.selectedSize;
+            const qty = parseInt(document.getElementById(`qty-${pid}`).innerText);
+
+            if (!size) {
+                alert('Please select a size first.');
+                return;
+            }
+
+            window.addToCart(pid, size, product, qty);
+        };
+
+        window.handleBuyNow = (pid, product) => {
+            window.handleAddToCart(pid, product);
+            if (document.querySelector(`.advanced-card [id="qty-${pid}"]`).closest('.advanced-card').dataset.selectedSize) {
+                window.location.href = 'checkout.html';
+            }
+        };
+
+        window.openQuickView = (p) => {
+            document.getElementById('modalName').innerText = p.name;
+            document.getElementById('modalDesc').innerText = p.description;
+            document.getElementById('modalPrice').innerText = `₹${p.price.toLocaleString()}`;
+            document.getElementById('modalImg').style.backgroundImage = `url('${p.image || p.images[0]}')`;
+            document.getElementById('modalSizes').innerHTML = ['S','M','L','XL'].map(s => `<div class="size-chip">${s}</div>`).join('');
+            document.getElementById('quickViewModal').style.display = 'block';
+        };
+
+        document.querySelector('.close-modal').onclick = () => {
+            document.getElementById('quickViewModal').style.display = 'none';
+        };
+
+        catCards.forEach(card => {
+            card.addEventListener('click', () => {
+                catCards.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                fetchProducts(card.dataset.category);
+            });
+        });
+
+        fetchProducts();
+    </script>
+    <script src="js/cart.js"></script>
+</body>
+</html>

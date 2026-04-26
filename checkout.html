@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Sahnaa SA Luxury Fashion</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .checkout-container {
+            max-width: 1200px;
+            margin: 150px auto 80px;
+        }
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 4rem;
+        }
+        .checkout-section {
+            background: white;
+            padding: 2.5rem;
+            border: var(--border-gold);
+            margin-bottom: 2rem;
+        }
+        .checkout-section h3 {
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-gold);
+        }
+        .order-summary {
+            background: var(--off-white);
+            padding: 2.5rem;
+            position: sticky;
+            top: 120px;
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+        .summary-total {
+            border-top: 1px solid #ddd;
+            padding-top: 1rem;
+            margin-top: 1rem;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .payment-options {
+            margin-top: 2rem;
+        }
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .payment-method.active {
+            border-color: var(--primary-gold);
+            background: var(--light-gold);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav id="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">Sahnaa SA</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container checkout-container">
+        <div class="checkout-grid">
+            <div class="checkout-main">
+                <div class="checkout-section">
+                    <h3>Shipping Information</h3>
+                    <form id="checkoutForm">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                            <input type="text" placeholder="First Name" required style="padding: 1rem; border: 1px solid #ddd;">
+                            <input type="text" placeholder="Last Name" required style="padding: 1rem; border: 1px solid #ddd;">
+                        </div>
+                        <input type="email" placeholder="Email Address" required style="width: 100%; padding: 1rem; border: 1px solid #ddd; margin-bottom: 1.5rem;">
+                        <input type="text" placeholder="Address" required style="width: 100%; padding: 1rem; border: 1px solid #ddd; margin-bottom: 1.5rem;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem;">
+                            <input type="text" placeholder="City" required style="padding: 1rem; border: 1px solid #ddd;">
+                            <input type="text" placeholder="State" required style="padding: 1rem; border: 1px solid #ddd;">
+                            <input type="text" placeholder="Pincode" required style="padding: 1rem; border: 1px solid #ddd;">
+                        </div>
+                    </form>
+                </div>
+
+                <div class="checkout-section">
+                    <h3>Payment Method</h3>
+                    <div class="payment-options">
+                        <div class="payment-method active">
+                            <input type="radio" name="payment" checked>
+                            <i class="fas fa-credit-card"></i>
+                            <span>Online Payment (Razorpay/Stripe)</span>
+                        </div>
+                        <div class="payment-method">
+                            <input type="radio" name="payment">
+                            <i class="fas fa-university"></i>
+                            <span>Net Banking</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-summary">
+                <h3>Order Summary</h3>
+                <div id="checkoutItemsList">
+                    <!-- Items will be injected here -->
+                </div>
+                
+                <div class="summary-details">
+                    <div class="summary-item">
+                        <span>Subtotal</span>
+                        <span id="subtotal">₹0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Shipping</span>
+                        <span>Free</span>
+                    </div>
+                    <div class="summary-total">
+                        <span>Total</span>
+                        <span id="total">₹0</span>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-gold" id="placeOrderBtn" style="width: 100%; margin-top: 2rem;">Pay & Place Order</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/cart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const list = document.getElementById('checkoutItemsList');
+            const subtotalEl = document.getElementById('subtotal');
+            const totalEl = document.getElementById('total');
+            
+            function renderCheckout() {
+                list.innerHTML = '';
+                let total = 0;
+                
+                cart.forEach(item => {
+                    total += item.price * item.quantity;
+                    const div = document.createElement('div');
+                    div.className = 'summary-item';
+                    div.style.marginBottom = '1.5rem';
+                    div.innerHTML = `
+                        <span>${item.name} (x${item.quantity})</span>
+                        <span>₹${(item.price * item.quantity).toLocaleString()}</span>
+                    `;
+                    list.appendChild(div);
+                });
+                
+                subtotalEl.innerText = `₹${total.toLocaleString()}`;
+                totalEl.innerText = `₹${total.toLocaleString()}`;
+            }
+
+            renderCheckout();
+
+            document.getElementById('placeOrderBtn').addEventListener('click', () => {
+                if (cart.length === 0) {
+                    alert('Your cart is empty');
+                    return;
+                }
+                
+                // Simulate Payment Gateway
+                alert('Redirecting to Secure Payment Gateway...');
+                setTimeout(() => {
+                    alert('Payment Successful! Thank you for shopping with Sahnaa SA. Order ID: #SA' + Math.floor(Math.random()*100000));
+                    localStorage.removeItem('sahnaa_cart');
+                    window.location.href = 'index.html';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>

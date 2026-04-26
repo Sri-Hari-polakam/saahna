@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact & Appointment | SAAHNA Luxury Boutique</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: 150px; margin-bottom: 80px; }
+        .contact-info-card { background: var(--off-white); padding: 4rem; border-top: 5px solid var(--primary-gold); }
+        .info-item { display: flex; gap: 1.5rem; margin-bottom: 2.5rem; }
+        .info-item i { font-size: 1.5rem; color: var(--primary-gold); margin-top: 5px; }
+        .map-container { height: 450px; width: 100%; filter: grayscale(1) invert(0) contrast(1.2); transition: var(--transition); }
+        .map-container:hover { filter: none; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 1rem; border: 1px solid #ddd; font-family: inherit; }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav id="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">SAAHNA</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="products.html">Shop</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="contact-grid">
+            <div class="contact-details">
+                <h1 class="text-gold-gradient" style="font-size: 3rem; margin-bottom: 2rem;">Visit Our Studio</h1>
+                <p style="margin-bottom: 3rem; color: var(--text-muted);">Step into a world of personalized fashion. Book an appointment for a one-on-one design consultation.</p>
+                
+                <div class="contact-info-card">
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Location</h4>
+                            <p>2nd Floor, Thota’s Vivedha Apartment, KP Street, Bunder Rd, opp PVP Mall, Vijayawada, Andhra Pradesh 520010</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Studio Timings</h4>
+                            <p>Monday to Saturday: 11 AM – 8 PM</p>
+                            <p style="font-size: 0.9rem; color: var(--primary-gold);">*Flexible appointments available on request</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <h4>Connect With Us</h4>
+                            <p>Phone/WhatsApp: +91 9652926366</p>
+                            <p>Email: saahna.sa@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="appointment-form">
+                <div style="background: white; padding: 3rem; border: 1px solid #eee; box-shadow: 0 20px 40px rgba(0,0,0,0.05);">
+                    <h3 style="margin-bottom: 2rem; text-align: center;">Book Design Consultation</h3>
+                    <form id="appointmentForm">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Preferred Service</label>
+                            <select style="width: 100%; padding: 1rem; border: 1px solid #ddd;">
+                                <option>Professional Stitching</option>
+                                <option>Bridal Consultation</option>
+                                <option>Wardrobe Upcycling</option>
+                                <option>B2B Query</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Your Message (Optional)</label>
+                            <textarea rows="4"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-gold" style="width: 100%;">Schedule Appointment</button>
+                    </form>
+                    <div style="margin-top: 2rem; text-align: center;">
+                        <a href="https://wa.me/919652926366" class="btn btn-outline" style="width: 100%;">Quick WhatsApp Booking</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAP SECTION -->
+    <section>
+        <div class="map-container">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3825.29778219438!2d80.6433552!3d16.5113945!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTbCsDMwJzQxLjAiTiA4MMKwMzgnMzYuMSJF!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
+                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container" style="text-align: center; padding: 4rem 0;">
+            <p>&copy; 2026 SAAHNA Luxury Boutique. Visit us for a personalized experience.</p>
+        </div>
+    </footer>
+
+    <script src="js/cart.js"></script>
+    <script>
+        document.getElementById('appointmentForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Your appointment request has been received. Our concierge will contact you shortly.');
+            e.target.reset();
+        });
+    </script>
+</body>
+</html>

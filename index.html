@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAAHNA | Luxury Personalised Fashion Boutique</title>
+    <meta name="description" content="SAAHNA - Tailored clothing solutions for both men and women. Luxury boutique in Vijayawada offering fusion, ethnic, and western wear.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav id="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">SAAHNA</a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="products.html">Shop</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="admin/index.html" title="Admin Dashboard"><i class="fas fa-user-shield" style="font-size: 1rem; opacity: 0.7;"></i></a>
+                <a href="https://instagram.com/saahna.sa" target="_blank"><i class="fab fa-instagram"></i></a>
+                <div class="cart-icon" id="cartBtn">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count">0</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero animated-bg" style="position: relative; overflow: hidden;">
+        <div class="container" style="display: flex; align-items: center; width: 100%; position: relative; z-index: 1;">
+            <div class="hero-content">
+                <h1 class="fade-in">Personalised <br><span class="text-gold-gradient">Couture</span></h1>
+                <p class="fade-in" style="font-size: 1.2rem; margin-bottom: 2.5rem; max-width: 600px;">Tailored clothing solutions for both men and women, offering complete customization from start to finish.</p>
+                <div class="hero-btns fade-in">
+                    <a href="contact.html" class="btn btn-gold">Book Appointment</a>
+                    <a href="services.html" class="btn btn-outline" style="margin-left: 1rem;">Explore Services</a>
+                </div>
+            </div>
+            <div class="hero-image fade-in" style="background-image: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=1200'); border-radius: 200px 200px 0 0;"></div>
+        </div>
+    </section>
+
+    <!-- NEW ARRIVALS -->
+    <section class="new-arrivals" style="padding: 8rem 0; background: #fff;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 5rem;">
+                <h2 class="text-gold-gradient" style="font-size: 3rem;">Signature Collections</h2>
+                <p style="color: var(--text-muted);">Curated excellence by Ashitha Yejju.</p>
+            </div>
+            <div id="homeProductGrid" class="product-grid">
+                <!-- Products loaded via JS -->
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="products.html" class="btn btn-outline">View All Products</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- BRAND INTRO -->
+    <section class="brand-intro" style="padding: 10rem 0; text-align: center; background: var(--off-white);">
+        <div class="container">
+            <h2 class="text-gold-gradient" style="font-size: 3rem; margin-bottom: 2rem; letter-spacing: 2px;">The Saahna Experience</h2>
+            <p style="max-width: 850px; margin: 0 auto 2.5rem; font-size: 1.2rem; color: var(--text-muted); line-height: 1.8;">
+                Serving since 2019, SAAHNA is a luxury fashion destination founded by <strong>Ashitha Yejju</strong>. We specialize in fusion, ethnic, and western wear, providing a complete fashion ecosystem from fabric sourcing to master tailoring.
+            </p>
+            <a href="about.html" class="btn btn-gold">Read Our Story</a>
+        </div>
+    </section>
+
+    <!-- CUSTOMER REVIEWS -->
+    <section class="reviews" style="padding: 8rem 0; background: var(--off-white);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 5rem;">
+                <h2 class="text-gold-gradient" style="font-size: 3rem;">Client Testimonials</h2>
+                <p style="color: var(--text-muted); margin-top: 1rem;">What our esteemed clients say about their Saahna experience.</p>
+            </div>
+            <div class="review-grid">
+                <!-- Review 1 -->
+                <div class="testimonial-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="quote">"Absolutely thrilled with my bespoke outfit! The fit was perfect and the fabric quality is unmatched. SAAHNA truly understands luxury tailoring."</p>
+                    <div class="client-info">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150" alt="Priya Reddy" class="client-img">
+                        <div>
+                            <h4>Priya Reddy</h4>
+                            <p class="client-type">Verified Client</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="testimonial-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="quote">"The team at SAAHNA brought my dream dress to life. The intricate embroidery work is stunning and the customer service is top-notch."</p>
+                    <div class="client-info">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150" alt="Anjali Sharma" class="client-img">
+                        <div>
+                            <h4>Anjali Sharma</h4>
+                            <p class="client-type">Verified Client</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="testimonial-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="quote">"I ordered a couple's combo for my anniversary. Not only was it delivered on time, but it fit both of us flawlessly. Highly recommend!"</p>
+                    <div class="client-info">
+                        <img src="https://images.unsplash.com/photo-1516585427167-9f4af9627e6c?auto=format&fit=crop&q=80&w=150" alt="Rohan & Sneha" class="client-img">
+                        <div>
+                            <h4>Rohan & Sneha</h4>
+                            <p class="client-type">Verified Clients</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4 class="logo">SAAHNA</h4>
+                    <p style="color: var(--text-muted);">2nd Floor, Thota’s Vivedha Apartment, Vijayawada.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Our Services</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="admin/index.html" style="opacity: 0.6; font-size: 0.8rem;">Admin Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <p>+91 9652926366</p>
+                    <p>saahna.sa@gmail.com</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Follow SAAHNA</h4>
+                    <div class="socials" style="display: flex; gap: 1rem; font-size: 1.5rem;">
+                        <a href="https://instagram.com/saahna.sa"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WHATSAPP FLOAT -->
+    <a href="https://wa.me/919652926366" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+        <span>Direct Enquiry</span>
+    </a>
+
+    <style>
+        .whatsapp-float {
+            position: fixed; bottom: 40px; left: 40px; background: #25d366; color: white;
+            padding: 15px 25px; border-radius: 50px; display: flex; align-items: center;
+            gap: 10px; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3); z-index: 1000;
+            text-decoration: none; transition: 0.3s;
+        }
+        .whatsapp-float:hover { transform: translateY(-5px); }
+    </style>
+
+    <script src="js/animations.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/data.js"></script>
+    
+    <script>
+        // Load Products
+        async function loadHomeProducts() {
+            try {
+                const res = await fetch('http://localhost:5000/api/products');
+                let products = await res.json();
+                renderHomeProducts(products.filter(p => [1, 4, 31].includes(p.id)));
+            } catch (err) {
+                renderHomeProducts(window.localProducts.filter(p => [1, 4, 31].includes(p.id)));
+            }
+        }
+
+
+
+        function renderHomeProducts(products) {
+            const grid = document.getElementById('homeProductGrid');
+            grid.innerHTML = products.map(p => `
+                <div class="advanced-card">
+                    <div class="card-img-container">
+                        <img src="${p.image || p.images[0]}" alt="${p.name}">
+                    </div>
+                    <div class="card-body">
+                        <p class="category-label">${p.category}</p>
+                        <h3>${p.name}</h3>
+                        <div class="price-container">
+                            <span id="price-${p.id}" class="price">₹${p.price.toLocaleString()}</span>
+                        </div>
+                        
+                        <div class="size-chips">
+                            ${['S','M','L','XL'].map(s => `
+                                <div class="size-chip" onclick="window.selectCardSize(${p.id}, '${s}', this)">${s}</div>
+                            `).join('')}
+                        </div>
+
+                        <div class="qty-selector">
+                            <button class="qty-btn" onclick="window.updateCardQty(${p.id}, -1, ${p.price})"><i class="fas fa-minus"></i></button>
+                            <span class="qty-val" id="qty-${p.id}">1</span>
+                            <button class="qty-btn" onclick="window.updateCardQty(${p.id}, 1, ${p.price})"><i class="fas fa-plus"></i></button>
+                        </div>
+
+                        <div class="card-actions">
+                            <button class="btn btn-gold" onclick="window.handleAddToCart(${p.id}, ${JSON.stringify(p).replace(/"/g, '&quot;')})">Add to Cart</button>
+                            <button class="btn btn-outline" onclick="window.handleBuyNow(${p.id}, ${JSON.stringify(p).replace(/"/g, '&quot;')})">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        loadHomeProducts();
+
+        // Helper functions for advanced cards
+        window.selectCardSize = (pid, size, el) => {
+            const card = el.closest('.advanced-card');
+            card.querySelectorAll('.size-chip').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            card.dataset.selectedSize = size;
+        };
+
+        window.updateCardQty = (pid, delta, basePrice) => {
+            const qtyEl = document.getElementById(`qty-${pid}`);
+            const priceEl = document.getElementById(`price-${pid}`);
+            let qty = parseInt(qtyEl.innerText) + delta;
+            if (qty < 1) qty = 1;
+            qtyEl.innerText = qty;
+            priceEl.innerText = `₹${(basePrice * qty).toLocaleString()}`;
+        };
+
+        window.handleAddToCart = (pid, product) => {
+            const card = document.querySelector(`.advanced-card [id="qty-${pid}"]`).closest('.advanced-card');
+            const size = card.dataset.selectedSize;
+            const qty = parseInt(document.getElementById(`qty-${pid}`).innerText);
+            if (!size) { alert('Please select a size first.'); return; }
+            window.addToCart(pid, size, product, qty);
+        };
+
+        window.handleBuyNow = (pid, product) => {
+            window.handleAddToCart(pid, product);
+            if (document.querySelector(`.advanced-card [id="qty-${pid}"]`).closest('.advanced-card').dataset.selectedSize) {
+                window.location.href = 'checkout.html';
+            }
+        };
+    </script>
+</body>
+</html>
