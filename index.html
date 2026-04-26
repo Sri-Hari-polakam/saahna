@@ -220,10 +220,10 @@
     <script src="js/data.js"></script>
 
     <script>
-        // Load Products
+        const getApiUrl = () => window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' ? 'http://localhost:5000/api' : '/api';
         async function loadHomeProducts() {
             try {
-                const res = await fetch('http://localhost:5000/api/products');
+                const res = await fetch(`${getApiUrl()}/products`);
                 let products = await res.json();
                 renderHomeProducts(products.filter(p => [1, 4, 31].includes(p.id)));
             } catch (err) {

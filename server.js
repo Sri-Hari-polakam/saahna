@@ -18,7 +18,17 @@ app.use(cors());
 app.use(express.json());
 const uploadsPath = process.env.UPLOADS_PATH || './uploads';
 app.use('/uploads', express.static(uploadsPath));
-app.use(express.static('public')); // Serve frontend
+app.use(express.static('public')); // Serve frontend if public folder exists
+
+// Safely serve frontend files from the root directory (so you don't have to move them to public/)
+const frontendFiles = ['index.html', 'about.html', 'services.html', 'products.html', 'contact.html', 'custom.html', 'enquiry.html', 'checkout.html'];
+frontendFiles.forEach(file => {
+    app.get('/' + file, (req, res) => res.sendFile(path.join(__dirname, file)));
+});
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.use('/css', express.static(path.join(__dirname, 'css')));
+app.use('/js', express.static(path.join(__dirname, 'js')));
+app.use('/admin', express.static(path.join(__dirname, 'admin')));
 
 // Ensure uploads directory exists
 if (!fs.existsSync(uploadsPath)) {
@@ -257,4 +267,4 @@ app.get('/api/stats', verifyAdmin, (req, res) => {
     });
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));
