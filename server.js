@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
@@ -9,22 +10,24 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const PORT = 5000;
-const SECRET_KEY = 'SAHNAA_SECRET_GOLD_2026';
+const PORT = process.env.PORT || 5000;
+const SECRET_KEY = process.env.SECRET_KEY || 'SAHNAA_SECRET_GOLD_2026';
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static('uploads'));
+const uploadsPath = process.env.UPLOADS_PATH || './uploads';
+app.use('/uploads', express.static(uploadsPath));
 app.use(express.static('public')); // Serve frontend
 
 // Ensure uploads directory exists
-if (!fs.existsSync('./uploads')) {
-    fs.mkdirSync('./uploads');
+if (!fs.existsSync(uploadsPath)) {
+    fs.mkdirSync(uploadsPath);
 }
 
 // Database Initialization
-const db = new sqlite3.Database('./sahnaa_sa.db', (err) => {
+const dbPath = process.env.DB_PATH || './sahnaa_sa.db';
+const db = new sqlite3.Database(dbPath, (err) => {
     if (err) console.error(err.message);
     console.log('Connected to Sahnaa SA database.');
 });
