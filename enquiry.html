@@ -163,8 +163,7 @@
             };
 
             try {
-                const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' ? 'http://localhost:8080/api' : '/api';
-                const res = await fetch(`${API_URL}/enquiry`, {
+                const res = await fetch('http://localhost:5000/api/enquiry', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)

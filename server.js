@@ -4,40 +4,67 @@ const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const Razorpay = require('razorpay');
-const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
+let stripe, multer;
+try {
+    stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+    multer = require('multer');
+} catch (err) {
+    console.error("CRITICAL: Missing dependencies. Please run 'npm install stripe multer'");
+}
 const app = express();
-const PORT = process.env.PORT || 8080;
-const SECRET_KEY = process.env.SECRET_KEY || 'SAHNAA_SECRET_GOLD_2026';
+const PORT = 5000;
+const SECRET_KEY = 'SAHNAA_SECRET_GOLD_2026';
 
 // Middleware
 app.use(cors());
-app.use(express.json());
-const uploadsPath = process.env.UPLOADS_PATH || './uploads';
-app.use('/uploads', express.static(uploadsPath));
-app.use(express.static('public')); // Serve frontend if public folder exists
 
-// Safely serve frontend files from the root directory (so you don't have to move them to public/)
-const frontendFiles = ['index.html', 'about.html', 'services.html', 'products.html', 'contact.html', 'custom.html', 'enquiry.html', 'checkout.html'];
-frontendFiles.forEach(file => {
-    app.get('/' + file, (req, res) => res.sendFile(path.join(__dirname, file)));
+// --- STRIPE WEBHOOK ---
+app.post('/api/webhook', express.raw({type: 'application/json'}), (req, res) => {
+    const sig = req.headers['stripe-signature'];
+    let event = req.body;
+    try {
+        if (process.env.STRIPE_WEBHOOK_SECRET) {
+            event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+        } else {
+            event = JSON.parse(req.body.toString());
+        }
+    } catch (err) {
+        console.error("Webhook Error:", err.message);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    if (event.type === 'checkout.session.completed') {
+        const session = event.data.object;
+        const customer = JSON.parse(session.metadata.customer || '{}');
+        const items = JSON.parse(session.metadata.items || '[]');
+        const totalAmount = session.amount_total / 100;
+
+        db.run(`INSERT INTO orders (customerName, phone, email, address, city, country, totalAmount, paymentId, orderId, items, status) VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
+            [customer.name, customer.phone, customer.email, customer.address, customer.city, customer.country, totalAmount, session.payment_intent, session.id, JSON.stringify(items), 'Paid'],
+            function(err) {
+                if(err) console.error("DB Insert Error", err);
+            });
+    }
+
+    res.json({received: true});
 });
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-app.use('/css', express.static(path.join(__dirname, 'css')));
-app.use('/js', express.static(path.join(__dirname, 'js')));
-app.use('/admin', express.static(path.join(__dirname, 'admin')));
+
+app.use(express.json());
+app.use('/uploads', express.static('uploads'));
+app.use(express.static('public')); // Serve frontend
 
 // Ensure uploads directory exists
-if (!fs.existsSync(uploadsPath)) {
-    fs.mkdirSync(uploadsPath);
+if (!fs.existsSync('./uploads')) {
+    fs.mkdirSync('./uploads');
 }
 
+// Multer config moved below
+
 // Database Initialization
-const dbPath = process.env.DB_PATH || './sahnaa_sa.db';
-const db = new sqlite3.Database(dbPath, (err) => {
+const db = new sqlite3.Database('./sahnaa_sa.db', (err) => {
     if (err) console.error(err.message);
     console.log('Connected to Sahnaa SA database.');
 });
@@ -57,6 +84,10 @@ db.serialize(() => {
         images TEXT,
         sizes TEXT
     )`);
+
+    db.run(`ALTER TABLE products ADD COLUMN colors TEXT`, () => {});
+    db.run(`ALTER TABLE products ADD COLUMN customization TEXT`, () => {});
+    db.run(`ALTER TABLE products ADD COLUMN policies TEXT`, () => {});
 
     // Orders Table
     db.run(`CREATE TABLE IF NOT EXISTS orders (
@@ -99,64 +130,36 @@ db.serialize(() => {
     // Create default admin if not exists
     const adminPass = bcrypt.hashSync('admin123', 10);
     db.run(`INSERT OR IGNORE INTO admins (email, password) VALUES (?, ?)`, ['admin@saahna.com', adminPass]);
-    // Create default products if empty
+    // Create default products to reach 200 total
     db.get(`SELECT COUNT(*) as count FROM products`, (err, row) => {
-        if (row.count === 0) {
-            const initialProducts = [
-                // SAREES
-                ["Royal Gold Banarasi", "Sarees", 12500, 11000, 15, "Classic Banarasi silk.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800"]', '["Free Size"]'],
-                ["Ivory Kanjivaram", "Sarees", 15000, 14000, 10, "Pure Kanjivaram silk.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=800"]', '["Free Size"]'],
-                ["Champagne Chiffon", "Sarees", 8500, 7500, 20, "Lightweight chiffon.", "Chiffon", "Dry Clean", '["https://images.unsplash.com/photo-1583391733956-6c78276477e2?auto=format&fit=crop&q=80&w=800"]', '["Free Size"]'],
-                ["Gold Brocade Saree", "Sarees", 18000, 16000, 12, "Intricate brocade work.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1610030469668-935142b96de4?auto=format&fit=crop&q=80&w=800"]', '["Free Size"]'],
-                ["Midnight Silk Saree", "Sarees", 11000, 10000, 8, "Deep navy silk.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1610189012906-407883984605?auto=format&fit=crop&q=80&w=800"]', '["Free Size"]'],
-                ["Rose Gold Organza", "Sarees", 9500, 8500, 15, "Elegant organza.", "Organza", "Dry Clean", '["https://images.unsplash.com/photo-1610030469915-05562725c363?auto=format&fit=crop&q=80&w=800"]', '["Free Size"]'],
-                ["Classic Red Pattu", "Sarees", 22000, 20000, 5, "Wedding pattu saree.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1583391733975-ac581b23cc7f?auto=format&fit=crop&q=80&w=800"]', '["Free Size"]'],
-                ["Emerald Green Silk", "Sarees", 13500, 12000, 10, "Rich green silk.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1610030469931-18e388065b79?auto=format&fit=crop&q=80&w=800"]', '["Free Size"]'],
-                ["Beige Handloom", "Sarees", 7200, 6500, 18, "Handloom silk cotton.", "Silk Cotton", "Dry Clean", '["https://images.unsplash.com/photo-1610030470220-4f51e06e3001?auto=format&fit=crop&q=80&w=800"]', '["Free Size"]'],
-                ["Golden Tissue Saree", "Sarees", 16500, 15000, 6, "Ultra-fine tissue silk.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1610030470241-d61f74f469bb?auto=format&fit=crop&q=80&w=800"]', '["Free Size"]'],
-                
-                // SHIRTS
-                ["Linen White Shirt", "Men's Wear", 2500, 2200, 30, "Premium Italian linen.", "Linen", "Machine Wash", '["https://images.unsplash.com/photo-1598033129183-c4f50c7176c8?auto=format&fit=crop&q=80&w=800"]', '["S","M","L","XL"]'],
-                ["Gold Silk Kurta", "Men's Wear", 5500, 5000, 25, "Luxury silk kurta.", "Silk", "Hand Wash", '["https://images.unsplash.com/photo-1597983073493-88cd35cf93b0?auto=format&fit=crop&q=80&w=800"]', '["S","M","L","XL"]'],
-                ["Beige Bandhgala", "Men's Wear", 12000, 11000, 10, "Classic Bandhgala set.", "Wool", "Dry Clean", '["https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&q=80&w=800"]', '["M","L","XL"]'],
-                ["Navy Formal Shirt", "Men's Wear", 3200, 2800, 40, "Formal cotton shirt.", "Cotton", "Machine Wash", '["https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&q=80&w=800"]', '["S","M","L","XL"]'],
-                ["Embroidered Sherwani", "Men's Wear", 25000, 22000, 5, "Intricate embroidery sherwani.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1598505231683-194139956461?auto=format&fit=crop&q=80&w=800"]', '["M","L","XL"]'],
-                ["Sky Blue Linen", "Men's Wear", 2800, 2500, 20, "Casual linen shirt.", "Linen", "Machine Wash", '["https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&q=80&w=800"]', '["S","M","L","XL"]'],
-                ["Classic Black Kurta", "Men's Wear", 4200, 3800, 15, "Black cotton silk kurta.", "Silk Cotton", "Hand Wash", '["https://images.unsplash.com/photo-1611082531024-5d5138127339?auto=format&fit=crop&q=80&w=800"]', '["M","L","XL"]'],
-                ["Peach Wedding Kurta", "Men's Wear", 6800, 6000, 10, "Peach silk mirror work.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1597983073280-9907f1857997?auto=format&fit=crop&q=80&w=800"]', '["S","M","L","XL"]'],
-                ["Tan Leather Loafers", "Men's Wear", 4500, 4000, 12, "Handcrafted loafers.", "Leather", "Polish", '["https://images.unsplash.com/photo-1533867617858-e7b97e060509?auto=format&fit=crop&q=80&w=800"]', '["8","9","10","11"]'],
-                ["Velvet Waistcoat", "Men's Wear", 3800, 3500, 20, "Maroon velvet waistcoat.", "Velvet", "Dry Clean", '["https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?auto=format&fit=crop&q=80&w=800"]', '["S","M","L"]'],
-                
-                // COMBOS (Matching Couple Wear)
-                ["Royal Couple Combo", "Co - ord sets", 85000, 80000, 5, "Matching bride & groom outfits.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1583391733975-ac581b23cc7f?auto=format&fit=crop&q=80&w=800"]', '["Custom"]'],
-                ["Ethnic Duo Set", "Co - ord sets", 42000, 38000, 8, "Matching ivory sets.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&q=80&w=800"]', '["Custom"]'],
-                ["Sangeet Sparkle Combo", "Co - ord sets", 55000, 50000, 6, "Mirror work couple sets.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800"]', '["Custom"]'],
-                ["Pastel Promise Set", "Co - ord sets", 68000, 62000, 4, "Matching pastel couture.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&q=80&w=800"]', '["Custom"]'],
-                ["Midnight Couple Wear", "Co - ord sets", 48000, 45000, 7, "Navy silk duo set.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&q=80&w=800"]', '["Custom"]'],
-                ["Golden Aura Combo", "Co - ord sets", 92000, 88000, 3, "Luxury golden couple wear.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&q=80&w=800"]', '["Custom"]'],
-                ["Floral Fusion Duo", "Co - ord sets", 35000, 32000, 10, "Modern floral couple set.", "Cotton Silk", "Dry Clean", '["https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800"]', '["Custom"]'],
-                ["Velvet Royalty Set", "Co - ord sets", 78000, 72000, 4, "Maroon velvet duo.", "Velvet", "Dry Clean", '["https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&q=80&w=800"]', '["Custom"]'],
-                ["Silk Symphony Combo", "Co - ord sets", 41000, 38000, 9, "Traditional silk duo.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&q=80&w=800"]', '["Custom"]'],
-                ["Luxury Brocade Duo", "Co - ord sets", 82000, 78000, 2, "Heavy brocade couple set.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&q=80&w=800"]', '["Custom"]'],
-                
-                // ONE-PIECE DRESSES
-                ["Midnight Blue Velvet Dress", "One - Piece Dress", 4500, 4000, 15, "Elegant midnight blue velvet dress.", "Velvet", "Dry Clean", '["https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800"]', '["S","M","L","XL"]'],
-                ["Rose Silk Maxi", "One - Piece Dress", 5500, 5000, 10, "Flowy rose-colored silk maxi dress.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&q=80&w=800"]', '["S","M","L"]'],
-                ["Emerald Green Satin Dress", "One - Piece Dress", 4800, 4500, 12, "Sleek emerald green satin slip dress.", "Satin", "Dry Clean", '["https://images.unsplash.com/photo-1612336307429-8a898d10e223?auto=format&fit=crop&q=80&w=800"]', '["S","M","L"]'],
-                ["Classic Black Wrap Dress", "One - Piece Dress", 3500, 3200, 20, "Versatile black wrap dress.", "Cotton Blend", "Machine Wash", '["https://images.unsplash.com/photo-1605763240000-7e93b172d754?auto=format&fit=crop&q=80&w=800"]', '["S","M","L","XL"]'],
-                ["Floral Chiffon Midi", "One - Piece Dress", 3200, 2800, 18, "Lightweight chiffon midi dress.", "Chiffon", "Dry Clean", '["https://images.unsplash.com/photo-1572804013427-4d7ca7268217?auto=format&fit=crop&q=80&w=800"]', '["M","L","XL"]'],
-                ["White Lace Shift Dress", "One - Piece Dress", 4200, 3800, 15, "Delicate white lace dress.", "Lace", "Dry Clean", '["https://images.unsplash.com/photo-1515347619362-e6bf7f94086e?auto=format&fit=crop&q=80&w=800"]', '["S","M","L"]'],
-                ["Burgundy Sequin Gown", "One - Piece Dress", 8500, 8000, 8, "Glamorous burgundy sequin evening gown.", "Sequin", "Dry Clean", '["https://images.unsplash.com/photo-1566160980482-ebc2669e2c6d?auto=format&fit=crop&q=80&w=800"]', '["S","M","L","XL"]'],
-                ["Mustard Yellow Sundress", "One - Piece Dress", 2800, 2500, 25, "Bright mustard yellow cotton sundress.", "Cotton", "Machine Wash", '["https://images.unsplash.com/photo-1596783049102-1811eef2deaf?auto=format&fit=crop&q=80&w=800"]', '["S","M","L"]'],
-                ["Navy Blue A-Line Dress", "One - Piece Dress", 3900, 3500, 14, "Structured navy blue A-line dress.", "Cotton Blend", "Machine Wash", '["https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800"]', '["M","L","XL"]'],
-                ["Silver Pleated Maxi", "One - Piece Dress", 6200, 5800, 6, "Stunning silver pleated metallic maxi.", "Polyester", "Dry Clean", '["https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&q=80&w=800"]', '["S","M","L"]'],
-                
-                // FROCKS
-                ["Peach Floral Frock", "Frocks", 3200, 2800, 20, "Beautiful peach floral designer frock.", "Cotton", "Machine Wash", '["https://images.unsplash.com/photo-1622290319146-7b63fd48a609?auto=format&fit=crop&q=80&w=800"]', '["S","M","L"]'],
-                ["Blue Silk Frock", "Frocks", 4500, 4000, 15, "Elegant blue silk party frock.", "Silk", "Dry Clean", '["https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800"]', '["S","M","L"]']
+        if (row.count < 200) {
+            db.run("DELETE FROM products"); // clear existing to avoid duplicates
+            
+            const categories = ["Sarees", "Men's Wear", "Co - ord sets", "One - Piece Dress", "Frocks", "Fabrics", "Kurtis", "Lehangas", "Kid's Wear"];
+            const templates = [
+                { price: 12500, discountPrice: 11000, desc: "Classic Banarasi silk.", image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800", sizes: ["Free Size"] },
+                { price: 2500, discountPrice: 2200, desc: "Premium Italian linen.", image: "https://images.unsplash.com/photo-1598033129183-c4f50c7176c8?auto=format&fit=crop&q=80&w=800", sizes: ["S","M","L","XL"] },
+                { price: 85000, discountPrice: 80000, desc: "Matching bride & groom outfits.", image: "https://images.unsplash.com/photo-1583391733975-ac581b23cc7f?auto=format&fit=crop&q=80&w=800", sizes: ["Custom"] },
+                { price: 4500, discountPrice: 4000, desc: "Elegant velvet dress.", image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800", sizes: ["S","M","L","XL"] },
+                { price: 3200, discountPrice: 2800, desc: "Beautiful designer frock.", image: "https://images.unsplash.com/photo-1622290319146-7b63fd48a609?auto=format&fit=crop&q=80&w=800", sizes: ["S","M","L"] }
             ];
+            const adjectives = ["Royal", "Classic", "Premium", "Elegant", "Luxury", "Designer", "Modern", "Traditional", "Festive", "Casual"];
+            const colors = ["Gold", "White", "Blue", "Peach", "Midnight", "Emerald", "Ruby", "Silver", "Ivory", "Rose", "Crimson"];
+
             const stmt = db.prepare(`INSERT INTO products (name, category, price, discountPrice, stock, description, fabric, care, images, sizes) VALUES (?,?,?,?,?,?,?,?,?,?)`);
-            initialProducts.forEach(p => stmt.run(p));
+            for (let i = 1; i <= 200; i++) {
+                const category = categories[i % categories.length];
+                const t = templates[i % templates.length];
+                const adj = adjectives[i % adjectives.length];
+                const color = colors[i % colors.length];
+                
+                const name = `${adj} ${color} ${category.split(" ")[0]} ${i}`;
+                
+                stmt.run([
+                    name, category, t.price + (i * 10), t.discountPrice + (i * 10), 20 + (i % 10),
+                    t.desc, "Mixed", "Dry Clean", JSON.stringify([t.image]), JSON.stringify(t.sizes)
+                ]);
+            }
             stmt.finalize();
         }
     });
@@ -185,17 +188,45 @@ const verifyAdmin = (req, res, next) => {
     });
 };
 
+// Multer Config & Upload Route
+let upload = null;
+if (multer) {
+    const storage = multer.diskStorage({
+        destination: './uploads/',
+        filename: (req, file, cb) => {
+            cb(null, 'prod_' + Date.now() + path.extname(file.originalname));
+        }
+    });
+    upload = multer({ storage });
+}
+
+app.post('/api/upload', verifyAdmin, (req, res, next) => {
+    if (!upload) return res.status(500).json({ error: 'Multer not installed' });
+    upload.single('image')(req, res, next);
+}, (req, res) => {
+    if (!req.file) return res.status(400).json({ error: 'No image uploaded' });
+    const imageUrl = `http://localhost:5000/uploads/${req.file.filename}`;
+    res.json({ imageUrl });
+});
+
 // --- PRODUCT ROUTES ---
 app.get('/api/products', (req, res) => {
     db.all(`SELECT * FROM products`, [], (err, rows) => {
-        res.json(rows.map(r => ({ ...r, images: JSON.parse(r.images || '[]'), sizes: JSON.parse(r.sizes || '[]') })));
+        res.json(rows.map(r => ({ 
+            ...r, 
+            images: JSON.parse(r.images || '[]'), 
+            sizes: JSON.parse(r.sizes || '[]'),
+            colors: JSON.parse(r.colors || '[]'),
+            customization: JSON.parse(r.customization || '{}'),
+            policies: JSON.parse(r.policies || '{}')
+        })));
     });
 });
 
 app.post('/api/products', verifyAdmin, (req, res) => {
-    const { name, category, price, discountPrice, stock, description, fabric, care, images, sizes } = req.body;
-    db.run(`INSERT INTO products (name, category, price, discountPrice, stock, description, fabric, care, images, sizes) VALUES (?,?,?,?,?,?,?,?,?,?)`,
-        [name, category, price, discountPrice, stock, description, fabric, care, JSON.stringify(images), JSON.stringify(sizes)],
+    const { name, category, price, discountPrice, stock, description, fabric, care, images, sizes, colors, customization, policies } = req.body;
+    db.run(`INSERT INTO products (name, category, price, discountPrice, stock, description, fabric, care, images, sizes, colors, customization, policies) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+        [name, category, price, discountPrice, stock, description, fabric, care, JSON.stringify(images), JSON.stringify(sizes), JSON.stringify(colors || []), JSON.stringify(customization || {}), JSON.stringify(policies || {})],
         function(err) {
             res.json({ id: this.lastID });
         });
@@ -203,6 +234,16 @@ app.post('/api/products', verifyAdmin, (req, res) => {
 
 app.delete('/api/products/:id', verifyAdmin, (req, res) => {
     db.run(`DELETE FROM products WHERE id = ?`, [req.params.id], () => res.json({ success: true }));
+});
+
+app.put('/api/products/:id', verifyAdmin, (req, res) => {
+    const { name, category, price, discountPrice, stock, description, fabric, care, images, sizes, colors, customization, policies } = req.body;
+    db.run(`UPDATE products SET name=?, category=?, price=?, discountPrice=?, stock=?, description=?, fabric=?, care=?, images=?, sizes=?, colors=?, customization=?, policies=? WHERE id=?`,
+        [name, category, price, discountPrice, stock, description, fabric, care, JSON.stringify(images), JSON.stringify(sizes), JSON.stringify(colors || []), JSON.stringify(customization || {}), JSON.stringify(policies || {}), req.params.id],
+        function(err) {
+            if(err) return res.status(500).json({error: err.message});
+            res.json({ success: true });
+        });
 });
 
 // --- ENQUIRY ROUTES ---
@@ -220,32 +261,39 @@ app.get('/api/enquiries', verifyAdmin, (req, res) => {
 });
 
 // --- ORDER & PAYMENT ROUTES ---
-const razorpay = new Razorpay({
-    key_id: 'rzp_test_placeholder', // Should be in .env
-    key_secret: 'rzp_test_placeholder_secret'
-});
-
-app.post('/api/create-order', async (req, res) => {
-    const { amount } = req.body;
+app.post('/api/create-checkout-session', async (req, res) => {
     try {
-        const order = await razorpay.orders.create({
-            amount: amount * 100, // paisa
-            currency: 'INR',
-            receipt: 'order_' + Date.now()
-        });
-        res.json(order);
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
+        const { items, customer } = req.body;
+        
+        const lineItems = items.map(item => ({
+            price_data: {
+                currency: 'inr',
+                product_data: {
+                    name: item.name,
+                    images: item.image ? [item.image] : [],
+                },
+                unit_amount: Math.round(item.price * 100),
+            },
+            quantity: item.quantity,
+        }));
 
-app.post('/api/confirm-payment', (req, res) => {
-    const { customer, items, totalAmount, paymentId, orderId } = req.body;
-    db.run(`INSERT INTO orders (customerName, phone, email, address, city, country, totalAmount, paymentId, orderId, items) VALUES (?,?,?,?,?,?,?,?,?,?)`,
-        [customer.name, customer.phone, customer.email, customer.address, customer.city, customer.country, totalAmount, paymentId, orderId, JSON.stringify(items)],
-        function(err) {
-            res.json({ success: true, orderId: this.lastID });
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            line_items: lineItems,
+            mode: 'payment',
+            success_url: `http://localhost:5000/success.html`,
+            cancel_url: `http://localhost:5000/cancel.html`,
+            metadata: {
+                customer: JSON.stringify(customer),
+                items: JSON.stringify(items.map(i => ({ id: i.id, name: i.name, quantity: i.quantity })))
+            }
         });
+
+        res.json({ id: session.id, url: session.url });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: err.message });
+    }
 });
 
 app.get('/api/orders', verifyAdmin, (req, res) => {
@@ -267,6 +315,4 @@ app.get('/api/stats', verifyAdmin, (req, res) => {
     });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

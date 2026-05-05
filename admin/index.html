@@ -23,17 +23,49 @@
         .data-table th { background: var(--off-white); color: var(--primary-gold); text-transform: uppercase; font-size: 0.8rem; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
         .modal-content { background: white; width: 600px; margin: 50px auto; padding: 3rem; border-radius: 10px; max-height: 90vh; overflow-y: auto; }
-        .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; display: flex; align-items: center; justify-content: center; }
+        .modal-content { background: white; width: 600px; margin: 50px auto; padding: 3rem; border-radius: 10px; max-height: 90vh; overflow-y: auto; }
+        
+        /* Premium Login Overlay Styles */
+        .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; display: flex; }
+        .login-left { flex: 1; background: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=1200') center/cover no-repeat; position: relative; display: flex; align-items: center; justify-content: center; }
+        .login-left::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); }
+        .login-glass-card { position: relative; z-index: 1; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); padding: 4rem; border-radius: 20px; text-align: center; color: white; max-width: 500px; border: 1px solid rgba(255, 255, 255, 0.2); }
+        .login-right { width: 500px; display: flex; align-items: center; justify-content: center; background: #fff; }
+        .login-form-container { width: 100%; max-width: 350px; padding: 2rem; }
+        .input-group { position: relative; margin-bottom: 1.5rem; }
+        .input-group i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #aaa; }
+        .input-group input { width: 100%; padding: 1.2rem 1rem 1.2rem 3rem; border: 1px solid #eee; border-radius: 8px; font-size: 1rem; transition: 0.3s; background: #fafafa; }
+        .input-group input:focus { border-color: var(--primary-gold); background: #fff; outline: none; box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1); }
     </style>
 </head>
 <body>
 
     <div id="loginPage" class="login-overlay">
-        <div style="width: 400px; padding: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.1); text-align: center;">
-            <h2 class="text-gold-gradient" style="margin-bottom: 2rem;">Admin Login</h2>
-            <input type="email" id="loginEmail" placeholder="Email" style="width:100%; padding:1rem; margin-bottom:1rem; border:1px solid #ddd;">
-            <input type="password" id="loginPass" placeholder="Password" style="width:100%; padding:1rem; margin-bottom:2rem; border:1px solid #ddd;">
-            <button onclick="handleLogin()" class="btn btn-gold" style="width: 100%;">Enter Dashboard</button>
+        <div class="login-left">
+            <div class="login-glass-card">
+                <h1 style="font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 1rem; font-weight: 700;">SAAHNA</h1>
+                <p style="font-size: 1.2rem; line-height: 1.6; opacity: 0.9;">Secure Administration Portal. Manage your luxury collections, track orders, and oversee your fashion empire.</p>
+            </div>
+        </div>
+        <div class="login-right">
+            <div class="login-form-container">
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <h2 class="text-gold-gradient" style="font-size: 2rem; margin-bottom: 0.5rem;">Welcome Back</h2>
+                    <p style="color: var(--text-muted);">Please sign in to continue</p>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="loginEmail" placeholder="Email Address">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="loginPass" placeholder="Password">
+                </div>
+                <button onclick="handleLogin()" class="btn btn-gold" style="width: 100%; padding: 1.2rem; font-size: 1.1rem; border-radius: 8px; margin-top: 1rem; box-shadow: 0 10px 20px rgba(212,175,55,0.2);">Secure Login <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i></button>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="../index.html" style="color: #999; font-size: 0.9rem; text-decoration: none; transition: 0.3s;"><i class="fas fa-arrow-left"></i> Return to Main Website</a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -121,30 +153,85 @@
 
     <!-- PRODUCT MODAL -->
     <div id="productModal" class="modal">
-        <div class="modal-content">
-            <h2 id="modalTitle">Add Product</h2>
+        <div class="modal-content" style="width: 800px; max-height: 90vh; overflow-y: auto;">
+            <h2 id="modalTitle" style="color: var(--primary-gold); margin-bottom: 1.5rem;">Add Product</h2>
             <form id="productForm">
-                <input type="text" id="pName" placeholder="Product Name" required style="width:100%; margin-bottom:1rem; padding:0.8rem;">
-                <select id="pCategory" style="width:100%; margin-bottom:1rem; padding:0.8rem;">
-                    <option>Bridal</option><option>Ethnic</option><option>Couture</option><option>Men</option>
-                </select>
-                <div style="display:flex; gap:1rem;">
-                    <input type="number" id="pPrice" placeholder="Price" required style="flex:1; margin-bottom:1rem; padding:0.8rem;">
-                    <input type="number" id="pStock" placeholder="Stock" required style="flex:1; margin-bottom:1rem; padding:0.8rem;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <input type="text" id="pName" placeholder="Product Name" required style="padding:0.8rem; border: 1px solid #ddd;">
+                    <select id="pCategory" required style="padding:0.8rem; border: 1px solid #ddd;">
+                        <option value="">Select Category/Collection</option>
+                        <option value="Sarees">Sarees</option>
+                        <option value="Men's Wear">Men's Wear</option>
+                        <option value="Co - ord sets">Co - ord sets</option>
+                        <option value="One - Piece Dress">One - Piece Dress</option>
+                        <option value="Frocks">Frocks</option>
+                        <option value="Fabrics">Fabrics</option>
+                        <option value="Kurtis">Kurtis</option>
+                        <option value="Lehangas">Lehangas</option>
+                        <option value="Kid's Wear">Kid's Wear</option>
+                    </select>
                 </div>
-                <textarea id="pDesc" placeholder="Description" rows="4" style="width:100%; margin-bottom:1rem; padding:0.8rem;"></textarea>
-                <input type="text" id="pImages" placeholder="Image URL (Comma separated)" style="width:100%; margin-bottom:1rem; padding:0.8rem;">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <input type="number" id="pPrice" placeholder="Price (₹)" required style="padding:0.8rem; border: 1px solid #ddd;">
+                    <input type="number" id="pDiscountPrice" placeholder="Discount Price (₹)" style="padding:0.8rem; border: 1px solid #ddd;">
+                    <input type="number" id="pStock" placeholder="Stock Quantity" required style="padding:0.8rem; border: 1px solid #ddd;">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <input type="text" id="pFabric" placeholder="Fabric Material" style="padding:0.8rem; border: 1px solid #ddd;">
+                    <input type="text" id="pCare" placeholder="Care Instructions" style="padding:0.8rem; border: 1px solid #ddd;">
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label style="display:block; margin-bottom:0.5rem; color: #666;">Available Sizes:</label>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;" id="pSizesContainer">
+                        <label><input type="checkbox" value="S" checked> S</label>
+                        <label><input type="checkbox" value="M" checked> M</label>
+                        <label><input type="checkbox" value="L" checked> L</label>
+                        <label><input type="checkbox" value="XL" checked> XL</label>
+                        <label><input type="checkbox" value="Free Size"> Free Size</label>
+                        <label><input type="checkbox" value="Custom"> Custom</label>
+                    </div>
+                </div>
+
+                <textarea id="pDesc" placeholder="Full Description" rows="4" style="width:100%; margin-bottom:1rem; padding:0.8rem; border: 1px solid #ddd;"></textarea>
+                
+                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #eee;">
+                <h3 style="margin-bottom: 1rem;">Policies</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <input type="text" id="pReturnPolicy" placeholder="Return Policy" style="padding:0.8rem; border: 1px solid #ddd;">
+                    <input type="text" id="pShippingInfo" placeholder="Shipping Info" style="padding:0.8rem; border: 1px solid #ddd;">
+                    <input type="text" id="pPrivacyPolicy" placeholder="Privacy Policy" style="padding:0.8rem; border: 1px solid #ddd;">
+                </div>
+
+                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #eee;">
+                <h3 style="margin-bottom: 1rem;">Advanced Configuration (JSON)</h3>
+                <p style="font-size: 0.8rem; color: #666; margin-bottom: 1rem;">For Colors and Customizations, please use the JSON format below.</p>
+                <textarea id="pColorsJSON" placeholder='Colors (e.g., [{"name":"Red", "hex":"#FF0000", "image":"url"}])' rows="2" style="width:100%; margin-bottom:1rem; padding:0.8rem; border: 1px solid #ddd;"></textarea>
+                <textarea id="pCustomJSON" placeholder='Customization (e.g., {"enabled":true, "fields":[{"name":"Embroidery Text", "extraPrice":500}]})' rows="2" style="width:100%; margin-bottom:1rem; padding:0.8rem; border: 1px solid #ddd;"></textarea>
+
+                <div style="margin-bottom: 1rem; border: 2px dashed #ccc; padding: 2.5rem; text-align: center; background: #fafafa; border-radius: 12px;">
+                    <label style="display:block; margin-bottom:0.5rem; color: var(--primary-gold); font-weight: bold; font-size: 1.2rem;">Product Images</label>
+                    <p style="font-size: 0.8rem; color: #666; margin-bottom: 1rem;">Drag & drop multiple images or click to select files.</p>
+                    <input type="file" id="pImageFile" accept="image/*" multiple style="margin-bottom: 0.5rem;">
+                    <p style="font-size: 0.8rem; color: #999; margin-top: 1rem;">Or provide image URLs below (comma-separated):</p>
+                    <input type="text" id="pImagesUrl" placeholder="Image URLs (Optional if files uploaded)" style="width:100%; padding:0.8rem; border: 1px solid #ddd; margin-top: 0.5rem;">
+                </div>
+
                 <div style="display:flex; justify-content: flex-end; gap:1rem;">
                     <button type="button" onclick="closeModal()" class="btn btn-outline">Cancel</button>
-                    <button type="submit" class="btn btn-gold">Save Product</button>
+                    <button type="submit" id="saveProductBtn" class="btn btn-gold">Save Product</button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' ? 'http://localhost:8080/api' : '/api';
+        const API_URL = 'http://localhost:5000/api';
         let token = localStorage.getItem('sahnaa_admin_token');
+        let allProducts = [];
+        let editingProductId = null;
 
         if (token) document.getElementById('loginPage').style.display = 'none';
 
@@ -197,16 +284,17 @@
 
         async function loadProducts() {
             const res = await fetch(`${API_URL}/products`);
-            const products = await res.json();
+            allProducts = await res.json();
             const body = document.getElementById('productTableBody');
-            body.innerHTML = products.map(p => `
+            body.innerHTML = allProducts.map(p => `
                 <tr>
-                    <td><img src="${p.images[0]}" width="50"></td>
+                    <td><img src="${p.images && p.images[0] ? p.images[0] : 'https://via.placeholder.com/50'}" width="50"></td>
                     <td>${p.name}</td>
                     <td>${p.category}</td>
                     <td>₹${p.price}</td>
                     <td>${p.stock}</td>
                     <td>
+                        <i class="fas fa-edit" style="color:#007BFF; cursor:pointer; margin-right:10px;" onclick="editProduct(${p.id})"></i>
                         <i class="fas fa-trash" style="color:red; cursor:pointer;" onclick="deleteProduct(${p.id})"></i>
                     </td>
                 </tr>
@@ -219,27 +307,131 @@
             loadProducts();
         }
 
-        function openProductModal() { document.getElementById('productModal').style.display = 'block'; }
+        function openProductModal() { 
+            document.getElementById('productForm').reset();
+            document.getElementById('modalTitle').innerText = 'Add Product';
+            editingProductId = null;
+            document.getElementById('productModal').style.display = 'block'; 
+        }
         function closeModal() { document.getElementById('productModal').style.display = 'none'; }
+
+        function editProduct(id) {
+            const p = allProducts.find(x => x.id === id);
+            if(!p) return;
+            editingProductId = p.id;
+            document.getElementById('modalTitle').innerText = 'Edit Product';
+            
+            document.getElementById('pName').value = p.name;
+            document.getElementById('pCategory').value = p.category;
+            document.getElementById('pPrice').value = p.price;
+            document.getElementById('pDiscountPrice').value = p.discountPrice || p.price;
+            document.getElementById('pStock').value = p.stock;
+            document.getElementById('pFabric').value = p.fabric || '';
+            document.getElementById('pCare').value = p.care || '';
+            document.getElementById('pDesc').value = p.description || '';
+            
+            if(p.policies) {
+                document.getElementById('pReturnPolicy').value = p.policies.returnPolicy || '';
+                document.getElementById('pShippingInfo').value = p.policies.shippingInfo || '';
+                document.getElementById('pPrivacyPolicy').value = p.policies.privacyPolicy || '';
+            }
+            if(p.colors && p.colors.length > 0) document.getElementById('pColorsJSON').value = JSON.stringify(p.colors, null, 2);
+            if(p.customization && p.customization.enabled) document.getElementById('pCustomJSON').value = JSON.stringify(p.customization, null, 2);
+            
+            document.getElementById('pImagesUrl').value = p.images ? p.images.join(', ') : '';
+            
+            document.getElementById('productModal').style.display = 'block';
+        }
 
         document.getElementById('productForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const product = {
-                name: document.getElementById('pName').value,
-                category: document.getElementById('pCategory').value,
-                price: document.getElementById('pPrice').value,
-                stock: document.getElementById('pStock').value,
-                description: document.getElementById('pDesc').value,
-                images: document.getElementById('pImages').value.split(','),
-                sizes: ['S', 'M', 'L', 'XL']
-            };
-            await fetch(`${API_URL}/products`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify(product)
-            });
-            closeModal();
-            loadProducts();
+            const btn = document.getElementById('saveProductBtn');
+            btn.innerText = 'Saving...';
+            btn.disabled = true;
+
+            try {
+                let imageUrls = [];
+                const fileInput = document.getElementById('pImageFile');
+                const textInput = document.getElementById('pImagesUrl');
+
+                if (fileInput.files.length > 0) {
+                    for(let i=0; i<fileInput.files.length; i++) {
+                        const formData = new FormData();
+                        formData.append('image', fileInput.files[i]);
+                        const uploadRes = await fetch(`${API_URL}/upload`, {
+                            method: 'POST',
+                            headers: { 'Authorization': `Bearer ${token}` },
+                            body: formData
+                        });
+                        const uploadData = await uploadRes.json();
+                        if(uploadData.imageUrl) imageUrls.push(uploadData.imageUrl);
+                    }
+                } else if (textInput.value) {
+                    imageUrls = textInput.value.split(',').map(s=>s.trim());
+                } else {
+                    imageUrls = ['https://via.placeholder.com/800']; // default fallback
+                }
+
+                const sizes = Array.from(document.querySelectorAll('#pSizesContainer input:checked')).map(cb => cb.value);
+
+                let colors = [];
+                let customization = {};
+                let policies = {
+                    returnPolicy: document.getElementById('pReturnPolicy').value,
+                    shippingInfo: document.getElementById('pShippingInfo').value,
+                    privacyPolicy: document.getElementById('pPrivacyPolicy').value
+                };
+
+                try {
+                    const cJSON = document.getElementById('pColorsJSON').value;
+                    if(cJSON) colors = JSON.parse(cJSON);
+                } catch(e) { console.error("Invalid Colors JSON"); }
+                
+                try {
+                    const custJSON = document.getElementById('pCustomJSON').value;
+                    if(custJSON) customization = JSON.parse(custJSON);
+                } catch(e) { console.error("Invalid Customization JSON"); }
+
+                const product = {
+                    name: document.getElementById('pName').value,
+                    category: document.getElementById('pCategory').value,
+                    price: document.getElementById('pPrice').value,
+                    discountPrice: document.getElementById('pDiscountPrice').value || document.getElementById('pPrice').value,
+                    stock: document.getElementById('pStock').value,
+                    fabric: document.getElementById('pFabric').value || 'Mixed',
+                    care: document.getElementById('pCare').value || 'Dry Clean',
+                    description: document.getElementById('pDesc').value,
+                    images: imageUrls,
+                    sizes: sizes.length > 0 ? sizes : ['Free Size'],
+                    colors: colors,
+                    customization: customization,
+                    policies: policies
+                };
+
+                if (editingProductId) {
+                    await fetch(`${API_URL}/products/${editingProductId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify(product)
+                    });
+                } else {
+                    await fetch(`${API_URL}/products`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify(product)
+                    });
+                }
+                
+                closeModal();
+                loadProducts();
+                document.getElementById('productForm').reset();
+            } catch (err) {
+                console.error(err);
+                alert("Failed to save product.");
+            } finally {
+                btn.innerText = 'Save Product';
+                btn.disabled = false;
+            }
         });
 
         async function loadOrders() {

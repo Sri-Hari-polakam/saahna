@@ -77,6 +77,17 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="products.html">Products</a></li>
             </ul>
+            <div class="nav-icons">
+                <a href="admin/index.html" title="Admin Dashboard"><i class="fas fa-user-shield" style="font-size: 1rem; opacity: 0.7;"></i></a>
+                <a href="wishlist.html" class="wishlist-icon" title="Wishlist" style="position: relative; margin-right: 15px;">
+                    <i class="far fa-heart"></i>
+                    <span class="wishlist-count" style="position: absolute; top: -8px; right: -10px; background: #000; color: white; font-size: 0.7rem; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">0</span>
+                </a>
+                <div class="cart-icon" id="cartBtn">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count">0</span>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -137,11 +148,18 @@
                         <span id="total">₹0</span>
                     </div>
                 </div>
-                <button type="button" class="btn btn-gold" id="placeOrderBtn" style="width: 100%; margin-top: 2rem;">Pay & Place Order</button>
+                <div style="margin-top: 1.5rem;">
+                    <input type="checkbox" id="termsAccept" required>
+                    <label for="termsAccept" style="font-size: 0.9rem; color: var(--text-muted);">
+                        I agree to the <a href="terms.html" target="_blank" style="color: var(--primary-gold);">Terms & Conditions</a>, <a href="privacy-policy.html" target="_blank" style="color: var(--primary-gold);">Privacy Policy</a>, <a href="refund-policy.html" target="_blank" style="color: var(--primary-gold);">Refund Policy</a>, and <a href="shipping-policy.html" target="_blank" style="color: var(--primary-gold);">Shipping Policy</a>.
+                    </label>
+                </div>
+                <button type="button" class="btn btn-gold" id="placeOrderBtn" style="width: 100%; margin-top: 1rem;">Pay & Place Order</button>
             </div>
         </div>
     </div>
 
+    <script src="js/wishlist.js"></script>
     <script src="js/cart.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -171,19 +189,60 @@
 
             renderCheckout();
 
-            document.getElementById('placeOrderBtn').addEventListener('click', () => {
+            document.getElementById('placeOrderBtn').addEventListener('click', async () => {
                 if (cart.length === 0) {
                     alert('Your cart is empty');
                     return;
                 }
+
+                // Check terms acceptance
+                const termsCheckbox = document.getElementById('termsAccept');
+                if (termsCheckbox && !termsCheckbox.checked) {
+                    alert('Please accept the Terms and Conditions to proceed.');
+                    return;
+                }
                 
-                // Simulate Payment Gateway
-                alert('Redirecting to Secure Payment Gateway...');
-                setTimeout(() => {
-                    alert('Payment Successful! Thank you for shopping with Sahnaa SA. Order ID: #SA' + Math.floor(Math.random()*100000));
-                    localStorage.removeItem('sahnaa_cart');
-                    window.location.href = 'index.html';
-                }, 2000);
+                const form = document.getElementById('checkoutForm');
+                if(!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+
+                const inputs = form.querySelectorAll('input');
+                const customer = {
+                    name: inputs[0].value + ' ' + inputs[1].value,
+                    email: inputs[2].value,
+                    address: inputs[3].value,
+                    city: inputs[4].value,
+                    state: inputs[5].value,
+                    phone: inputs[6].value || 'N/A', // Add phone if exists
+                    country: 'India'
+                };
+
+                document.getElementById('placeOrderBtn').innerText = "Processing...";
+                document.getElementById('placeOrderBtn').disabled = true;
+
+                try {
+                    const res = await fetch('http://localhost:5000/api/create-checkout-session', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ items: cart, customer })
+                    });
+                    
+                    const data = await res.json();
+                    if(data.url) {
+                        window.location.href = data.url;
+                    } else {
+                        alert('Error: ' + data.error);
+                        document.getElementById('placeOrderBtn').innerText = "Pay & Place Order";
+                        document.getElementById('placeOrderBtn').disabled = false;
+                    }
+                } catch(e) {
+                    console.error(e);
+                    alert('Failed to initiate checkout.');
+                    document.getElementById('placeOrderBtn').innerText = "Pay & Place Order";
+                    document.getElementById('placeOrderBtn').disabled = false;
+                }
             });
         });
     </script>

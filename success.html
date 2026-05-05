@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Successful | Sahnaa SA</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .container { text-align: center; padding: 100px 20px; }
+        .success-icon { font-size: 80px; color: #4CAF50; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon">✓</div>
+        <h1>Payment Successful!</h1>
+        <p>Thank you for your order. We have received your payment and are processing your order.</p>
+        <p>A confirmation email will be sent to you shortly.</p>
+        <br>
+        <a href="index.html" class="btn btn-gold">Return to Home</a>
+    </div>
+    <script>
+        // Clear cart after successful checkout
+        localStorage.removeItem('sahnaa_cart');
+    </script>
+</body>
+</html>

@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SAAHNA | Luxury Personalised Fashion Boutique</title>
-    <meta name="description"
-        content="SAAHNA - Tailored clothing solutions for both men and women. Luxury boutique in Vijayawada offering fusion, ethnic, and western wear.">
+    <meta name="description" content="SAAHNA - Tailored clothing solutions for both men and women. Luxury boutique in Vijayawada offering fusion, ethnic, and western wear.">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
-
 <body>
 
     <!-- NAVIGATION -->
@@ -26,9 +23,12 @@
                 <li><a href="contact.html">Contact</a></li>
             </ul>
             <div class="nav-icons">
-                <a href="admin/index.html" title="Admin Dashboard"><i class="fas fa-user-shield"
-                        style="font-size: 1rem; opacity: 0.7;"></i></a>
+                <a href="admin/index.html" title="Admin Dashboard"><i class="fas fa-user-shield" style="font-size: 1rem; opacity: 0.7;"></i></a>
                 <a href="https://instagram.com/saahna.sa" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="wishlist.html" class="wishlist-icon" title="Wishlist" style="position: relative; margin-right: 15px;">
+                    <i class="far fa-heart"></i>
+                    <span class="wishlist-count" style="position: absolute; top: -8px; right: -10px; background: #000; color: white; font-size: 0.7rem; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">0</span>
+                </a>
                 <div class="cart-icon" id="cartBtn">
                     <i class="fas fa-shopping-bag"></i>
                     <span class="cart-count">0</span>
@@ -42,16 +42,13 @@
         <div class="container" style="display: flex; align-items: center; width: 100%; position: relative; z-index: 1;">
             <div class="hero-content">
                 <h1 class="fade-in">Personalised <br><span class="text-gold-gradient">Couture</span></h1>
-                <p class="fade-in" style="font-size: 1.2rem; margin-bottom: 2.5rem; max-width: 600px;">Tailored clothing
-                    solutions for both men and women, offering complete customization from start to finish.</p>
+                <p class="fade-in" style="font-size: 1.2rem; margin-bottom: 2.5rem; max-width: 600px;">Tailored clothing solutions for both men and women, offering complete customization from start to finish.</p>
                 <div class="hero-btns fade-in">
                     <a href="contact.html" class="btn btn-gold">Book Appointment</a>
                     <a href="services.html" class="btn btn-outline" style="margin-left: 1rem;">Explore Services</a>
                 </div>
             </div>
-            <div class="hero-image fade-in"
-                style="background-image: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=1200'); border-radius: 200px 200px 0 0;">
-            </div>
+            <div class="hero-image fade-in" style="background-image: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=1200'); border-radius: 200px 200px 0 0;"></div>
         </div>
     </section>
 
@@ -74,13 +71,9 @@
     <!-- BRAND INTRO -->
     <section class="brand-intro" style="padding: 10rem 0; text-align: center; background: var(--off-white);">
         <div class="container">
-            <h2 class="text-gold-gradient" style="font-size: 3rem; margin-bottom: 2rem; letter-spacing: 2px;">The Saahna
-                Experience</h2>
-            <p
-                style="max-width: 850px; margin: 0 auto 2.5rem; font-size: 1.2rem; color: var(--text-muted); line-height: 1.8;">
-                Serving since 2019, SAAHNA is a luxury fashion destination founded by <strong>Ashitha Yejju</strong>. We
-                specialize in fusion, ethnic, and western wear, providing a complete fashion ecosystem from fabric
-                sourcing to master tailoring.
+            <h2 class="text-gold-gradient" style="font-size: 3rem; margin-bottom: 2rem; letter-spacing: 2px;">The Saahna Experience</h2>
+            <p style="max-width: 850px; margin: 0 auto 2.5rem; font-size: 1.2rem; color: var(--text-muted); line-height: 1.8;">
+                Serving since 2019, SAAHNA is a luxury fashion destination founded by <strong>Ashitha Yejju</strong>. We specialize in fusion, ethnic, and western wear, providing a complete fashion ecosystem from fabric sourcing to master tailoring.
             </p>
             <a href="about.html" class="btn btn-gold">Read Our Story</a>
         </div>
@@ -91,21 +84,17 @@
         <div class="container">
             <div style="text-align: center; margin-bottom: 5rem;">
                 <h2 class="text-gold-gradient" style="font-size: 3rem;">Client Testimonials</h2>
-                <p style="color: var(--text-muted); margin-top: 1rem;">What our esteemed clients say about their Saahna
-                    experience.</p>
+                <p style="color: var(--text-muted); margin-top: 1rem;">What our esteemed clients say about their Saahna experience.</p>
             </div>
             <div class="review-grid">
                 <!-- Review 1 -->
                 <div class="testimonial-card">
                     <div class="stars">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                            class="fas fa-star"></i><i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
-                    <p class="quote">"Absolutely thrilled with my bespoke outfit! The fit was perfect and the fabric
-                        quality is unmatched. SAAHNA truly understands luxury tailoring."</p>
+                    <p class="quote">"Absolutely thrilled with my bespoke outfit! The fit was perfect and the fabric quality is unmatched. SAAHNA truly understands luxury tailoring."</p>
                     <div class="client-info">
-                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150"
-                            alt="Priya Reddy" class="client-img">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150" alt="Priya Reddy" class="client-img">
                         <div>
                             <h4>Priya Reddy</h4>
                             <p class="client-type">Verified Client</p>
@@ -116,14 +105,11 @@
                 <!-- Review 2 -->
                 <div class="testimonial-card">
                     <div class="stars">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                            class="fas fa-star"></i><i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
-                    <p class="quote">"The team at SAAHNA brought my dream dress to life. The intricate embroidery work
-                        is stunning and the customer service is top-notch."</p>
+                    <p class="quote">"The team at SAAHNA brought my dream dress to life. The intricate embroidery work is stunning and the customer service is top-notch."</p>
                     <div class="client-info">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150"
-                            alt="Anjali Sharma" class="client-img">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150" alt="Anjali Sharma" class="client-img">
                         <div>
                             <h4>Anjali Sharma</h4>
                             <p class="client-type">Verified Client</p>
@@ -134,14 +120,11 @@
                 <!-- Review 3 -->
                 <div class="testimonial-card">
                     <div class="stars">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                            class="fas fa-star"></i><i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
-                    <p class="quote">"I ordered a couple's combo for my anniversary. Not only was it delivered on time,
-                        but it fit both of us flawlessly. Highly recommend!"</p>
+                    <p class="quote">"I ordered a couple's combo for my anniversary. Not only was it delivered on time, but it fit both of us flawlessly. Highly recommend!"</p>
                     <div class="client-info">
-                        <img src="https://images.unsplash.com/photo-1516585427167-9f4af9627e6c?auto=format&fit=crop&q=80&w=150"
-                            alt="Rohan & Sneha" class="client-img">
+                        <img src="https://images.unsplash.com/photo-1516585427167-9f4af9627e6c?auto=format&fit=crop&q=80&w=150" alt="Rohan & Sneha" class="client-img">
                         <div>
                             <h4>Rohan & Sneha</h4>
                             <p class="client-type">Verified Clients</p>
@@ -151,6 +134,13 @@
             </div>
         </div>
     </section>
+
+    <!-- QUICK VIEW MODAL -->
+    <div id="quickViewModal" class="modal">
+        <div class="modal-content" id="quickViewContent">
+            <!-- Dynamically populated -->
+        </div>
+    </div>
 
     <!-- FOOTER -->
     <footer>
@@ -167,6 +157,10 @@
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="services.html">Our Services</a></li>
                         <li><a href="contact.html">Contact</a></li>
+                        <li><a href="refund-policy.html">Refund Policy</a></li>
+                        <li><a href="shipping-policy.html">Shipping Policy</a></li>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms & Conditions</a></li>
                         <li><a href="admin/index.html" style="opacity: 0.6; font-size: 0.8rem;">Admin Dashboard</a></li>
                     </ul>
                 </div>
@@ -194,113 +188,177 @@
 
     <style>
         .whatsapp-float {
-            position: fixed;
-            bottom: 40px;
-            left: 40px;
-            background: #25d366;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
-            z-index: 1000;
-            text-decoration: none;
-            transition: 0.3s;
+            position: fixed; bottom: 40px; left: 40px; background: #25d366; color: white;
+            padding: 15px 25px; border-radius: 50px; display: flex; align-items: center;
+            gap: 10px; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3); z-index: 1000;
+            text-decoration: none; transition: 0.3s;
         }
-
-        .whatsapp-float:hover {
-            transform: translateY(-5px);
-        }
+        .whatsapp-float:hover { transform: translateY(-5px); }
     </style>
 
     <script src="js/animations.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/data.js"></script>
-
+    
     <script>
-        const getApiUrl = () => window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' ? 'http://localhost:8080/api' : '/api';
+        // Load Product        
+        window.allHomeProductsData = [];
+
         async function loadHomeProducts() {
             try {
-                const res = await fetch(`${getApiUrl()}/products`);
-                let products = await res.json();
-                renderHomeProducts(products.filter(p => [1, 4, 31].includes(p.id)));
+                const res = await fetch('http://localhost:5000/api/products');
+                window.allHomeProductsData = await res.json();
+                renderHomeProducts(window.allHomeProductsData.slice(0, 8)); // Show a few
             } catch (err) {
-                renderHomeProducts(window.localProducts.filter(p => [1, 4, 31].includes(p.id)));
+                window.allHomeProductsData = window.localProducts || [];
+                renderHomeProducts(window.allHomeProductsData.filter(p => [1, 4, 31].includes(p.id)));
             }
+            if(window.updateWishlistUI) window.updateWishlistUI();
         }
-
-
 
         function renderHomeProducts(products) {
             const grid = document.getElementById('homeProductGrid');
-            grid.innerHTML = products.map(p => `
-                <div class="advanced-card">
-                    <div class="card-img-container">
-                        <img src="${p.image || p.images[0]}" alt="${p.name}">
+            grid.innerHTML = products.map(p => {
+                const priceHtml = p.discountPrice 
+                    ? `<span class="price">₹${p.discountPrice.toLocaleString()}</span> <span style="text-decoration: line-through; color: #999; font-size: 0.9rem; margin-left: 0.5rem;">₹${p.price.toLocaleString()}</span>`
+                    : `<span class="price">₹${p.price.toLocaleString()}</span>`;
+
+                const colors = p.colors || [];
+                const colorHtml = colors.length > 0 ? `
+                    <div class="color-swatches">
+                        ${colors.map((c, i) => `<div class="color-swatch ${i===0?'active':''}" style="background-color: ${c.hex};" onclick="window.changeCardColor(${p.id}, '${c.image}', this)" title="${c.name}"></div>`).join('')}
                     </div>
-                    <div class="card-body">
+                ` : '';
+
+                return `
+                <div class="advanced-card">
+                    <div class="card-img-container" style="height: 350px; position:relative;">
+                        <img id="card-img-${p.id}" src="${p.image || (p.images && p.images[0]) || 'https://via.placeholder.com/400'}" alt="${p.name}">
+                        <button class="quick-view-btn" onclick="window.openQuickView(${p.id})">Quick View</button>
+                        <button class="wishlist-btn" data-pid="${p.id}" onclick="window.toggleWishlist(${p.id})" style="position:absolute; top:15px; right:15px; background:white; border:none; width:35px; height:35px; border-radius:50%; box-shadow:0 5px 15px rgba(0,0,0,0.1); cursor:pointer; font-size:1.1rem; color:#888; z-index:5;"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="card-body" style="padding: 1.5rem; justify-content: flex-start;">
                         <p class="category-label">${p.category}</p>
-                        <h3>${p.name}</h3>
-                        <div class="price-container">
-                            <span id="price-${p.id}" class="price">₹${p.price.toLocaleString()}</span>
+                        <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem; text-transform: capitalize;">${p.name}</h3>
+                        <div class="price-container" style="margin-bottom: 0.5rem;">
+                            ${priceHtml}
                         </div>
-                        
-                        <div class="size-chips">
-                            ${['S', 'M', 'L', 'XL'].map(s => `
-                                <div class="size-chip" onclick="window.selectCardSize(${p.id}, '${s}', this)">${s}</div>
-                            `).join('')}
-                        </div>
-
-                        <div class="qty-selector">
-                            <button class="qty-btn" onclick="window.updateCardQty(${p.id}, -1, ${p.price})"><i class="fas fa-minus"></i></button>
-                            <span class="qty-val" id="qty-${p.id}">1</span>
-                            <button class="qty-btn" onclick="window.updateCardQty(${p.id}, 1, ${p.price})"><i class="fas fa-plus"></i></button>
-                        </div>
-
-                        <div class="card-actions">
-                            <button class="btn btn-gold" onclick="window.handleAddToCart(${p.id}, ${JSON.stringify(p).replace(/"/g, '&quot;')})">Add to Cart</button>
-                            <button class="btn btn-outline" onclick="window.handleBuyNow(${p.id}, ${JSON.stringify(p).replace(/"/g, '&quot;')})">Buy Now</button>
-                        </div>
+                        ${colorHtml}
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
+            if(window.updateWishlistUI) window.updateWishlistUI();
         }
+        
         loadHomeProducts();
 
-        // Helper functions for advanced cards
-        window.selectCardSize = (pid, size, el) => {
+        window.changeCardColor = (pid, imgUrl, el) => {
             const card = el.closest('.advanced-card');
-            card.querySelectorAll('.size-chip').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
-            card.dataset.selectedSize = size;
+            card.querySelectorAll('.color-swatch').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            if (imgUrl) document.getElementById(`card-img-${pid}`).src = imgUrl;
         };
 
-        window.updateCardQty = (pid, delta, basePrice) => {
-            const qtyEl = document.getElementById(`qty-${pid}`);
-            const priceEl = document.getElementById(`price-${pid}`);
-            let qty = parseInt(qtyEl.innerText) + delta;
-            if (qty < 1) qty = 1;
-            qtyEl.innerText = qty;
-            priceEl.innerText = `₹${(basePrice * qty).toLocaleString()}`;
+        window.openQuickView = (pid) => {
+            const p = window.allHomeProductsData.find(x => x.id === pid);
+            if (!p) return;
+            
+            const modal = document.getElementById('quickViewModal');
+            const content = document.getElementById('quickViewContent');
+            
+            const sizes = p.sizes && p.sizes.length ? p.sizes : ['S','M','L'];
+            const colors = p.colors || [];
+            let images = p.images && p.images.length > 0 ? p.images : [p.image];
+            if(!images[0]) images = ['https://via.placeholder.com/800'];
+            
+            let html = `
+                <span class="close-modal" onclick="document.getElementById('quickViewModal').style.display='none'">&times;</span>
+                <button class="wishlist-btn" data-pid="${p.id}" onclick="window.toggleWishlist(${p.id})" style="position:absolute; top:30px; right:80px; background:white; border:none; width:40px; height:40px; border-radius:50%; box-shadow:0 5px 15px rgba(0,0,0,0.1); cursor:pointer; font-size:1.2rem; color:#888; z-index:10;"><i class="far fa-heart"></i></button>
+                <div style="display:flex; flex-direction:column;">
+                    <div id="modalMainImg" style="height: 400px; background: url('${images[0]}') center/cover; border-radius: 32px 0 0 0;"></div>
+                    <div style="display:flex; gap:10px; padding:20px; overflow-x:auto;">
+                        ${images.map(img => `<img src="${img}" style="width:80px; height:80px; object-fit:cover; cursor:pointer; border-radius:8px; border:2px solid transparent;" onclick="document.getElementById('modalMainImg').style.backgroundImage='url(\\'${img}\\')'" class="modal-thumb">`).join('')}
+                    </div>
+                </div>
+                <div style="padding: 3rem; overflow-y:auto; max-height:80vh;">
+                    <h2 style="font-size: 2rem; margin-bottom: 0.5rem; font-family: 'Playfair Display', serif;">${p.name}</h2>
+                    <p style="color:var(--text-muted); margin-bottom: 1rem; text-transform:uppercase; font-size:0.8rem; letter-spacing:2px;">${p.category}</p>
+                    <div class="text-gold-gradient" style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1.5rem;">
+                        ${p.discountPrice ? `₹${p.discountPrice.toLocaleString()} <span style="text-decoration:line-through; font-size:1rem; color:#999;">₹${p.price.toLocaleString()}</span>` : `₹${p.price.toLocaleString()}`}
+                    </div>
+                    
+                    <p style="line-height:1.6; margin-bottom:2rem; color:#555;">${p.description || 'Premium quality luxury wear.'}</p>
+                    
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:2rem; font-size:0.9rem; background:#f9f9f9; padding:1.5rem; border-radius:12px;">
+                        <div><strong>Fabric:</strong> ${p.fabric || 'N/A'}</div>
+                        <div><strong>Care:</strong> ${p.care || 'N/A'}</div>
+                        <div><strong>Stock:</strong> ${p.stock > 0 ? 'In Stock' : 'Out of Stock'}</div>
+                    </div>
+
+                    ${colors.length > 0 ? `
+                        <div style="margin-bottom:2rem;">
+                            <h4 style="margin-bottom:0.8rem; font-size:0.9rem; text-transform:uppercase; color:#888;">Select Color:</h4>
+                            <div style="display:flex; gap:10px;">
+                                ${colors.map((c,i) => `<div class="color-swatch ${i===0?'active':''}" style="background-color:${c.hex}; width:30px; height:30px; border: 2px solid ${i===0?'#000':'#ddd'}; border-radius:50%; cursor:pointer;" title="${c.name}" onclick="document.getElementById('modalMainImg').style.backgroundImage='url(\\'${c.image}\\')'; this.parentElement.querySelectorAll('.color-swatch').forEach(el=>el.style.borderColor='#ddd'); this.style.borderColor='#000';"></div>`).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <div style="margin-bottom:2rem;">
+                        <h4 style="margin-bottom:0.8rem; font-size:0.9rem; text-transform:uppercase; color:#888;">Select Size:</h4>
+                        <div class="size-chips" style="justify-content:flex-start;" id="qvSizes">
+                            ${sizes.map(s => `<div class="size-chip" onclick="this.parentElement.querySelectorAll('.size-chip').forEach(el=>el.classList.remove('selected')); this.classList.add('selected'); document.getElementById('quickViewModal').dataset.size='${s}';">${s}</div>`).join('')}
+                        </div>
+                    </div>
+                    
+                    ${p.customization && p.customization.enabled ? `
+                        <div style="margin-bottom:2rem; padding:1.5rem; border:1px dashed var(--primary-gold); border-radius:12px; background:var(--off-white);">
+                            <h4 style="margin-bottom:1rem; font-size:0.9rem; text-transform:uppercase; color:var(--primary-gold);">Customization Available</h4>
+                            ${p.customization.fields.map(f => `
+                                <div style="margin-bottom:0.5rem;">
+                                    <label style="font-size:0.85rem; font-weight:600;">${f.name} ${f.extraPrice ? `(+₹${f.extraPrice})` : ''}</label>
+                                    <input type="text" id="cust_${p.id}" placeholder="Enter details..." style="width:100%; padding:0.8rem; border:1px solid #ddd; border-radius:8px; margin-top:5px;">
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+
+                    <button class="btn btn-gold" style="width:100%; padding:1.2rem; font-size:1.1rem; border-radius:12px; margin-bottom:1.5rem;" onclick="window.qvAddToCart(${p.id})">Add to Cart</button>
+                    
+                    ${p.policies ? `
+                        <div style="font-size:0.8rem; color:#777; line-height:1.6; padding-top:1.5rem; border-top:1px solid #eee;">
+                            ${p.policies.shippingInfo ? `<div style="margin-bottom:0.5rem;"><i class="fas fa-truck" style="margin-right:8px; color:var(--primary-gold);"></i> ${p.policies.shippingInfo}</div>` : ''}
+                            ${p.policies.returnPolicy ? `<div style="margin-bottom:0.5rem;"><i class="fas fa-undo" style="margin-right:8px; color:var(--primary-gold);"></i> ${p.policies.returnPolicy}</div>` : ''}
+                            ${p.policies.privacyPolicy ? `<div><i class="fas fa-shield-alt" style="margin-right:8px; color:var(--primary-gold);"></i> ${p.policies.privacyPolicy}</div>` : ''}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            content.innerHTML = html;
+            modal.style.display = 'block';
+            modal.dataset.size = ''; 
+            
+            if(window.updateWishlistUI) window.updateWishlistUI();
         };
 
-        window.handleAddToCart = (pid, product) => {
-            const card = document.querySelector(`.advanced-card [id="qty-${pid}"]`).closest('.advanced-card');
-            const size = card.dataset.selectedSize;
-            const qty = parseInt(document.getElementById(`qty-${pid}`).innerText);
-            if (!size) { alert('Please select a size first.'); return; }
-            window.addToCart(pid, size, product, qty);
-        };
-
-        window.handleBuyNow = (pid, product) => {
-            window.handleAddToCart(pid, product);
-            if (document.querySelector(`.advanced-card [id="qty-${pid}"]`).closest('.advanced-card').dataset.selectedSize) {
-                window.location.href = 'checkout.html';
+        window.qvAddToCart = (pid) => {
+            const p = window.allHomeProductsData.find(x => x.id === pid);
+            const size = document.getElementById('quickViewModal').dataset.size;
+            if (!size) { alert('Please select a size'); return; }
+            let custData = null;
+            if (p.customization && p.customization.enabled) {
+                const custEl = document.getElementById(`cust_${pid}`);
+                if (custEl && custEl.value) custData = custEl.value;
             }
+            window.addToCart(pid, size, p, 1);
+            if(custData) console.log("Customization:", custData);
+            alert('Added to cart!');
+            document.getElementById('quickViewModal').style.display='none';
         };
     </script>
+    <script src="js/wishlist.js"></script>
+    <script src="js/cart.js"></script>
 </body>
-
 </html>

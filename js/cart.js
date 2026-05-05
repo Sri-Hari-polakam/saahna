@@ -128,4 +128,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (navLinks) navLinks.classList.toggle('active');
         });
     }
+
+    // Inject Floating Enquire Button
+    if (!document.getElementById('floatingEnquireBtn')) {
+        const btnHtml = `
+            <a href="https://wa.me/919652926366" id="floatingEnquireBtn" class="floating-enquire-btn" target="_blank">
+                <i class="fab fa-whatsapp" style="font-size: 1.5rem;"></i> Enquire Now
+            </a>
+        `;
+        document.body.insertAdjacentHTML('beforeend', btnHtml);
+    }
 });
