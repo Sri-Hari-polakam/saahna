@@ -206,7 +206,7 @@
 
         async function loadHomeProducts() {
             try {
-                const res = await fetch('http://localhost:5000/api/products');
+                const res = await fetch('https://saahna-production.up.railway.app/api/products');
                 window.allHomeProductsData = await res.json();
                 renderHomeProducts(window.allHomeProductsData.slice(0, 8)); // Show a few
             } catch (err) {

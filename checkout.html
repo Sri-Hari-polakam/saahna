@@ -223,7 +223,7 @@
                 document.getElementById('placeOrderBtn').disabled = true;
 
                 try {
-                    const res = await fetch('http://localhost:5000/api/create-checkout-session', {
+                    const res = await fetch('https://saahna-production.up.railway.app/api/create-checkout-session', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ items: cart, customer })

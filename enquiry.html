@@ -163,7 +163,7 @@
             };
 
             try {
-                const res = await fetch('http://localhost:5000/api/enquiry', {
+                const res = await fetch('https://saahna-production.up.railway.app/api/enquiry', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)

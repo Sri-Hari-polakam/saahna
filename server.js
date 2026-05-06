@@ -205,7 +205,7 @@ app.post('/api/upload', verifyAdmin, (req, res, next) => {
     upload.single('image')(req, res, next);
 }, (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'No image uploaded' });
-    const imageUrl = `http://localhost:5000/uploads/${req.file.filename}`;
+    const imageUrl = `https://saahna-production.up.railway.app/uploads/${req.file.filename}`;
     res.json({ imageUrl });
 });
 
@@ -281,8 +281,8 @@ app.post('/api/create-checkout-session', async (req, res) => {
             payment_method_types: ['card'],
             line_items: lineItems,
             mode: 'payment',
-            success_url: `http://localhost:5000/success.html`,
-            cancel_url: `http://localhost:5000/cancel.html`,
+            success_url: `https://saahna-production.up.railway.app/success.html`,
+            cancel_url: `https://saahna-production.up.railway.app/cancel.html`,
             metadata: {
                 customer: JSON.stringify(customer),
                 items: JSON.stringify(items.map(i => ({ id: i.id, name: i.name, quantity: i.quantity })))
