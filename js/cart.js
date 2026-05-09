@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!document.getElementById('floatingEnquireBtn')) {
         const btnHtml = `
             <a href="https://wa.me/919652926366" id="floatingEnquireBtn" class="floating-enquire-btn" target="_blank">
-                <i class="fab fa-whatsapp" style="font-size: 1.5rem;"></i> Enquire Now
+                <i class="fab fa-whatsapp" style="font-size: 2rem;"></i>
             </a>
         `;
         document.body.insertAdjacentHTML('beforeend', btnHtml);

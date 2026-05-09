@@ -23,8 +23,6 @@
                 <li><a href="contact.html">Contact</a></li>
             </ul>
             <div class="nav-icons">
-                <a href="admin/index.html" title="Admin Dashboard"><i class="fas fa-user-shield" style="font-size: 1rem; opacity: 0.7;"></i></a>
-                <a href="https://instagram.com/saahna.sa" target="_blank"><i class="fab fa-instagram"></i></a>
                 <a href="wishlist.html" class="wishlist-icon" title="Wishlist" style="position: relative; margin-right: 15px;">
                     <i class="far fa-heart"></i>
                     <span class="wishlist-count" style="position: absolute; top: -8px; right: -10px; background: #000; color: white; font-size: 0.7rem; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">0</span>
@@ -157,11 +155,15 @@
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="services.html">Our Services</a></li>
                         <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Policies</h4>
+                    <ul>
                         <li><a href="refund-policy.html">Refund Policy</a></li>
                         <li><a href="shipping-policy.html">Shipping Policy</a></li>
                         <li><a href="privacy-policy.html">Privacy Policy</a></li>
                         <li><a href="terms.html">Terms & Conditions</a></li>
-                        <li><a href="admin/index.html" style="opacity: 0.6; font-size: 0.8rem;">Admin Dashboard</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -171,30 +173,17 @@
                 </div>
                 <div class="footer-col">
                     <h4>Follow SAAHNA</h4>
-                    <div class="socials" style="display: flex; gap: 1rem; font-size: 1.5rem;">
-                        <a href="https://instagram.com/saahna.sa"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    <div class="socials">
+                        <a href="https://instagram.com/saahna.sa" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" target="_blank" title="Pinterest"><i class="fab fa-pinterest"></i></a>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- WHATSAPP FLOAT -->
-    <a href="https://wa.me/919652926366" class="whatsapp-float" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-        <span>Direct Enquiry</span>
-    </a>
-
-    <style>
-        .whatsapp-float {
-            position: fixed; bottom: 40px; left: 40px; background: #25d366; color: white;
-            padding: 15px 25px; border-radius: 50px; display: flex; align-items: center;
-            gap: 10px; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3); z-index: 1000;
-            text-decoration: none; transition: 0.3s;
-        }
-        .whatsapp-float:hover { transform: translateY(-5px); }
-    </style>
 
     <script src="js/animations.js"></script>
     <script src="js/cart.js"></script>
@@ -205,13 +194,16 @@
         window.allHomeProductsData = [];
 
         async function loadHomeProducts() {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 500);
             try {
-                const res = await fetch('https://saahna-production.up.railway.app/api/products');
+                const res = await fetch('http://localhost:5000/api/products', { signal: controller.signal });
+                clearTimeout(timeoutId);
                 window.allHomeProductsData = await res.json();
                 renderHomeProducts(window.allHomeProductsData.slice(0, 8)); // Show a few
             } catch (err) {
                 window.allHomeProductsData = window.localProducts || [];
-                renderHomeProducts(window.allHomeProductsData.filter(p => [1, 4, 31].includes(p.id)));
+                renderHomeProducts(window.allHomeProductsData.filter(p => [1, 4, 31, 5].includes(p.id)));
             }
             if(window.updateWishlistUI) window.updateWishlistUI();
         }

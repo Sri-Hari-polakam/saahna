@@ -320,7 +320,7 @@ footer {
 
 .footer-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 3rem;
     margin-bottom: 4rem;
 }
@@ -334,6 +334,33 @@ footer {
 
 .footer-col ul li {
     margin-bottom: 0.8rem;
+}
+
+.socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.socials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background: white;
+    color: var(--text-dark);
+    border-radius: 50%;
+    font-size: 1.2rem;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.socials a:hover {
+    background: var(--primary-gold);
+    color: white;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(255, 65, 108, 0.2);
 }
 
 .footer-bottom {
@@ -481,37 +508,45 @@ footer {
 
 /* Category Cards */
 .category-header {
-    padding: 150px 0 50px;
+    padding: 120px 0 20px;
     background: var(--off-white);
     text-align: center;
 }
 .category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
-    padding-bottom: 3rem;
+    display: flex;
+    overflow-x: auto;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    padding-bottom: 1.5rem;
+    /* Hide scrollbar but keep functionality */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+.category-grid::-webkit-scrollbar {
+    display: none; /* Chrome/Safari/Opera */
 }
 .cat-card {
     background: white;
-    padding: 1.5rem;
+    padding: 1rem 1.5rem;
     border-radius: 20px;
     cursor: pointer;
     transition: var(--transition);
     border: 1px solid rgba(0,0,0,0.03);
     text-align: center;
     box-shadow: var(--premium-shadow);
+    min-width: 130px;
+    flex-shrink: 0;
 }
 .cat-card:hover, .cat-card.active {
     border-color: var(--primary-gold);
-    transform: translateY(-8px);
+    transform: translateY(-5px);
     box-shadow: var(--premium-shadow-hover);
 }
 .cat-card img {
-    width: 85px;
-    height: 85px;
+    width: 65px;
+    height: 65px;
     border-radius: 50%;
-    margin: 0 auto 1.2rem;
+    margin: 0 auto 0.8rem;
     object-fit: cover;
     border: 3px solid var(--off-white);
     transition: var(--transition);
@@ -966,14 +1001,12 @@ footer {
     right: 30px;
     background: #25D366;
     color: white;
-    padding: 12px 24px;
-    border-radius: 50px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    text-decoration: none;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
     box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
     z-index: 1000;
     transition: all 0.3s ease;

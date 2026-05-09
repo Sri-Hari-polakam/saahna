@@ -38,14 +38,11 @@ app.post('/api/webhook', express.raw({type: 'application/json'}), (req, res) => 
 
     if (event.type === 'checkout.session.completed') {
         const session = event.data.object;
-        const customer = JSON.parse(session.metadata.customer || '{}');
-        const items = JSON.parse(session.metadata.items || '[]');
-        const totalAmount = session.amount_total / 100;
-
-        db.run(`INSERT INTO orders (customerName, phone, email, address, city, country, totalAmount, paymentId, orderId, items, status) VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
-            [customer.name, customer.phone, customer.email, customer.address, customer.city, customer.country, totalAmount, session.payment_intent, session.id, JSON.stringify(items), 'Paid'],
+        
+        db.run(`UPDATE orders SET status = 'Paid', paymentId = ? WHERE orderId = ?`,
+            [session.payment_intent, session.id],
             function(err) {
-                if(err) console.error("DB Insert Error", err);
+                if(err) console.error("DB Update Error", err);
             });
     }
 
@@ -205,7 +202,7 @@ app.post('/api/upload', verifyAdmin, (req, res, next) => {
     upload.single('image')(req, res, next);
 }, (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'No image uploaded' });
-    const imageUrl = `https://saahna-production.up.railway.app/uploads/${req.file.filename}`;
+    const imageUrl = `http://localhost:5000/uploads/${req.file.filename}`;
     res.json({ imageUrl });
 });
 
@@ -261,6 +258,18 @@ app.get('/api/enquiries', verifyAdmin, (req, res) => {
 });
 
 // --- ORDER & PAYMENT ROUTES ---
+app.post('/api/orders', (req, res) => {
+    const { items, customer, paymentMethod, totalAmount } = req.body;
+    const status = paymentMethod === 'cod' ? 'Pending (COD)' : 'Pending';
+    const orderId = 'ORD_' + Date.now();
+    
+    db.run(`INSERT INTO orders (customerName, phone, email, address, city, country, totalAmount, paymentId, orderId, items, status) VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
+        [customer.name, customer.phone, customer.email, customer.address, customer.city, customer.country, totalAmount, paymentMethod, orderId, JSON.stringify(items), status],
+        function(err) {
+            if(err) return res.status(500).json({ error: err.message });
+            res.json({ success: true, orderId: orderId });
+        });
+});
 app.post('/api/create-checkout-session', async (req, res) => {
     try {
         const { items, customer } = req.body;
@@ -281,13 +290,20 @@ app.post('/api/create-checkout-session', async (req, res) => {
             payment_method_types: ['card'],
             line_items: lineItems,
             mode: 'payment',
-            success_url: `https://saahna-production.up.railway.app/success.html`,
-            cancel_url: `https://saahna-production.up.railway.app/cancel.html`,
+            success_url: `http://localhost:5000/success.html`,
+            cancel_url: `http://localhost:5000/cancel.html`,
             metadata: {
                 customer: JSON.stringify(customer),
                 items: JSON.stringify(items.map(i => ({ id: i.id, name: i.name, quantity: i.quantity })))
             }
         });
+
+        const totalAmount = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        db.run(`INSERT INTO orders (customerName, phone, email, address, city, country, totalAmount, paymentId, orderId, items, status) VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
+            [customer.name, customer.phone, customer.email, customer.address, customer.city, customer.country, totalAmount, 'online', session.id, JSON.stringify(items), 'Pending Payment'],
+            function(err) {
+                if(err) console.error("DB Insert Error", err);
+            });
 
         res.json({ id: session.id, url: session.url });
     } catch (err) {
