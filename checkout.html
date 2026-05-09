@@ -285,7 +285,7 @@
                 if (paymentMethod === 'cod') {
                     try {
                         const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                        const res = await fetch('http://localhost:5000/api/orders', {
+                        const res = await fetch('https://saahna-production.up.railway.app/api/orders', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ items: cart, customer, paymentMethod: 'cod', totalAmount })
@@ -307,7 +307,7 @@
                 }
 
                 try {
-                    const res = await fetch('http://localhost:5000/api/create-checkout-session', {
+                    const res = await fetch('https://saahna-production.up.railway.app/api/create-checkout-session', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ items: cart, customer })

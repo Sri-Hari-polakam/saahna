@@ -197,7 +197,7 @@
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 500);
             try {
-                const res = await fetch('http://localhost:5000/api/products', { signal: controller.signal });
+                const res = await fetch('https://saahna-production.up.railway.app/api/products', { signal: controller.signal });
                 clearTimeout(timeoutId);
                 window.allHomeProductsData = await res.json();
                 renderHomeProducts(window.allHomeProductsData.slice(0, 8)); // Show a few
