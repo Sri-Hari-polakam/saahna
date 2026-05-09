@@ -7,23 +7,79 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background: #f4f4f4; padding: 0; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+        
+        body { background: #faf9f6; padding: 0; font-family: 'Inter', sans-serif; color: #333; }
         .admin-container { display: flex; min-height: 100vh; }
-        .sidebar { width: 250px; background: #fff; border-right: 1px solid #ddd; padding: 2rem; }
-        .sidebar h2 { color: var(--primary-gold); margin-bottom: 2rem; font-size: 1.5rem; }
-        .sidebar ul li { margin-bottom: 1rem; cursor: pointer; padding: 0.8rem; border-radius: 5px; transition: 0.3s; }
-        .sidebar ul li:hover, .sidebar ul li.active { background: var(--light-gold); color: var(--primary-gold); }
-        .main-content { flex: 1; padding: 3rem; }
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 3rem; }
-        .stat-card { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--primary-gold); }
-        .stat-card h3 { font-size: 0.9rem; text-transform: uppercase; color: #666; margin-bottom: 0.5rem; }
-        .stat-card p { font-size: 2rem; font-weight: 700; color: var(--text-dark); }
-        .data-table { width: 100%; background: white; border-collapse: collapse; margin-top: 2rem; }
-        .data-table th, .data-table td { padding: 1.2rem; text-align: left; border-bottom: 1px solid #eee; }
-        .data-table th { background: var(--off-white); color: var(--primary-gold); text-transform: uppercase; font-size: 0.8rem; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
-        .modal-content { background: white; width: 600px; margin: 50px auto; padding: 3rem; border-radius: 10px; max-height: 90vh; overflow-y: auto; }
-        .modal-content { background: white; width: 600px; margin: 50px auto; padding: 3rem; border-radius: 10px; max-height: 90vh; overflow-y: auto; }
+        
+        /* Premium Sidebar */
+        .sidebar { width: 280px; background: #fff; box-shadow: 2px 0 20px rgba(0,0,0,0.03); padding: 2.5rem 2rem; position: relative; z-index: 10; }
+        .sidebar h2 { font-family: 'Playfair Display', serif; color: var(--primary-gold); margin-bottom: 3rem; font-size: 2rem; letter-spacing: 2px; text-align: center; font-weight: 700; }
+        .sidebar ul { list-style: none; padding: 0; }
+        .sidebar ul li { margin-bottom: 0.5rem; cursor: pointer; padding: 1rem 1.5rem; border-radius: 12px; transition: all 0.3s ease; font-weight: 500; display: flex; align-items: center; gap: 1rem; color: #666; font-size: 0.95rem; }
+        .sidebar ul li i { font-size: 1.2rem; width: 20px; text-align: center; }
+        .sidebar ul li:hover { background: rgba(212, 175, 55, 0.05); color: var(--primary-gold); transform: translateX(5px); }
+        .sidebar ul li.active { background: var(--primary-gold); color: white; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2); }
+        
+        /* Main Content */
+        .main-content { flex: 1; padding: 3rem 4rem; background: #faf9f6; overflow-y: auto; }
+        .main-content h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #222; margin-bottom: 2rem; }
+        
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+        .stat-card { background: white; padding: 2.5rem 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); display: flex; flex-direction: column; position: relative; overflow: hidden; border: 1px solid rgba(0,0,0,0.02); transition: transform 0.3s ease; }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.05); }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--primary-gold), #e8c872); }
+        .stat-card h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 0.5rem; font-weight: 600; }
+        .stat-card p { font-size: 2.5rem; font-weight: 700; color: #222; margin: 0; }
+        .stat-icon { position: absolute; right: 1.5rem; bottom: -0.5rem; font-size: 6rem; color: rgba(212, 175, 55, 0.04); z-index: 0; }
+        .stat-card h3, .stat-card p { position: relative; z-index: 1; }
+        
+        /* Tables */
+        .table-container { background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); overflow-x: auto; border: 1px solid rgba(0,0,0,0.02); }
+        .data-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+        .data-table th, .data-table td { padding: 1.5rem 1.5rem; text-align: left; }
+        .data-table th { color: #888; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; font-weight: 600; border-bottom: 1px solid #eee; background: #fff; }
+        .data-table td { border-bottom: 1px solid #f8f8f8; color: #444; font-size: 0.95rem; vertical-align: middle; background: #fff; }
+        .data-table tbody tr { transition: all 0.3s ease; }
+        .data-table tbody tr:hover td { background: #faf9f6; }
+        
+        /* Status Badges */
+        .status-badge { padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; display: inline-block; }
+        .status-paid { background: #e8f5e9; color: #2e7d32; }
+        .status-pending { background: #fff3e0; color: #f57c00; }
+        .status-decline { background: #ffebee; color: #c62828; }
+        
+        /* Buttons */
+        .btn-gold { background: var(--primary-gold); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: 500; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2); }
+        .btn-gold:hover { background: #b8962e; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3); }
+        .btn-outline { background: transparent; color: var(--primary-gold); border: 1px solid var(--primary-gold); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; transition: 0.3s; font-weight: 500; }
+        .btn-outline:hover { background: var(--primary-gold); color: white; }
+        
+        /* Modal tweaks */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background: white; margin: auto; border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.1); }
+        
+        /* Premium Forms */
+        .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+        .form-group label { font-size: 0.85rem; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-control { padding: 1rem 1.2rem; border: 1px solid #eaeaea; border-radius: 10px; font-size: 0.95rem; background: #faf9f6; transition: all 0.3s ease; color: #333; font-family: 'Inter', sans-serif; }
+        .form-control:focus { outline: none; border-color: var(--primary-gold); background: #fff; box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1); }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #222; margin-bottom: 1rem; border-bottom: 2px solid rgba(212, 175, 55, 0.2); padding-bottom: 0.5rem; display: inline-block; }
+        
+        /* Premium Checkbox Pills */
+        .size-pills { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+        .size-pills label { position: relative; cursor: pointer; }
+        .size-pills input { position: absolute; opacity: 0; cursor: pointer; }
+        .size-pills span { display: inline-block; padding: 0.6rem 1.2rem; background: #faf9f6; border: 1px solid #eaeaea; border-radius: 50px; font-size: 0.85rem; font-weight: 600; color: #666; transition: all 0.3s ease; }
+        .size-pills input:checked ~ span { background: var(--primary-gold); color: white; border-color: var(--primary-gold); box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2); }
+        
+        /* Premium Upload Zone */
+        .upload-zone { border: 2px dashed #e0e0e0; padding: 3rem 2rem; text-align: center; background: #faf9f6; border-radius: 16px; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .upload-zone:hover { border-color: var(--primary-gold); background: #fff; }
+        .upload-zone i { font-size: 2.5rem; color: var(--primary-gold); margin-bottom: 1rem; opacity: 0.8; }
+        .upload-zone p { margin: 0; color: #666; font-size: 0.9rem; }
         
         /* Premium Login Overlay Styles */
         .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; display: flex; }
@@ -86,10 +142,10 @@
             <div id="section-dashboard" class="section">
                 <h1 style="margin-bottom: 2rem;">Overview</h1>
                 <div class="stats-grid">
-                    <div class="stat-card"><h3>Total Revenue</h3><p id="stat-revenue">₹0</p></div>
-                    <div class="stat-card"><h3>Total Orders</h3><p id="stat-orders">0</p></div>
-                    <div class="stat-card"><h3>Products</h3><p id="stat-products">0</p></div>
-                    <div class="stat-card"><h3>Enquiries</h3><p id="stat-enquiries">0</p></div>
+                    <div class="stat-card"><i class="fas fa-wallet stat-icon"></i><h3>Total Revenue</h3><p id="stat-revenue">₹0</p></div>
+                    <div class="stat-card"><i class="fas fa-shopping-bag stat-icon"></i><h3>Total Orders</h3><p id="stat-orders">0</p></div>
+                    <div class="stat-card"><i class="fas fa-tshirt stat-icon"></i><h3>Products</h3><p id="stat-products">0</p></div>
+                    <div class="stat-card"><i class="fas fa-envelope-open-text stat-icon"></i><h3>Enquiries</h3><p id="stat-enquiries">0</p></div>
                 </div>
             </div>
 
@@ -99,141 +155,264 @@
                     <h1>Manage Products</h1>
                     <button onclick="openProductModal()" class="btn btn-gold">+ Add Product</button>
                 </div>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Stock</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="productTableBody"></tbody>
-                </table>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productTableBody"></tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- ORDERS SECTION -->
             <div id="section-orders" class="section" style="display:none;">
                 <h1>Orders</h1>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Customer</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                            <th>Date</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="orderTableBody"></tbody>
-                </table>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Customer</th>
+                                <th>Shipping Info</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderTableBody"></tbody>
+                    </table>
+                </div>
             </div>
             
             <!-- ENQUIRIES SECTION -->
             <div id="section-enquiries" class="section" style="display:none;">
                 <h1>Enquiries & Requests</h1>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Type</th>
-                            <th>Name</th>
-                            <th>Contact</th>
-                            <th>Message</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody id="enquiryTableBody"></tbody>
-                </table>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Message</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="enquiryTableBody"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- PRODUCT MODAL -->
     <div id="productModal" class="modal">
-        <div class="modal-content" style="width: 800px; max-height: 90vh; overflow-y: auto;">
-            <h2 id="modalTitle" style="color: var(--primary-gold); margin-bottom: 1.5rem;">Add Product</h2>
-            <form id="productForm">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                    <input type="text" id="pName" placeholder="Product Name" required style="padding:0.8rem; border: 1px solid #ddd;">
-                    <select id="pCategory" required style="padding:0.8rem; border: 1px solid #ddd;">
-                        <option value="">Select Category/Collection</option>
-                        <option value="Sarees">Sarees</option>
-                        <option value="Men's Wear">Men's Wear</option>
-                        <option value="Co - ord sets">Co - ord sets</option>
-                        <option value="One - Piece Dress">One - Piece Dress</option>
-                        <option value="Frocks">Frocks</option>
-                        <option value="Fabrics">Fabrics</option>
-                        <option value="Kurtis">Kurtis</option>
-                        <option value="Lehangas">Lehangas</option>
-                        <option value="Kid's Wear">Kid's Wear</option>
-                    </select>
+        <div class="modal-content" style="width: 850px; max-height: 90vh; overflow-y: auto; padding: 0;">
+            <!-- Header -->
+            <div style="background: var(--off-white); padding: 2rem 3rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10;">
+                <h2 id="modalTitle" style="font-family: 'Playfair Display', serif; color: var(--primary-gold); font-size: 2rem; margin: 0;">Add Collection Piece</h2>
+                <button type="button" onclick="closeModal()" style="background: transparent; border: none; font-size: 1.5rem; color: #999; cursor: pointer; transition: 0.3s;"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <form id="productForm" style="padding: 3rem;">
+                <h3 class="section-title">Core Details</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Product Name</label>
+                        <input type="text" id="pName" class="form-control" placeholder="e.g. Royal Emerald Lehanga" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="pCategory" class="form-control" required>
+                            <option value="">Select Category</option>
+                            <option value="Sarees">Sarees</option>
+                            <option value="Men's Wear">Men's Wear</option>
+                            <option value="Co - ord sets">Co - ord sets</option>
+                            <option value="One - Piece Dress">One - Piece Dress</option>
+                            <option value="Frocks">Frocks</option>
+                            <option value="Fabrics">Fabrics</option>
+                            <option value="Kurtis">Kurtis</option>
+                            <option value="Lehangas">Lehangas</option>
+                            <option value="Kid's Wear">Kid's Wear</option>
+                        </select>
+                    </div>
                 </div>
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                    <input type="number" id="pPrice" placeholder="Price (₹)" required style="padding:0.8rem; border: 1px solid #ddd;">
-                    <input type="number" id="pDiscountPrice" placeholder="Discount Price (₹)" style="padding:0.8rem; border: 1px solid #ddd;">
-                    <input type="number" id="pStock" placeholder="Stock Quantity" required style="padding:0.8rem; border: 1px solid #ddd;">
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                    <input type="text" id="pFabric" placeholder="Fabric Material" style="padding:0.8rem; border: 1px solid #ddd;">
-                    <input type="text" id="pCare" placeholder="Care Instructions" style="padding:0.8rem; border: 1px solid #ddd;">
-                </div>
-
-                <div style="margin-bottom: 1rem;">
-                    <label style="display:block; margin-bottom:0.5rem; color: #666;">Available Sizes:</label>
-                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;" id="pSizesContainer">
-                        <label><input type="checkbox" value="S" checked> S</label>
-                        <label><input type="checkbox" value="M" checked> M</label>
-                        <label><input type="checkbox" value="L" checked> L</label>
-                        <label><input type="checkbox" value="XL" checked> XL</label>
-                        <label><input type="checkbox" value="Free Size"> Free Size</label>
-                        <label><input type="checkbox" value="Custom"> Custom</label>
+                <div class="form-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="form-group">
+                        <label>Price (₹)</label>
+                        <input type="number" id="pPrice" class="form-control" placeholder="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Discount Price (₹)</label>
+                        <input type="number" id="pDiscountPrice" class="form-control" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Quantity</label>
+                        <input type="number" id="pStock" class="form-control" placeholder="0" required>
                     </div>
                 </div>
 
-                <textarea id="pDesc" placeholder="Full Description" rows="4" style="width:100%; margin-bottom:1rem; padding:0.8rem; border: 1px solid #ddd;"></textarea>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Fabric Material</label>
+                        <input type="text" id="pFabric" class="form-control" placeholder="e.g. Premium Silk">
+                    </div>
+                    <div class="form-group">
+                        <label>Care Instructions</label>
+                        <input type="text" id="pCare" class="form-control" placeholder="e.g. Dry Clean Only">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label>Available Sizes</label>
+                    <div class="size-pills" id="pSizesContainer">
+                        <label><input type="checkbox" value="S" checked><span>S</span></label>
+                        <label><input type="checkbox" value="M" checked><span>M</span></label>
+                        <label><input type="checkbox" value="L" checked><span>L</span></label>
+                        <label><input type="checkbox" value="XL" checked><span>XL</span></label>
+                        <label><input type="checkbox" value="Free Size"><span>Free Size</span></label>
+                        <label><input type="checkbox" value="Custom"><span>Custom Fit</span></label>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 3rem;">
+                    <label>Product Story / Description</label>
+                    <textarea id="pDesc" class="form-control" placeholder="Describe the elegance and details of this piece..." rows="4"></textarea>
+                </div>
                 
-                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #eee;">
-                <h3 style="margin-bottom: 1rem;">Policies</h3>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                    <input type="text" id="pReturnPolicy" placeholder="Return Policy" style="padding:0.8rem; border: 1px solid #ddd;">
-                    <input type="text" id="pShippingInfo" placeholder="Shipping Info" style="padding:0.8rem; border: 1px solid #ddd;">
-                    <input type="text" id="pPrivacyPolicy" placeholder="Privacy Policy" style="padding:0.8rem; border: 1px solid #ddd;">
+                <h3 class="section-title">Store Policies</h3>
+                <div class="form-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 3rem;">
+                    <div class="form-group">
+                        <label>Return Policy</label>
+                        <input type="text" id="pReturnPolicy" class="form-control" placeholder="Standard Return Policy">
+                    </div>
+                    <div class="form-group">
+                        <label>Shipping Info</label>
+                        <input type="text" id="pShippingInfo" class="form-control" placeholder="Dispatches in 3-5 Days">
+                    </div>
+                    <div class="form-group">
+                        <label>Privacy Policy</label>
+                        <input type="text" id="pPrivacyPolicy" class="form-control" placeholder="Standard Privacy Policy">
+                    </div>
                 </div>
 
-                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #eee;">
-                <h3 style="margin-bottom: 1rem;">Advanced Configuration (JSON)</h3>
-                <p style="font-size: 0.8rem; color: #666; margin-bottom: 1rem;">For Colors and Customizations, please use the JSON format below.</p>
-                <textarea id="pColorsJSON" placeholder='Colors (e.g., [{"name":"Red", "hex":"#FF0000", "image":"url"}])' rows="2" style="width:100%; margin-bottom:1rem; padding:0.8rem; border: 1px solid #ddd;"></textarea>
-                <textarea id="pCustomJSON" placeholder='Customization (e.g., {"enabled":true, "fields":[{"name":"Embroidery Text", "extraPrice":500}]})' rows="2" style="width:100%; margin-bottom:1rem; padding:0.8rem; border: 1px solid #ddd;"></textarea>
-
-                <div style="margin-bottom: 1rem; border: 2px dashed #ccc; padding: 2.5rem; text-align: center; background: #fafafa; border-radius: 12px;">
-                    <label style="display:block; margin-bottom:0.5rem; color: var(--primary-gold); font-weight: bold; font-size: 1.2rem;">Product Images</label>
-                    <p style="font-size: 0.8rem; color: #666; margin-bottom: 1rem;">Drag & drop multiple images or click to select files.</p>
-                    <input type="file" id="pImageFile" accept="image/*" multiple style="margin-bottom: 0.5rem;">
-                    <p style="font-size: 0.8rem; color: #999; margin-top: 1rem;">Or provide image URLs below (comma-separated):</p>
-                    <input type="text" id="pImagesUrl" placeholder="Image URLs (Optional if files uploaded)" style="width:100%; padding:0.8rem; border: 1px solid #ddd; margin-top: 0.5rem;">
+                <h3 class="section-title">Media Gallery</h3>
+                <div class="upload-zone" style="margin-bottom: 1.5rem;">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p style="font-size: 1.1rem; color: #333; font-weight: 500; margin-bottom: 0.5rem;">Upload High-Resolution Images</p>
+                    <p style="margin-bottom: 1.5rem;">Drag & drop files or click to browse</p>
+                    <input type="file" id="pImageFile" accept="image/*" multiple style="background: transparent; border: none; padding: 0; width: auto; max-width: 100%; cursor: pointer;">
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 3rem;">
+                    <label>Or provide image URLs (comma-separated)</label>
+                    <input type="text" id="pImagesUrl" class="form-control" placeholder="https://...">
                 </div>
 
-                <div style="display:flex; justify-content: flex-end; gap:1rem;">
-                    <button type="button" onclick="closeModal()" class="btn btn-outline">Cancel</button>
-                    <button type="submit" id="saveProductBtn" class="btn btn-gold">Save Product</button>
+                <h3 class="section-title">Visual Options</h3>
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label>Product Colors</label>
+                    <div id="colorsContainer" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem;"></div>
+                    <button type="button" onclick="addColorRow()" class="btn btn-outline" style="width: fit-content; padding: 0.5rem 1rem; font-size: 0.85rem;"><i class="fas fa-plus"></i> Add Color Variant</button>
+                </div>
+
+                <h3 class="section-title">Bespoke Customizations</h3>
+                <div class="form-group" style="margin-bottom: 3rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                        <input type="checkbox" id="pCustomEnabled" style="width: 20px; height: 20px; cursor: pointer;">
+                        <label for="pCustomEnabled" style="margin: 0; cursor: pointer; text-transform: none; color: #333; font-weight: 500;">Enable Customization Options</label>
+                    </div>
+                    <div id="customFieldsContainer" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem;"></div>
+                    <button type="button" onclick="addCustomFieldRow()" class="btn btn-outline" style="width: fit-content; padding: 0.5rem 1rem; font-size: 0.85rem;"><i class="fas fa-plus"></i> Add Customization Field</button>
+                </div>
+
+                <div style="display:flex; justify-content: flex-end; gap:1.5rem; margin-top: 2rem; border-top: 1px solid #eee; padding-top: 2rem;">
+                    <button type="button" onclick="closeModal()" class="btn btn-outline" style="padding: 1rem 2rem;">Cancel</button>
+                    <button type="submit" id="saveProductBtn" class="btn btn-gold" style="padding: 1rem 3rem; font-size: 1.1rem;"><i class="fas fa-save" style="margin-right: 0.5rem;"></i> Save Product</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- ORDER STATUS MODAL -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content" style="width: 400px; padding: 2.5rem; text-align: center;">
+            <h2 style="font-family: 'Playfair Display', serif; color: var(--primary-gold); margin-bottom: 1.5rem;">Update Order Status</h2>
+            <div class="form-group" style="margin-bottom: 2rem; text-align: left;">
+                <label>Select Status</label>
+                <select id="orderStatusSelect" class="form-control">
+                    <option value="Pending">Pending</option>
+                    <option value="Done">Done</option>
+                    <option value="Decline">Decline</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                <button type="button" onclick="closeOrderModal()" class="btn btn-outline" style="flex: 1; border-color: #ff4069; color: #ff4069; font-weight: 600; letter-spacing: 1px;">CANCEL</button>
+                <button type="button" onclick="saveOrderStatus()" class="btn btn-gold" style="flex: 1; background: #ff4069; color: white; border: none; font-weight: 600; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(255, 64, 105, 0.2);">UPDATE</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        const API_URL = 'https://saahna-production.up.railway.app/api';
+        const API_URL = '/api';
         let token = localStorage.getItem('sahnaa_admin_token');
         let allProducts = [];
         let editingProductId = null;
 
         if (token) document.getElementById('loginPage').style.display = 'none';
+
+        // Helper functions for dynamic UI
+        function addColorRow(data = { name: '', hex: '#D4AF37' }) {
+            const container = document.getElementById('colorsContainer');
+            const div = document.createElement('div');
+            div.className = 'form-grid';
+            div.style.gridTemplateColumns = '2fr 1fr auto';
+            div.style.alignItems = 'end';
+            div.style.marginBottom = '0';
+            div.innerHTML = `
+                <div class="form-group">
+                    <label>Color Name</label>
+                    <input type="text" class="form-control color-name" value="${data.name}" placeholder="e.g. Royal Gold">
+                </div>
+                <div class="form-group">
+                    <label>Swatch</label>
+                    <input type="color" class="form-control color-hex" value="${data.hex}" style="height: 48px; padding: 5px;">
+                </div>
+                <button type="button" onclick="this.parentElement.remove()" class="btn btn-outline" style="border-color: #ff4d4d; color: #ff4d4d; padding: 0.8rem;"><i class="fas fa-trash"></i></button>
+            `;
+            container.appendChild(div);
+        }
+
+        function addCustomFieldRow(data = { name: '', extraPrice: 0 }) {
+            const container = document.getElementById('customFieldsContainer');
+            const div = document.createElement('div');
+            div.className = 'form-grid';
+            div.style.gridTemplateColumns = '2fr 1fr auto';
+            div.style.alignItems = 'end';
+            div.style.marginBottom = '0';
+            div.innerHTML = `
+                <div class="form-group">
+                    <label>Field Name</label>
+                    <input type="text" class="form-control custom-name" value="${data.name}" placeholder="e.g. Embroidery Text">
+                </div>
+                <div class="form-group">
+                    <label>Extra Price (₹)</label>
+                    <input type="number" class="form-control custom-price" value="${data.extraPrice}" placeholder="0">
+                </div>
+                <button type="button" onclick="this.parentElement.remove()" class="btn btn-outline" style="border-color: #ff4d4d; color: #ff4d4d; padding: 0.8rem;"><i class="fas fa-trash"></i></button>
+            `;
+            container.appendChild(div);
+        }
 
         async function handleLogin() {
             const email = document.getElementById('loginEmail').value;
@@ -311,6 +490,9 @@
             document.getElementById('productForm').reset();
             document.getElementById('modalTitle').innerText = 'Add Product';
             editingProductId = null;
+            document.getElementById('colorsContainer').innerHTML = '';
+            document.getElementById('customFieldsContainer').innerHTML = '';
+            document.getElementById('pCustomEnabled').checked = false;
             document.getElementById('productModal').style.display = 'block'; 
         }
         function closeModal() { document.getElementById('productModal').style.display = 'none'; }
@@ -335,8 +517,20 @@
                 document.getElementById('pShippingInfo').value = p.policies.shippingInfo || '';
                 document.getElementById('pPrivacyPolicy').value = p.policies.privacyPolicy || '';
             }
-            if(p.colors && p.colors.length > 0) document.getElementById('pColorsJSON').value = JSON.stringify(p.colors, null, 2);
-            if(p.customization && p.customization.enabled) document.getElementById('pCustomJSON').value = JSON.stringify(p.customization, null, 2);
+            
+            // Dynamic UI Population
+            document.getElementById('colorsContainer').innerHTML = '';
+            if(p.colors && p.colors.length > 0) {
+                p.colors.forEach(c => addColorRow(c));
+            }
+
+            document.getElementById('customFieldsContainer').innerHTML = '';
+            if(p.customization) {
+                document.getElementById('pCustomEnabled').checked = p.customization.enabled || false;
+                if(p.customization.fields && p.customization.fields.length > 0) {
+                    p.customization.fields.forEach(f => addCustomFieldRow(f));
+                }
+            }
             
             document.getElementById('pImagesUrl').value = p.images ? p.images.join(', ') : '';
             
@@ -374,23 +568,36 @@
 
                 const sizes = Array.from(document.querySelectorAll('#pSizesContainer input:checked')).map(cb => cb.value);
 
+                // Collect Dynamic Data
                 let colors = [];
-                let customization = {};
+                const colorNames = document.querySelectorAll('.color-name');
+                const colorHexes = document.querySelectorAll('.color-hex');
+                colorNames.forEach((input, index) => {
+                    if (input.value) {
+                        colors.push({ name: input.value, hex: colorHexes[index].value, image: '' });
+                    }
+                });
+
+                let customization = {
+                    enabled: document.getElementById('pCustomEnabled').checked,
+                    fields: []
+                };
+                const customNames = document.querySelectorAll('.custom-name');
+                const customPrices = document.querySelectorAll('.custom-price');
+                customNames.forEach((input, index) => {
+                    if (input.value) {
+                        customization.fields.push({ 
+                            name: input.value, 
+                            extraPrice: parseFloat(customPrices[index].value) || 0 
+                        });
+                    }
+                });
+
                 let policies = {
                     returnPolicy: document.getElementById('pReturnPolicy').value,
                     shippingInfo: document.getElementById('pShippingInfo').value,
                     privacyPolicy: document.getElementById('pPrivacyPolicy').value
                 };
-
-                try {
-                    const cJSON = document.getElementById('pColorsJSON').value;
-                    if(cJSON) colors = JSON.parse(cJSON);
-                } catch(e) { console.error("Invalid Colors JSON"); }
-                
-                try {
-                    const custJSON = document.getElementById('pCustomJSON').value;
-                    if(custJSON) customization = JSON.parse(custJSON);
-                } catch(e) { console.error("Invalid Customization JSON"); }
 
                 const product = {
                     name: document.getElementById('pName').value,
@@ -434,17 +641,57 @@
             }
         });
 
+        let currentUpdatingOrderId = null;
+        function openOrderModal(id, currentStatus) {
+            currentUpdatingOrderId = id;
+            document.getElementById('orderStatusSelect').value = currentStatus.includes('Pending') ? 'Pending' : currentStatus;
+            document.getElementById('orderModal').style.display = 'flex';
+        }
+        function closeOrderModal() { document.getElementById('orderModal').style.display = 'none'; }
+        
+        async function saveOrderStatus() {
+            const status = document.getElementById('orderStatusSelect').value;
+            try {
+                const res = await fetch(`${API_URL}/orders/${currentUpdatingOrderId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ status })
+                });
+                if(res.ok) {
+                    alert('Status Updated Successfully!');
+                    closeOrderModal();
+                    loadOrders();
+                } else {
+                    const errData = await res.json();
+                    alert('Error: ' + (errData.error || 'Failed to update status'));
+                }
+            } catch(e) { 
+                console.error(e); 
+                alert('Connection to server failed. Please ensure the backend is running.');
+            }
+        }
+
         async function loadOrders() {
             const res = await fetch(`${API_URL}/orders`, { headers: { 'Authorization': `Bearer ${token}` } });
             const orders = await res.json();
             document.getElementById('orderTableBody').innerHTML = orders.map(o => `
                 <tr>
                     <td>#${o.id}</td>
-                    <td>${o.customerName}</td>
+                    <td>
+                        <strong>${o.customerName}</strong><br>
+                        <small style="color: #666;">${o.phone}</small><br>
+                        <small style="color: #666;">${o.email}</small>
+                    </td>
+                    <td>
+                        <small style="color: #444; line-height: 1.4;">
+                            ${o.address},<br>
+                            ${o.city}, ${o.country}
+                        </small>
+                    </td>
                     <td>₹${o.totalAmount}</td>
-                    <td><span style="color:orange;">${o.status}</span></td>
+                    <td><span class="status-badge ${o.status.toLowerCase().includes('paid') || o.status === 'Done' ? 'status-paid' : o.status === 'Decline' ? 'status-decline' : 'status-pending'}">${o.status}</span></td>
                     <td>${new Date(o.createdAt).toLocaleDateString()}</td>
-                    <td><button class="btn btn-outline" style="padding:0.3rem 0.8rem;">Update</button></td>
+                    <td><button class="btn btn-outline" style="padding:0.3rem 0.8rem;" onclick="openOrderModal('${o.id}', '${o.status}')">Update</button></td>
                 </tr>
             `).join('');
         }

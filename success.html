@@ -2,25 +2,214 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Payment Successful | Sahnaa SA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed | Sahnaa SA</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        .container { text-align: center; padding: 100px 20px; }
-        .success-icon { font-size: 80px; color: #4CAF50; margin-bottom: 20px; }
+        :root {
+            --primary-gold: #D4AF37;
+            --text-dark: #1a1a1a;
+            --text-muted: #666;
+            --bg-soft: #faf9f6;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-soft);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .success-card {
+            background: white;
+            padding: 4rem 3rem;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            animation: cardAppear 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Animated SVG Checkmark */
+        .checkmark-wrapper {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2.5rem;
+            display: block;
+        }
+
+        .checkmark {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 3;
+            stroke: #22c55e;
+            stroke-miterlimit: 10;
+            box-shadow: inset 0px 0px 0px #22c55e;
+            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+        }
+
+        .checkmark__circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 3;
+            stroke-miterlimit: 10;
+            stroke: #22c55e;
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+
+        .checkmark__check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+
+        @keyframes stroke { 100% { stroke-dashoffset: 0; } }
+        @keyframes scale { 0%, 100% { transform: none; } 50% { transform: scale3d(1.1, 1.1, 1); } }
+        @keyframes fill { 100% { box-shadow: inset 0px 0px 0px 50px #f0fdf4; } }
+
+        .confetti-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            animation: fadeIn 1s ease 0.3s forwards;
+            opacity: 0;
+        }
+
+        p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+            animation: fadeIn 1s ease 0.5s forwards;
+            opacity: 0;
+        }
+
+        .order-id-box {
+            display: inline-block;
+            background: #faf9f6;
+            border: 1px dashed var(--primary-gold);
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 1.5rem 0 2.5rem;
+            font-size: 0.9rem;
+            animation: fadeIn 1s ease 0.7s forwards;
+            opacity: 0;
+        }
+
+        .order-id-box strong { color: var(--primary-gold); margin-left: 5px; font-family: monospace; font-size: 1.1rem; }
+
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+
+        .btn-premium {
+            display: inline-block;
+            background: var(--primary-gold);
+            color: white;
+            padding: 1.2rem 3rem;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+            animation: fadeIn 1s ease 0.9s forwards;
+            opacity: 0;
+        }
+
+        .btn-premium:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(212, 175, 55, 0.3); background: #b8962e; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="success-icon">✓</div>
-        <h1>Payment Successful!</h1>
-        <p>Thank you for your order. We have received your payment and are processing your order.</p>
-        <p>A confirmation email will be sent to you shortly.</p>
-        <br>
-        <a href="index.html" class="btn btn-gold">Return to Home</a>
+    <canvas id="confetti" class="confetti-canvas"></canvas>
+    
+    <div class="success-card">
+        <div class="checkmark-wrapper">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+        </div>
+        
+        <h1>Exquisite Choice</h1>
+        <p>Your order has been successfully placed.</p>
+        <p>Thank you for choosing Sahnaa SA.</p>
+        
+        <div class="order-id-box">Order ID: <strong id="orderIdDisplay">#ORD_PENDING</strong></div>
+        
+        <div>
+            <a href="index.html" class="btn-premium">Return to Home</a>
+        </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
         // Clear cart after successful checkout
         localStorage.removeItem('sahnaa_cart');
+
+        // Get Order ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('id');
+        if (orderId) {
+            document.getElementById('orderIdDisplay').innerText = '#' + orderId;
+        }
+
+        // Confetti burst
+        const duration = 3 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+        function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+        const interval = setInterval(function() {
+            const timeLeft = animationEnd - Date.now();
+            if (timeLeft <= 0) return clearInterval(interval);
+
+            const particleCount = 50 * (timeLeft / duration);
+            confetti(Object.assign({}, defaults, { 
+                particleCount, 
+                origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+                colors: ['#D4AF37', '#ffffff', '#e8c872']
+            }));
+            confetti(Object.assign({}, defaults, { 
+                particleCount, 
+                origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+                colors: ['#D4AF37', '#ffffff', '#e8c872']
+            }));
+        }, 250);
+
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#D4AF37', '#ffffff', '#e8c872']
+        });
     </script>
 </body>
 </html>

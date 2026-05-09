@@ -271,6 +271,17 @@
                         </div>
                     ` : ''}
 
+                    <div style="margin-bottom:2rem; display: flex; align-items: center; gap: 2rem;">
+                        <div>
+                            <h4 style="margin-bottom:0.8rem; font-size:0.9rem; text-transform:uppercase; color:#888;">Quantity:</h4>
+                            <div class="quantity-selector-premium">
+                                <button onclick="changeQVQty(-1)">-</button>
+                                <input type="number" id="qvQty" value="1" min="1" readonly>
+                                <button onclick="changeQVQty(1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+
                     <button class="btn btn-gold" style="width:100%; padding:1.2rem; font-size:1.1rem; border-radius:12px; margin-bottom:1.5rem;" onclick="window.qvAddToCart(${p.id})">Add to Cart</button>
                     
                     ${p.policies ? `
@@ -293,16 +304,21 @@
         window.qvAddToCart = (pid) => {
             const p = window.allProductsData.find(x => x.id === pid);
             const size = document.getElementById('quickViewModal').dataset.size;
+            const qty = parseInt(document.getElementById('qvQty').value) || 1;
+            
             if (!size) { alert('Please select a size'); return; }
-            let custData = null;
-            if (p.customization && p.customization.enabled) {
-                const custEl = document.getElementById(`cust_${pid}`);
-                if (custEl && custEl.value) custData = custEl.value;
+            
+            if(window.addToCart) {
+                window.addToCart(pid, size, p, qty);
+                document.getElementById('quickViewModal').style.display='none';
             }
-            window.addToCart(pid, size, p, 1);
-            if(custData) console.log("Customization:", custData);
-            alert('Added to cart!');
-            document.getElementById('quickViewModal').style.display='none';
+        };
+
+        window.changeQVQty = (change) => {
+            const input = document.getElementById('qvQty');
+            let val = parseInt(input.value) + change;
+            if(val < 1) val = 1;
+            input.value = val;
         };
 
         catCards.forEach(card => {

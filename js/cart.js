@@ -58,8 +58,15 @@ function renderCart() {
             <div class="cart-item-details">
                 <h4 style="margin: 0;">${item.name}</h4>
                 <p style="font-size: 0.8rem; color: #666; margin: 2px 0;">Size: ${item.size}</p>
-                <p style="font-weight: 600; margin: 5px 0;">${item.quantity} x ₹${item.price.toLocaleString()}</p>
-                <span style="color: #D4AF37; cursor: pointer; font-size: 0.8rem; text-decoration: underline;" onclick="removeFromCart(${index})">Remove</span>
+                <div style="display: flex; align-items: center; gap: 0.8rem; margin: 10px 0;">
+                    <div class="quantity-controls-mini">
+                        <button onclick="updateQuantity(${index}, -1)" ${item.quantity <= 1 ? 'disabled' : ''}>-</button>
+                        <span>${item.quantity}</span>
+                        <button onclick="updateQuantity(${index}, 1)">+</button>
+                    </div>
+                    <span style="font-weight: 600;">₹${(item.price * item.quantity).toLocaleString()}</span>
+                </div>
+                <span style="color: #ff4d4d; cursor: pointer; font-size: 0.8rem;" onclick="removeFromCart(${index})">Remove</span>
             </div>
         `;
         list.appendChild(div);
@@ -76,6 +83,14 @@ window.removeFromCart = (index) => {
     renderCart();
 };
 
+window.updateQuantity = (index, change) => {
+    cart[index].quantity += change;
+    if (cart[index].quantity < 1) cart[index].quantity = 1;
+    saveCart();
+    updateCartUI();
+    renderCart();
+};
+
 function addToCart(productId, size = 'M', productData = null, quantity = 1) {
     const product = productData || { id: productId, name: "Product " + productId, price: 10000, image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&q=80&w=200' };
     const img = product.image || (product.images ? product.images[0] : 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&q=80&w=200');
@@ -85,7 +100,8 @@ function addToCart(productId, size = 'M', productData = null, quantity = 1) {
     if (existingItem) {
         existingItem.quantity += parseInt(quantity);
     } else {
-        cart.push({ ...product, image: img, size, quantity: parseInt(quantity) });
+        const availableSizes = product.sizes && product.sizes.length ? product.sizes : ['S','M','L','XL','Free Size'];
+        cart.push({ ...product, image: img, size, quantity: parseInt(quantity), availableSizes });
     }
     
     saveCart();

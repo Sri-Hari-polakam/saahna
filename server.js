@@ -290,21 +290,23 @@ app.post('/api/create-checkout-session', async (req, res) => {
             quantity: item.quantity,
         }));
 
+        const orderId = 'ORD_' + Date.now();
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: lineItems,
             mode: 'payment',
-            success_url: `https://saahna.vercel.app/success.html`,
-            cancel_url: `https://saahna.vercel.app/cancel.html`,
+            success_url: `https://saahna.vercel.app/success.html?id=${orderId}`,
+            cancel_url: `https://saahna.vercel.app/checkout.html`,
             metadata: {
                 customer: JSON.stringify(customer),
+                orderId: orderId,
                 items: JSON.stringify(items.map(i => ({ id: i.id, name: i.name, quantity: i.quantity })))
             }
         });
 
         const totalAmount = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         db.run(`INSERT INTO orders (customerName, phone, email, address, city, country, totalAmount, paymentId, orderId, items, status) VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
-            [customer.name, customer.phone, customer.email, customer.address, customer.city, customer.country, totalAmount, 'online', session.id, JSON.stringify(items), 'Pending Payment'],
+            [customer.name, customer.phone, customer.email, customer.address, customer.city, customer.country, totalAmount, 'online', orderId, JSON.stringify(items), 'Pending Payment'],
             function(err) {
                 if(err) console.error("DB Insert Error", err);
             });
@@ -318,6 +320,14 @@ app.post('/api/create-checkout-session', async (req, res) => {
 
 app.get('/api/orders', verifyAdmin, (req, res) => {
     db.all(`SELECT * FROM orders ORDER BY createdAt DESC`, [], (err, rows) => res.json(rows));
+});
+
+app.put('/api/orders/:id', verifyAdmin, (req, res) => {
+    const { status } = req.body;
+    db.run(`UPDATE orders SET status = ? WHERE id = ?`, [status, req.params.id], function(err) {
+        if(err) return res.status(500).json({ error: err.message });
+        res.json({ success: true });
+    });
 });
 
 app.get('/api/stats', verifyAdmin, (req, res) => {
