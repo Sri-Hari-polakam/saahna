@@ -51,7 +51,11 @@ app.post('/api/webhook', express.raw({type: 'application/json'}), (req, res) => 
 
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
-app.use(express.static('public')); // Serve frontend
+app.use(express.static(__dirname)); // Serve frontend from root directory
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // Ensure uploads directory exists
 if (!fs.existsSync('./uploads')) {
