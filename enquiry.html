@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -259,6 +259,11 @@
     <script src="js/cart.js"></script>
     <script src="js/animations.js"></script>
     <script>
+        // Auto-detect API URL
+        const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:5000/api' 
+            : 'https://saahna-production.up.railway.app/api';
+
         document.getElementById('enquiryForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = {
@@ -270,7 +275,7 @@
             };
 
             try {
-                const res = await fetch('/api/enquiry', {
+                const res = await fetch(`${API_URL}/enquiry`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)

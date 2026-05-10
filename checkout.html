@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -420,6 +420,11 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
+        // Auto-detect API URL
+        const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:5000/api' 
+            : 'https://saahna-production.up.railway.app/api';
+
         let cart = JSON.parse(localStorage.getItem('sahnaa_cart')) || [];
 
         function selectPayment(method, element) {
@@ -512,7 +517,7 @@
             if (paymentMethod === 'cod') {
                 try {
                     const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                    const res = await fetch('/api/orders', {
+                    const res = await fetch(`${API_URL}/orders`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ items: cart, customer, paymentMethod: 'cod', totalAmount })
@@ -531,7 +536,7 @@
             }
 
             try {
-                const res = await fetch('/api/create-razorpay-order', {
+                const res = await fetch(`${API_URL}/create-razorpay-order`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ items: cart, customer })
@@ -555,7 +560,7 @@
                     order_id: data.razorpayOrderId,
                     handler: async function (response) {
                         // Verify payment signature on the server
-                        const verifyRes = await fetch('/api/verify-payment', {
+                        const verifyRes = await fetch(`${API_URL}/verify-payment`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({

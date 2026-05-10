@@ -31,7 +31,7 @@ if (Razorpay && process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) 
     console.warn('Razorpay keys not set — payment features disabled.');
 }
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 const SECRET_KEY = 'SAHNAA_SECRET_GOLD_2026';
 
 // Middleware
@@ -277,7 +277,10 @@ app.post('/api/upload', verifyAdmin, (req, res, next) => {
     upload.single('image')(req, res, next);
 }, (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'No image uploaded' });
-    const imageUrl = `http://localhost:5000/uploads/${req.file.filename}`;
+    // Use the current host instead of hardcoded localhost
+    const protocol = req.protocol;
+    const host = req.get('host');
+    const imageUrl = `${protocol}://${host}/uploads/${req.file.filename}`;
     res.json({ imageUrl });
 });
 

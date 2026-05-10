@@ -733,9 +733,9 @@
 
     <script>
         // Auto-detect API URL
-        const API_URL = window.location.protocol === 'file:' 
+        const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
             ? 'http://localhost:5000/api' 
-            : '/api';
+            : 'https://saahna-production.up.railway.app/api';
 
         // ── Apply homepage content from API ──────────────────────────────
         async function applyHomepageContent() {
