@@ -18,6 +18,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const SECRET_KEY = 'SAHNAA_SECRET_GOLD_2026';
 
+// START LISTENING IMMEDIATELY (Crucial for Railway to prevent timeouts)
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Server listening on port ${PORT}`);
+    console.log(`🌍 URL: https://saahna-production.up.railway.app`);
+});
+
 // Middleware
 app.use(cors({
     origin: '*',
@@ -30,6 +36,10 @@ app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     next();
 });
+
+// Health check route for Railway (Respond fast!)
+app.get('/api/health', (req, res) => res.json({ status: 'healthy', timestamp: new Date() }));
+app.get('/api', (req, res) => res.json({ message: 'SAAHNA API is running' }));
 
 // --- RAZORPAY WEBHOOK ---
 app.use(express.json());
@@ -295,10 +305,4 @@ app.get('/api/stats', verifyAdmin, (req, res) => {
     });
 });
 
-// Health check route for Railway
-app.get('/api/health', (req, res) => res.json({ status: 'healthy', timestamp: new Date() }));
-
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Server fully operational on port ${PORT}`);
-    console.log(`🌍 Production URL: https://saahna-production.up.railway.app`);
-});
+// Health check route for Railway is now at the top.
