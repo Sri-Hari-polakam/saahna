@@ -894,7 +894,9 @@
     </div>
 
     <script>
-        const API_URL = '/api';
+        // Auto-detect: use Railway URL when not on localhost
+        const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+        const API_URL = IS_LOCAL ? '/api' : 'https://saahna-production.up.railway.app/api';
         let token = localStorage.getItem('sahnaa_admin_token');
         let allProducts = [];
         let editingProductId = null;

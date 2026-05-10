@@ -15,11 +15,21 @@ try {
     console.error("CRITICAL: Missing dependencies. Please run 'npm install razorpay multer'");
 }
 
-// Razorpay instance
-const razorpay = Razorpay ? new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET
-}) : null;
+// Razorpay instance — only initialise when keys are present
+let razorpay = null;
+if (Razorpay && process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
+    try {
+        razorpay = new Razorpay({
+            key_id: process.env.RAZORPAY_KEY_ID,
+            key_secret: process.env.RAZORPAY_KEY_SECRET
+        });
+        console.log('Razorpay initialised.');
+    } catch (err) {
+        console.error('Razorpay init failed:', err.message);
+    }
+} else {
+    console.warn('Razorpay keys not set — payment features disabled.');
+}
 const app = express();
 const PORT = 5000;
 const SECRET_KEY = 'SAHNAA_SECRET_GOLD_2026';
