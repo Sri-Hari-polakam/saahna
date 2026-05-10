@@ -258,7 +258,18 @@ if (multer) {
             cb(null, 'prod_' + Date.now() + path.extname(file.originalname));
         }
     });
-    upload = multer({ storage });
+    upload = multer({
+        storage,
+        fileFilter: (req, file, cb) => {
+            // Accept images and videos
+            if (file.mimetype.startsWith('image/') || file.mimetype.startsWith('video/')) {
+                cb(null, true);
+            } else {
+                cb(new Error('Only image and video files are allowed'));
+            }
+        },
+        limits: { fileSize: 100 * 1024 * 1024 } // 100MB max for videos
+    });
 }
 
 app.post('/api/upload', verifyAdmin, (req, res, next) => {
@@ -266,7 +277,7 @@ app.post('/api/upload', verifyAdmin, (req, res, next) => {
     upload.single('image')(req, res, next);
 }, (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'No image uploaded' });
-    const imageUrl = `https://saahna-production.up.railway.app/uploads/${req.file.filename}`;
+    const imageUrl = `http://localhost:5000/uploads/${req.file.filename}`;
     res.json({ imageUrl });
 });
 

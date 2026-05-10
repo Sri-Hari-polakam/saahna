@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -77,7 +77,10 @@
         .p-badge{padding:.3rem .8rem;border-radius:6px;font-size:.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;width:fit-content;}
         .p-badge-new{background:var(--dark);color:#fff;}
         .p-badge-sale{background:var(--vivid);color:#fff;}
-        .p-badge-premium{background:var(--gold);color:var(--dark);}
+        .p-badge-oos{background:#555;color:#fff;}
+        .oos-card .p-card-img img{filter:grayscale(0.8) opacity(0.7);}
+        .oos-card .p-card-qv{display:none;}
+        .oos-card::after{content:'OUT OF STOCK';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-15deg);font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:rgba(255,255,255,0.8);background:rgba(0,0,0,0.4);padding:0.5rem 1rem;border:2px solid rgba(255,255,255,0.8);border-radius:8px;pointer-events:none;z-index:5;text-shadow:0 0 10px rgba(0,0,0,0.5);letter-spacing:2px;}
         .p-card-body{padding:1.4rem 1.4rem 1.6rem;display:flex;flex-direction:column;flex:1;}
         .p-card-cat{font-size:.62rem;letter-spacing:2.5px;text-transform:uppercase;color:#bbb;font-weight:600;margin-bottom:.5rem;}
         .p-card-name{font-family:'Playfair Display',serif;font-size:1.05rem;color:#1a1a1a;margin-bottom:.8rem;line-height:1.3;font-weight:600;}
@@ -336,7 +339,7 @@
     <script src="js/wishlist.js"></script>
     <script src="js/cart.js"></script>
     <script>
-        const API_URL = '/api';
+
         const ITEMS_PER_PAGE = 12;
         const CATEGORIES = ['all','Sarees',"Men's Wear","Co - ord sets","One - Piece Dress","Frocks","Fabrics","Kurtis","Lehangas","Kid's Wear"];
         const CAT_IMGS = {
@@ -412,14 +415,16 @@
                 const price = p.discountPrice || p.price;
                 const discount = p.discountPrice ? Math.round((1 - p.discountPrice/p.price)*100) : 0;
                 const colors = p.colors || [];
-                const badge = idx === 0 ? '<span class="p-badge p-badge-new">New</span>' :
+                const isOutOfStock = p.stock <= 0;
+                const badge = isOutOfStock ? '<span class="p-badge p-badge-oos">Out of Stock</span>' :
+                              idx === 0 ? '<span class="p-badge p-badge-new">New</span>' :
                               discount >= 20 ? `<span class="p-badge p-badge-sale">${discount}% Off</span>` :
                               p.price >= 10000 ? '<span class="p-badge p-badge-premium">Premium</span>' : '';
                 const colorSwatches = colors.length > 0 ? `<div class="p-card-colors">${colors.map((c,i)=>`<div class="p-swatch${i===0?' active':''}" style="background:${c.hex}" title="${c.name}" onclick="event.stopPropagation();swapImg(${p.id},'${c.image}',this)"></div>`).join('')}</div>` : '';
                 const card = document.createElement('div');
-                card.className = 'p-card';
+                card.className = 'p-card' + (isOutOfStock ? ' oos-card' : '');
                 card.style.transitionDelay = (idx % ITEMS_PER_PAGE % 3) * 0.08 + 's';
-                card.onclick = () => location.href = `product-details.html?id=${p.id}`;
+                card.onclick = () => openQV(p.id);
                 card.innerHTML = `
                     <div class="p-card-img p-card-img-h">
                         <img id="pimg-${p.id}" src="${img}" alt="${p.name}" loading="lazy">
@@ -552,7 +557,6 @@
                     <div><p class="qv-label">Size</p><div class="qv-sizes">${sizes.map(s=>`<button class="qv-size-btn" onclick="this.closest('.qv-sizes').querySelectorAll('.qv-size-btn').forEach(b=>{b.classList.remove('active');});this.classList.add('active');document.getElementById('qvModal').dataset.size='${s}';">${s}</button>`).join('')}</div></div>
                     <div><p class="qv-label">Quantity</p><div class="qv-qty"><button onclick="var i=document.getElementById('qvQtyInput');i.value=Math.max(1,parseInt(i.value)-1)">-</button><input id="qvQtyInput" type="number" value="1" min="1" readonly><button onclick="var i=document.getElementById('qvQtyInput');i.value=parseInt(i.value)+1">+</button></div></div>
                     <button class="qv-add-btn" onclick="qvAddToCart(${p.id})">Add to Bag</button>
-                    <a href="product-details.html?id=${p.id}" class="qv-view-link">View Full Details &rarr;</a>
                     ${p.policies && (p.policies.shippingInfo || p.policies.returnPolicy) ? `<div class="qv-policies">${p.policies.shippingInfo?`<div><i class="fas fa-truck"></i>${p.policies.shippingInfo}</div>`:''}${p.policies.returnPolicy?`<div><i class="fas fa-undo"></i>${p.policies.returnPolicy}</div>`:''}</div>` : ''}
                 </div>`;
             modal.style.display = 'block';
@@ -570,14 +574,21 @@
             if (window.addToCart) { window.addToCart(pid, size, p, qty); closeQV(); }
         }
 
+        // Auto-detect API URL
+        const API_URL = window.location.protocol === 'file:' 
+            ? 'http://localhost:5000/api' 
+            : '/api';
+
         // Load products
         async function init() {
             const controller = new AbortController();
             setTimeout(() => controller.abort(), 5000);
             try {
                 const res = await fetch(`${API_URL}/products`, { signal: controller.signal });
+                if (!res.ok) throw new Error('API failed');
                 allProducts = await res.json();
             } catch(e) {
+                console.warn("Falling back to local data:", e.message);
                 allProducts = window.localProducts || [];
             }
             window.allProductsData = allProducts;

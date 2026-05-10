@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,6 +8,12 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        .p-badge-oos { background: #555 !important; color: #fff !important; }
+        .oos-card img { filter: grayscale(0.8) opacity(0.7); }
+        .oos-card::after { content: 'OUT OF STOCK'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.4); padding: 0.4rem 0.8rem; border: 2px solid rgba(255,255,255,0.8); border-radius: 8px; pointer-events: none; z-index: 5; text-shadow: 0 0 10px rgba(0,0,0,0.5); letter-spacing: 2px; }
+        .oos-card .quick-view-btn { display: none !important; }
+    </style>
 </head>
 <body>
 
@@ -252,7 +258,7 @@
                 z-index: 4;
                 animation: floatA 5s ease-in-out infinite;
             ">
-                <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=85&w=300"
+                <img id="heroFloat1" src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=85&w=300"
                      alt="Velvet Dress"
                      style="width:100%; height:100%; object-fit:cover; object-position: center top; filter: saturate(1.1);">
             </div>
@@ -271,7 +277,7 @@
                 z-index: 4;
                 animation: floatB 6s ease-in-out infinite;
             ">
-                <img src="https://images.unsplash.com/photo-1622290319146-7b63fd48a609?auto=format&fit=crop&q=85&w=300"
+                <img id="heroFloat2" src="https://images.unsplash.com/photo-1622290319146-7b63fd48a609?auto=format&fit=crop&q=85&w=300"
                      alt="Designer Frock"
                      style="width:100%; height:100%; object-fit:cover; object-position: center top; filter: saturate(1.1);">
             </div>
@@ -453,82 +459,29 @@
                 <div style="width: 40px; height: 2px; background: linear-gradient(90deg, #FF0055, #D4AF37); margin: 0 auto 0.8rem;"></div>
                 <p style="color: var(--text-muted); font-size: 0.72rem; letter-spacing: 4px; text-transform: uppercase; font-weight: 600;">Curated Excellence</p>
             </div>
-            <!-- 4-card grid -->
+            <!-- 4-card grid — populated dynamically from database -->
             <div id="homeProductGrid" style="display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; margin-bottom:2.5rem;">
-
-                <!-- Card 1 -->
-                <div id="sigCard1" class="advanced-card sig-card" onclick="location.href='product-details.html?id=1'" style="cursor:pointer; border-radius:16px; overflow:hidden; background:white; border:1px solid #f0f0f0; box-shadow:0 4px 20px rgba(0,0,0,0.04); transition:all 0.3s ease;">
-                    <div style="position:relative; height:320px; overflow:hidden; background:#f8f8f8;">
-                        <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=85&w=600" alt="Royal Gold Silk Saree" style="width:100%; height:100%; object-fit:cover; object-position:center top; transition:transform 0.8s ease;">
-                        <button onclick="event.stopPropagation(); window.toggleWishlist(1)" class="wishlist-btn" data-pid="1" style="position:absolute; top:12px; right:12px; background:white; border:none; width:34px; height:34px; border-radius:50%; box-shadow:0 4px 12px rgba(0,0,0,0.1); cursor:pointer; font-size:1rem; color:#aaa; display:flex; align-items:center; justify-content:center; z-index:3; transition:0.3s;"><i class="far fa-heart"></i></button>
-                        <div class="sig-badge" style="position:absolute; top:12px; left:12px; background:#FF0055; color:white; font-size:0.58rem; font-weight:700; padding:4px 10px; border-radius:4px; letter-spacing:1.5px; z-index:3;">NEW</div>
-                        <button class="quick-view-btn" onclick="event.stopPropagation(); window.openQuickView(1)">Quick View</button>
-                    </div>
-                    <div style="padding:1.4rem 1.2rem; border-top:1px solid #f5f5f5; text-align:center;">
-                        <p class="sig-cat" style="font-size:0.65rem; letter-spacing:2.5px; text-transform:uppercase; color:#aaa; font-weight:600; margin-bottom:0.5rem;">Sarees</p>
-                        <h3 class="sig-name" style="font-family:'Playfair Display',serif; font-size:1.05rem; color:#1a1a1a; margin-bottom:0.8rem; font-weight:700;">Royal Gold Silk Saree</h3>
-                        <div style="display:flex; align-items:center; justify-content:center; gap:0.6rem;">
-                            <span class="sig-price" style="font-size:1.1rem; font-weight:700; color:#FF0055;">&#8377;12,500</span>
-                            <span class="sig-orig" style="font-size:0.85rem; color:#ccc; text-decoration:line-through;">&#8377;14,000</span>
-                        </div>
-                    </div>
+                <!-- Loading skeleton -->
+                <div style="border-radius:16px;overflow:hidden;background:white;border:1px solid #f0f0f0;box-shadow:0 4px 20px rgba(0,0,0,0.04);">
+                    <div style="height:320px;background:linear-gradient(90deg,#f0ede8 25%,#faf8f5 50%,#f0ede8 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;"></div>
+                    <div style="padding:1.4rem 1.2rem;"><div style="height:10px;background:#f0ede8;border-radius:4px;margin-bottom:8px;width:60%;"></div><div style="height:14px;background:#f0ede8;border-radius:4px;margin-bottom:8px;"></div><div style="height:12px;background:#f0ede8;border-radius:4px;width:40%;margin:0 auto;"></div></div>
                 </div>
-
-                <!-- Card 2 -->
-                <div id="sigCard2" class="advanced-card sig-card" onclick="location.href='product-details.html?id=4'" style="cursor:pointer; border-radius:16px; overflow:hidden; background:white; border:1px solid #f0f0f0; box-shadow:0 4px 20px rgba(0,0,0,0.04); transition:all 0.3s ease;">
-                    <div style="position:relative; height:320px; overflow:hidden; background:#f8f8f8;">
-                        <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=85&w=600" alt="Elegant Velvet Evening Dress" style="width:100%; height:100%; object-fit:cover; object-position:center top; transition:transform 0.8s ease;">
-                        <button onclick="event.stopPropagation(); window.toggleWishlist(4)" class="wishlist-btn" data-pid="4" style="position:absolute; top:12px; right:12px; background:white; border:none; width:34px; height:34px; border-radius:50%; box-shadow:0 4px 12px rgba(0,0,0,0.1); cursor:pointer; font-size:1rem; color:#aaa; display:flex; align-items:center; justify-content:center; z-index:3; transition:0.3s;"><i class="far fa-heart"></i></button>
-                        <div class="sig-badge" style="position:absolute; top:12px; left:12px; background:#FF0055; color:white; font-size:0.58rem; font-weight:700; padding:4px 10px; border-radius:4px; letter-spacing:1.5px; z-index:3;">TRENDING</div>
-                        <button class="quick-view-btn" onclick="event.stopPropagation(); window.openQuickView(4)">Quick View</button>
-                    </div>
-                    <div style="padding:1.4rem 1.2rem; border-top:1px solid #f5f5f5; text-align:center;">
-                        <p class="sig-cat" style="font-size:0.65rem; letter-spacing:2.5px; text-transform:uppercase; color:#aaa; font-weight:600; margin-bottom:0.5rem;">One-Piece Dress</p>
-                        <h3 class="sig-name" style="font-family:'Playfair Display',serif; font-size:1.05rem; color:#1a1a1a; margin-bottom:0.8rem; font-weight:700;">Elegant Velvet Evening Dress</h3>
-                        <div style="display:flex; align-items:center; justify-content:center; gap:0.6rem;">
-                            <span class="sig-price" style="font-size:1.1rem; font-weight:700; color:#FF0055;">&#8377;4,500</span>
-                            <span class="sig-orig" style="font-size:0.85rem; color:#ccc; text-decoration:line-through;">&#8377;5,200</span>
-                        </div>
-                    </div>
+                <div style="border-radius:16px;overflow:hidden;background:white;border:1px solid #f0f0f0;box-shadow:0 4px 20px rgba(0,0,0,0.04);">
+                    <div style="height:320px;background:linear-gradient(90deg,#f0ede8 25%,#faf8f5 50%,#f0ede8 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;animation-delay:.15s;"></div>
+                    <div style="padding:1.4rem 1.2rem;"><div style="height:10px;background:#f0ede8;border-radius:4px;margin-bottom:8px;width:60%;"></div><div style="height:14px;background:#f0ede8;border-radius:4px;margin-bottom:8px;"></div><div style="height:12px;background:#f0ede8;border-radius:4px;width:40%;margin:0 auto;"></div></div>
                 </div>
-
-                <!-- Card 3 -->
-                <div id="sigCard3" class="advanced-card sig-card" onclick="location.href='product-details.html?id=31'" style="cursor:pointer; border-radius:16px; overflow:hidden; background:white; border:1px solid #f0f0f0; box-shadow:0 4px 20px rgba(0,0,0,0.04); transition:all 0.3s ease;">
-                    <div style="position:relative; height:320px; overflow:hidden; background:#f8f8f8;">
-                        <img src="https://images.unsplash.com/photo-1583391733975-ac581b23cc7f?auto=format&fit=crop&q=85&w=600" alt="Wedding Couture Set" style="width:100%; height:100%; object-fit:cover; object-position:center top; transition:transform 0.8s ease;">
-                        <button onclick="event.stopPropagation(); window.toggleWishlist(31)" class="wishlist-btn" data-pid="31" style="position:absolute; top:12px; right:12px; background:white; border:none; width:34px; height:34px; border-radius:50%; box-shadow:0 4px 12px rgba(0,0,0,0.1); cursor:pointer; font-size:1rem; color:#aaa; display:flex; align-items:center; justify-content:center; z-index:3; transition:0.3s;"><i class="far fa-heart"></i></button>
-                        <div class="sig-badge" style="position:absolute; top:12px; left:12px; background:#D4AF37; color:white; font-size:0.58rem; font-weight:700; padding:4px 10px; border-radius:4px; letter-spacing:1.5px; z-index:3;">PREMIUM</div>
-                        <button class="quick-view-btn" onclick="event.stopPropagation(); window.openQuickView(31)">Quick View</button>
-                    </div>
-                    <div style="padding:1.4rem 1.2rem; border-top:1px solid #f5f5f5; text-align:center;">
-                        <p class="sig-cat" style="font-size:0.65rem; letter-spacing:2.5px; text-transform:uppercase; color:#aaa; font-weight:600; margin-bottom:0.5rem;">Lehangas</p>
-                        <h3 class="sig-name" style="font-family:'Playfair Display',serif; font-size:1.05rem; color:#1a1a1a; margin-bottom:0.8rem; font-weight:700;">Wedding Couture Set</h3>
-                        <div style="display:flex; align-items:center; justify-content:center; gap:0.6rem;">
-                            <span class="sig-price" style="font-size:1.1rem; font-weight:700; color:#FF0055;">&#8377;85,000</span>
-                            <span class="sig-orig" style="font-size:0.85rem; color:#ccc; text-decoration:line-through;">&#8377;95,000</span>
-                        </div>
-                    </div>
+                <div style="border-radius:16px;overflow:hidden;background:white;border:1px solid #f0f0f0;box-shadow:0 4px 20px rgba(0,0,0,0.04);">
+                    <div style="height:320px;background:linear-gradient(90deg,#f0ede8 25%,#faf8f5 50%,#f0ede8 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;animation-delay:.3s;"></div>
+                    <div style="padding:1.4rem 1.2rem;"><div style="height:10px;background:#f0ede8;border-radius:4px;margin-bottom:8px;width:60%;"></div><div style="height:14px;background:#f0ede8;border-radius:4px;margin-bottom:8px;"></div><div style="height:12px;background:#f0ede8;border-radius:4px;width:40%;margin:0 auto;"></div></div>
                 </div>
-
-                <!-- Card 4 -->
-                <div id="sigCard4" class="advanced-card sig-card" onclick="location.href='product-details.html?id=5'" style="cursor:pointer; border-radius:16px; overflow:hidden; background:white; border:1px solid #f0f0f0; box-shadow:0 4px 20px rgba(0,0,0,0.04); transition:all 0.3s ease;">
-                    <div style="position:relative; height:320px; overflow:hidden; background:#f8f8f8;">
-                        <img src="https://images.unsplash.com/photo-1622290319146-7b63fd48a609?auto=format&fit=crop&q=85&w=600" alt="Designer Silk Frock" style="width:100%; height:100%; object-fit:cover; object-position:center top; transition:transform 0.8s ease;">
-                        <button onclick="event.stopPropagation(); window.toggleWishlist(5)" class="wishlist-btn" data-pid="5" style="position:absolute; top:12px; right:12px; background:white; border:none; width:34px; height:34px; border-radius:50%; box-shadow:0 4px 12px rgba(0,0,0,0.1); cursor:pointer; font-size:1rem; color:#aaa; display:flex; align-items:center; justify-content:center; z-index:3; transition:0.3s;"><i class="far fa-heart"></i></button>
-                        <div class="sig-badge" style="position:absolute; top:12px; left:12px; background:#FF0055; color:white; font-size:0.58rem; font-weight:700; padding:4px 10px; border-radius:4px; letter-spacing:1.5px; z-index:3;">NEW</div>
-                        <button class="quick-view-btn" onclick="event.stopPropagation(); window.openQuickView(5)">Quick View</button>
-                    </div>
-                    <div style="padding:1.4rem 1.2rem; border-top:1px solid #f5f5f5; text-align:center;">
-                        <p class="sig-cat" style="font-size:0.65rem; letter-spacing:2.5px; text-transform:uppercase; color:#aaa; font-weight:600; margin-bottom:0.5rem;">Frocks</p>
-                        <h3 class="sig-name" style="font-family:'Playfair Display',serif; font-size:1.05rem; color:#1a1a1a; margin-bottom:0.8rem; font-weight:700;">Designer Silk Frock</h3>
-                        <div style="display:flex; align-items:center; justify-content:center; gap:0.6rem;">
-                            <span class="sig-price" style="font-size:1.1rem; font-weight:700; color:#FF0055;">&#8377;3,200</span>
-                            <span class="sig-orig" style="font-size:0.85rem; color:#ccc; text-decoration:line-through;">&#8377;3,800</span>
-                        </div>
-                    </div>
+                <div style="border-radius:16px;overflow:hidden;background:white;border:1px solid #f0f0f0;box-shadow:0 4px 20px rgba(0,0,0,0.04);">
+                    <div style="height:320px;background:linear-gradient(90deg,#f0ede8 25%,#faf8f5 50%,#f0ede8 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;animation-delay:.45s;"></div>
+                    <div style="padding:1.4rem 1.2rem;"><div style="height:10px;background:#f0ede8;border-radius:4px;margin-bottom:8px;width:60%;"></div><div style="height:14px;background:#f0ede8;border-radius:4px;margin-bottom:8px;"></div><div style="height:12px;background:#f0ede8;border-radius:4px;width:40%;margin:0 auto;"></div></div>
                 </div>
-
             </div>
+            <style>
+                @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+            </style>
 
             <!-- View All Collections -->
             <div style="text-align:center; margin-top:0.5rem;">
@@ -557,29 +510,33 @@
             
             <!-- Instagram Video Grid -->
             <div class="video-grid">
-                <div style="aspect-ratio: 9/16; background: #222; border-radius: 20px; overflow: hidden; position: relative;">
-                    <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
+                <div id="brandVideo1Container" style="aspect-ratio: 9/16; background: #222; border-radius: 20px; overflow: hidden; position: relative; cursor: pointer;">
+                    <video id="brandVideo1" autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
                         <source src="https://assets.mixkit.co/videos/preview/mixkit-fashion-model-walking-in-front-of-a-white-wall-34255-large.mp4" type="video/mp4">
                     </video>
                     <div style="position: absolute; bottom: 20px; left: 20px;"><i class="fab fa-instagram"></i></div>
+                    <button class="v-mute-btn" onclick="event.stopPropagation(); toggleVidMute(1)" style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5;"><i class="fas fa-volume-mute"></i></button>
                 </div>
-                <div style="aspect-ratio: 9/16; background: #222; border-radius: 20px; overflow: hidden; position: relative;">
-                    <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
+                <div id="brandVideo2Container" style="aspect-ratio: 9/16; background: #222; border-radius: 20px; overflow: hidden; position: relative; cursor: pointer;">
+                    <video id="brandVideo2" autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
                         <source src="https://assets.mixkit.co/videos/preview/mixkit-beautiful-woman-posing-with-a-red-background-34257-large.mp4" type="video/mp4">
                     </video>
                     <div style="position: absolute; bottom: 20px; left: 20px;"><i class="fab fa-instagram"></i></div>
+                    <button class="v-mute-btn" onclick="event.stopPropagation(); toggleVidMute(2)" style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5;"><i class="fas fa-volume-mute"></i></button>
                 </div>
-                <div style="aspect-ratio: 9/16; background: #222; border-radius: 20px; overflow: hidden; position: relative;">
-                    <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
+                <div id="brandVideo3Container" style="aspect-ratio: 9/16; background: #222; border-radius: 20px; overflow: hidden; position: relative; cursor: pointer;">
+                    <video id="brandVideo3" autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
                         <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-with-red-dress-and-hat-posing-34258-large.mp4" type="video/mp4">
                     </video>
                     <div style="position: absolute; bottom: 20px; left: 20px;"><i class="fab fa-instagram"></i></div>
+                    <button class="v-mute-btn" onclick="event.stopPropagation(); toggleVidMute(3)" style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5;"><i class="fas fa-volume-mute"></i></button>
                 </div>
-                <div style="aspect-ratio: 9/16; background: #222; border-radius: 20px; overflow: hidden; position: relative;">
-                    <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
+                <div id="brandVideo4Container" style="aspect-ratio: 9/16; background: #222; border-radius: 20px; overflow: hidden; position: relative; cursor: pointer;">
+                    <video id="brandVideo4" autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
                         <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-in-white-dress-walking-slowly-34259-large.mp4" type="video/mp4">
                     </video>
                     <div style="position: absolute; bottom: 20px; left: 20px;"><i class="fab fa-instagram"></i></div>
+                    <button class="v-mute-btn" onclick="event.stopPropagation(); toggleVidMute(4)" style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5;"><i class="fas fa-volume-mute"></i></button>
                 </div>
             </div>
 
@@ -775,10 +732,15 @@
     <script src="js/data.js"></script>
 
     <script>
+        // Auto-detect API URL
+        const API_URL = window.location.protocol === 'file:' 
+            ? 'http://localhost:5000/api' 
+            : '/api';
+
         // ── Apply homepage content from API ──────────────────────────────
         async function applyHomepageContent() {
             try {
-                const res = await fetch('/api/homepage');
+                const res = await fetch(`${API_URL}/homepage`);
                 if (!res.ok) return;
                 const c = await res.json();
 
@@ -789,8 +751,17 @@
                 }
                 // Hero frame portrait
                 if (c.hero_frame_image) {
-                    const frame = document.querySelector('#heroFrame img');
+                    const frame = document.querySelector('#heroFrame img:not([id])');
                     if (frame) frame.src = c.hero_frame_image;
+                }
+                // Hero floating images
+                if (c.hero_float1) {
+                    const f1 = document.getElementById('heroFloat1');
+                    if (f1) f1.src = c.hero_float1;
+                }
+                if (c.hero_float2) {
+                    const f2 = document.getElementById('heroFloat2');
+                    if (f2) f2.src = c.hero_float2;
                 }
                 // Hero headline
                 if (c.hero_headline) {
@@ -816,6 +787,89 @@
                     const bx = document.getElementById('brandText');
                     if (bx) bx.innerHTML = c.brand_text.replace('Ashitha Yejju', '<span style="color:var(--primary-vivid);font-weight:600;">Ashitha Yejju</span>');
                 }
+                // Brand videos and links
+                [1,2,3,4].forEach(n => {
+                    const vUrl = c[`brand_video${n}`];
+                    const vLink = c[`brand_video${n}_link`];
+                    const vEl = document.getElementById(`brandVideo${n}`);
+                    const vContainer = document.getElementById(`brandVideo${n}Container`);
+
+                    if (vUrl && vEl) {
+                        vEl.src = vUrl;
+                        vEl.muted = true; // Always start muted
+                        vEl.setAttribute('autoplay', '');
+                        vEl.setAttribute('muted', '');
+                        vEl.setAttribute('playsinline', '');
+                        vEl.load();
+                        vEl.play().catch(e => {
+                            console.warn("Autoplay failed:", e);
+                            // Some browsers need a second attempt after load
+                            vEl.oncanplay = () => vEl.play().catch(() => {});
+                        });
+                    }
+                    if (vContainer) {
+                        vContainer.onclick = () => {
+                            const target = vLink || 'https://instagram.com/saahna.sa';
+                            window.open(target, '_blank');
+                        };
+                    }
+                });
+
+                // Define global toggle function
+                window.toggleVidMute = (n) => {
+                    const v = document.getElementById(`brandVideo${n}`);
+                    const btn = document.querySelector(`#brandVideo${n}Container .v-mute-btn i`);
+                    if (v && btn) {
+                        v.muted = !v.muted;
+                        btn.className = v.muted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+                    }
+                };
+
+                // Auto-unmute logic
+                const unmuteFirstVideo = () => {
+                    const v1 = document.getElementById('brandVideo1');
+                    const btn1 = document.querySelector('#brandVideo1Container .v-mute-btn i');
+                    if (v1 && v1.muted) {
+                        v1.muted = false;
+                        v1.play().then(() => {
+                            if (btn1) btn1.className = 'fas fa-volume-up';
+                        }).catch(() => {
+                            v1.muted = true;
+                        });
+                    }
+                };
+
+                // Try to unmute on scroll entry and mute on exit
+                const videoGrid = document.querySelector('.video-grid');
+                if (videoGrid) {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            const v1 = document.getElementById('brandVideo1');
+                            const btn1 = document.querySelector('#brandVideo1Container .v-mute-btn i');
+                            
+                            if (entry.isIntersecting) {
+                                // Scroll Entry: Try to unmute
+                                if (v1) {
+                                    v1.muted = false;
+                                    v1.play().then(() => {
+                                        if (btn1) btn1.className = 'fas fa-volume-up';
+                                    }).catch(() => {
+                                        v1.muted = true;
+                                        if (btn1) btn1.className = 'fas fa-volume-mute';
+                                    });
+                                }
+                            } else {
+                                // Scroll Exit: Mute
+                                if (v1) {
+                                    v1.muted = true;
+                                    if (btn1) btn1.className = 'fas fa-volume-mute';
+                                }
+                            }
+                        });
+                    }, { threshold: 0.1 }); 
+                    observer.observe(videoGrid);
+                }
+
                 // Signature cards
                 [1,2,3,4].forEach(n => {
                     const card = c[`sig_card${n}`];
@@ -829,14 +883,26 @@
                     const price = el.querySelector('.sig-price');
                     const orig  = el.querySelector('.sig-orig');
                     if (img)   img.src = card.image || img.src;
-                    if (badge) badge.innerText = card.badge || '';
+                    const isOutOfStock = card.stock <= 0;
+                    if (badge) {
+                        if (isOutOfStock) {
+                            badge.innerText = 'Out of Stock';
+                            badge.classList.add('p-badge-oos');
+                            el.classList.add('oos-card');
+                        } else {
+                            badge.innerText = card.badge || '';
+                            badge.classList.remove('p-badge-oos');
+                            el.classList.remove('oos-card');
+                        }
+                        badge.style.display = (card.badge || isOutOfStock) ? 'block' : 'none';
+                    }
                     if (cat)   cat.innerText = card.category || '';
                     if (name)  name.innerText = card.name || '';
                     if (price) price.innerHTML = `&#8377;${(card.discountPrice||card.price||0).toLocaleString()}`;
                     if (orig && card.price && card.discountPrice)
                         orig.innerHTML = `&#8377;${card.price.toLocaleString()}`;
                     // Update onclick to correct product id
-                    el.onclick = () => location.href = `product-details.html?id=${card.id}`;
+                    el.onclick = () => window.openQuickView(card.id);
                     el.querySelectorAll('[data-qv-id]').forEach(b => b.setAttribute('data-qv-id', card.id));
                     // Update quick view button
                     const qvBtn = el.querySelector('.quick-view-btn');
@@ -853,63 +919,114 @@
     </script>
 
     <script>
-        // Load Product        
         window.allHomeProductsData = [];
 
         async function loadHomeProducts() {
+            // 1. Fetch homepage content (admin-configured cards) and all products in parallel
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 5000); // Increased timeout to 5s
+            setTimeout(() => controller.abort(), 5000);
+
+            let hpContent = null;
+            let allProducts = [];
+
             try {
-                // Use relative path for reliability across environments
-                const res = await fetch('/api/products', { signal: controller.signal });
-                clearTimeout(timeoutId);
-                const data = await res.json();
-                window.allHomeProductsData = data;
-                renderHomeProducts(data.slice(0, 4)); // Show top 4 premium pieces
-            } catch (err) {
-                console.log("API Fetch failed, using local data", err);
-                window.allHomeProductsData = window.localProducts || [];
-                // Show top 4 from local data
-                renderHomeProducts(window.allHomeProductsData.slice(0, 4));
+                let hpRes = null, prodRes = null;
+                const results = await Promise.all([
+                    fetch(`${API_URL}/homepage`).catch(() => null),
+                    fetch(`${API_URL}/products`, { signal: controller.signal }).catch(() => null)
+                ]);
+                hpRes = results[0];
+                prodRes = results[1];
+
+                if (hpRes && hpRes.ok)   hpContent  = await hpRes.json();
+                if (prodRes && prodRes.ok) allProducts = await prodRes.json();
+                
+                // If API fails or we are in local mode, use local data
+                if (!allProducts || allProducts.length === 0) {
+                    allProducts = window.localProducts || [];
+                }
+            } catch(e) {
+                allProducts = window.localProducts || [];
             }
-            if(window.updateWishlistUI) window.updateWishlistUI();
+
+            window.allHomeProductsData = allProducts;
+
+            // 2. Check if admin has configured specific signature cards
+            const hasAdminCards = hpContent &&
+                (hpContent.sig_card1 || hpContent.sig_card2 || hpContent.sig_card3 || hpContent.sig_card4);
+
+            if (hasAdminCards) {
+                // Build the 4 cards from admin homepage settings
+                const adminCards = [1,2,3,4].map(n => {
+                    const c = hpContent[`sig_card${n}`];
+                    if (!c) return null;
+                    // Try to find full product data from DB for Quick View
+                    const dbProduct = allProducts.find(p => p.id === c.id);
+                    return {
+                        id:            c.id,
+                        name:          c.name,
+                        category:      c.category,
+                        price:         c.price,
+                        discountPrice: c.discountPrice,
+                        badge:         c.badge || 'NEW',
+                        images:        [c.image],
+                        image:         c.image,
+                        // merge DB data for Quick View
+                        ...(dbProduct || {}),
+                        // keep admin-set display values
+                        name:          c.name,
+                        category:      c.category,
+                        price:         c.price,
+                        discountPrice: c.discountPrice,
+                        images:        [c.image],
+                    };
+                }).filter(Boolean);
+
+                renderHomeProducts(adminCards, hpContent);
+            } else {
+                // Fall back to 4 newest products from DB
+                const newest = [...allProducts].sort((a, b) => b.id - a.id).slice(0, 4);
+                renderHomeProducts(newest, null);
+            }
+
+            if (window.updateWishlistUI) window.updateWishlistUI();
         }
 
-        function renderHomeProducts(products) {
+        function renderHomeProducts(products, hpContent) {
             const grid = document.getElementById('homeProductGrid');
             grid.innerHTML = products.map(p => {
-                const priceHtml = p.discountPrice 
-                    ? `<span class="price">₹${p.discountPrice.toLocaleString()}</span> <span style="text-decoration: line-through; color: #999; font-size: 0.9rem; margin-left: 0.5rem;">₹${p.price.toLocaleString()}</span>`
-                    : `<span class="price">₹${p.price.toLocaleString()}</span>`;
-
-                const colors = p.colors || [];
-                const colorHtml = colors.length > 0 ? `
-                    <div class="color-swatches">
-                        ${colors.map((c, i) => `<div class="color-swatch ${i===0?'active':''}" style="background-color: ${c.hex};" onclick="window.changeCardColor(${p.id}, '${c.image}', this)" title="${c.name}"></div>`).join('')}
-                    </div>
-                ` : '';
+                const img   = (p.images && p.images[0]) || p.image || 'https://via.placeholder.com/600x400';
+                const price = p.discountPrice || p.price;
+                const badgeText = p.badge || (p.discountPrice && p.discountPrice < p.price ? 'SALE' : 'NEW');
+                const badgeColor = badgeText === 'PREMIUM' ? '#D4AF37' : badgeText === 'SALE' ? '#FF0055' : badgeText === 'TRENDING' ? '#FF0055' : '#D4AF37';
+                const badgeTextColor = badgeText === 'PREMIUM' ? '#0A0A0B' : 'white';
+                const origHtml = p.discountPrice && p.discountPrice < p.price
+                    ? `<span style="font-size:.85rem;color:#ccc;text-decoration:line-through;">&#8377;${p.price.toLocaleString()}</span>` : '';
 
                 return `
-                <div class="advanced-card">
-                    <div class="card-img-container" style="height: 350px; position:relative;">
-                        <img id="card-img-${p.id}" src="${p.image || (p.images && p.images[0]) || 'https://via.placeholder.com/400'}" alt="${p.name}">
-                        <button class="quick-view-btn" onclick="window.openQuickView(${p.id})">Quick View</button>
-                        <button class="wishlist-btn" data-pid="${p.id}" onclick="window.toggleWishlist(${p.id})" style="position:absolute; top:15px; right:15px; background:white; border:none; width:35px; height:35px; border-radius:50%; box-shadow:0 5px 15px rgba(0,0,0,0.1); cursor:pointer; font-size:1.1rem; color:#888; z-index:5;"><i class="far fa-heart"></i></button>
+                <div class="advanced-card sig-card" onclick="location.href='product-details.html?id=${p.id}'" style="cursor:pointer;border-radius:16px;overflow:hidden;background:white;border:1px solid #f0f0f0;box-shadow:0 4px 20px rgba(0,0,0,0.04);transition:all 0.3s ease;">
+                    <div style="position:relative;height:320px;overflow:hidden;background:#f8f8f8;">
+                        <img src="${img}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform 0.8s ease;" loading="lazy">
+                        <button onclick="event.stopPropagation();window.toggleWishlist(${p.id})" class="wishlist-btn" data-pid="${p.id}" style="position:absolute;top:12px;right:12px;background:white;border:none;width:34px;height:34px;border-radius:50%;box-shadow:0 4px 12px rgba(0,0,0,0.1);cursor:pointer;font-size:1rem;color:#aaa;display:flex;align-items:center;justify-content:center;z-index:3;transition:0.3s;"><i class="far fa-heart"></i></button>
+                        <div style="position:absolute;top:12px;left:12px;background:${badgeColor};color:${badgeTextColor};font-size:.58rem;font-weight:700;padding:4px 10px;border-radius:4px;letter-spacing:1.5px;z-index:3;">${badgeText}</div>
+                        <button class="quick-view-btn" onclick="event.stopPropagation();window.openQuickView(${p.id})">Quick View</button>
                     </div>
-                    <div class="card-body" style="padding: 1.5rem; justify-content: flex-start;">
-                        <p class="category-label">${p.category}</p>
-                        <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem; text-transform: capitalize;">${p.name}</h3>
-                        <div class="price-container" style="margin-bottom: 0.5rem;">
-                            ${priceHtml}
+                    <div style="padding:1.4rem 1.2rem;border-top:1px solid #f5f5f5;text-align:center;">
+                        <p style="font-size:.65rem;letter-spacing:2.5px;text-transform:uppercase;color:#aaa;font-weight:600;margin-bottom:.5rem;">${p.category}</p>
+                        <h3 style="font-family:'Playfair Display',serif;font-size:1.05rem;color:#1a1a1a;margin-bottom:.8rem;font-weight:700;">${p.name}</h3>
+                        <div style="display:flex;align-items:center;justify-content:center;gap:.6rem;">
+                            <span style="font-size:1.1rem;font-weight:700;color:#FF0055;">&#8377;${price.toLocaleString()}</span>
+                            ${origHtml}
                         </div>
-                        ${colorHtml}
                     </div>
-                </div>
-                `;
+                </div>`;
             }).join('');
-            if(window.updateWishlistUI) window.updateWishlistUI();
+
+            // Keep full product data for Quick View
+            window.allHomeProductsData = products;
+            if (window.updateWishlistUI) window.updateWishlistUI();
         }
-        
+
         loadHomeProducts();
 
         window.changeCardColor = (pid, imgUrl, el) => {
@@ -1032,12 +1149,6 @@
                                 onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">
                             ADD TO BAG
                         </button>
-                        <!-- View full details link -->
-                        <a href="product-details.html?id=${p.id}"
-                           style="text-align:center;font-size:0.75rem;color:#aaa;text-decoration:none;letter-spacing:1px;padding-bottom:0.5rem;transition:0.2s;"
-                           onmouseover="this.style.color='#FF0055'" onmouseout="this.style.color='#aaa'">
-                            View Full Details &rarr;
-                        </a>
                     </div>
                 </div>
             `;

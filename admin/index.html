@@ -224,7 +224,11 @@
         .sig-card-editor .card-num { font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--gold); margin-bottom:1rem; }
 
         /* ── LOGIN ── */
-        .login-overlay { position:fixed; inset:0; background:#fff; z-index:2000; display:flex; }
+        .login-overlay {
+            position:fixed; inset:0; background:#fff; z-index:9999;
+            display:none; /* hidden by default */
+        }
+        .login-overlay.show { display:flex; }
         .login-left { flex:1; background:url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=1200') center/cover no-repeat; position:relative; display:flex; align-items:center; justify-content:center; }
         .login-left::before { content:''; position:absolute; inset:0; background:rgba(10,10,11,.55); }
         .login-glass { position:relative; z-index:1; background:rgba(255,255,255,.08); backdrop-filter:blur(20px); padding:3.5rem; border-radius:20px; text-align:center; color:#fff; max-width:480px; border:1px solid rgba(255,255,255,.15); }
@@ -257,87 +261,6 @@
             .admin-wrap { margin-left:0; }
             .stats-grid { grid-template-columns:1fr 1fr; }
         }
-    </style>
-</head>
-<body>
-        
-        body { background: #faf9f6; padding: 0; font-family: 'Inter', sans-serif; color: #333; }
-        .admin-container { display: flex; min-height: 100vh; }
-        
-        /* Premium Sidebar */
-        .sidebar { width: 280px; background: #fff; box-shadow: 2px 0 20px rgba(0,0,0,0.03); padding: 2.5rem 2rem; position: relative; z-index: 10; }
-        .sidebar h2 { font-family: 'Playfair Display', serif; color: var(--primary-gold); margin-bottom: 3rem; font-size: 2rem; letter-spacing: 2px; text-align: center; font-weight: 700; }
-        .sidebar ul { list-style: none; padding: 0; }
-        .sidebar ul li { margin-bottom: 0.5rem; cursor: pointer; padding: 1rem 1.5rem; border-radius: 12px; transition: all 0.3s ease; font-weight: 500; display: flex; align-items: center; gap: 1rem; color: #666; font-size: 0.95rem; }
-        .sidebar ul li i { font-size: 1.2rem; width: 20px; text-align: center; }
-        .sidebar ul li:hover { background: rgba(212, 175, 55, 0.05); color: var(--primary-gold); transform: translateX(5px); }
-        .sidebar ul li.active { background: var(--primary-gold); color: white; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2); }
-        
-        /* Main Content */
-        .main-content { flex: 1; padding: 3rem 4rem; background: #faf9f6; overflow-y: auto; }
-        .main-content h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #222; margin-bottom: 2rem; }
-        
-        /* Stats Grid */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
-        .stat-card { background: white; padding: 2.5rem 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); display: flex; flex-direction: column; position: relative; overflow: hidden; border: 1px solid rgba(0,0,0,0.02); transition: transform 0.3s ease; }
-        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.05); }
-        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--primary-gold), #e8c872); }
-        .stat-card h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 0.5rem; font-weight: 600; }
-        .stat-card p { font-size: 2.5rem; font-weight: 700; color: #222; margin: 0; }
-        .stat-icon { position: absolute; right: 1.5rem; bottom: -0.5rem; font-size: 6rem; color: rgba(212, 175, 55, 0.04); z-index: 0; }
-        .stat-card h3, .stat-card p { position: relative; z-index: 1; }
-        
-        /* Tables */
-        .table-container { background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); overflow-x: auto; border: 1px solid rgba(0,0,0,0.02); }
-        .data-table { width: 100%; border-collapse: separate; border-spacing: 0; }
-        .data-table th, .data-table td { padding: 1.5rem 1.5rem; text-align: left; }
-        .data-table th { color: #888; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; font-weight: 600; border-bottom: 1px solid #eee; background: #fff; }
-        .data-table td { border-bottom: 1px solid #f8f8f8; color: #444; font-size: 0.95rem; vertical-align: middle; background: #fff; }
-        .data-table tbody tr { transition: all 0.3s ease; }
-        .data-table tbody tr:hover td { background: #faf9f6; }
-        
-        /* Status Badges */
-        .status-badge { padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; display: inline-block; }
-        .status-paid { background: #e8f5e9; color: #2e7d32; }
-        .status-pending { background: #fff3e0; color: #f57c00; }
-        .status-decline { background: #ffebee; color: #c62828; }
-        
-        /* Buttons */
-        .btn-gold { background: var(--primary-gold); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: 500; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2); }
-        .btn-gold:hover { background: #b8962e; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3); }
-        .btn-outline { background: transparent; color: var(--primary-gold); border: 1px solid var(--primary-gold); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; transition: 0.3s; font-weight: 500; }
-        .btn-outline:hover { background: var(--primary-gold); color: white; }
-        
-        /* Modal tweaks */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1000; align-items: center; justify-content: center; }
-        .modal-content { background: white; margin: auto; border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.1); }
-        
-        /* Premium Forms */
-        .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
-        .form-group label { font-size: 0.85rem; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
-        .form-control { padding: 1rem 1.2rem; border: 1px solid #eaeaea; border-radius: 10px; font-size: 0.95rem; background: #faf9f6; transition: all 0.3s ease; color: #333; font-family: 'Inter', sans-serif; }
-        .form-control:focus { outline: none; border-color: var(--primary-gold); background: #fff; box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1); }
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem; }
-        .section-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #222; margin-bottom: 1rem; border-bottom: 2px solid rgba(212, 175, 55, 0.2); padding-bottom: 0.5rem; display: inline-block; }
-        
-        /* Premium Checkbox Pills */
-        .size-pills { display: flex; gap: 0.8rem; flex-wrap: wrap; }
-        .size-pills label { position: relative; cursor: pointer; }
-        .size-pills input { position: absolute; opacity: 0; cursor: pointer; }
-        .size-pills span { display: inline-block; padding: 0.6rem 1.2rem; background: #faf9f6; border: 1px solid #eaeaea; border-radius: 50px; font-size: 0.85rem; font-weight: 600; color: #666; transition: all 0.3s ease; }
-        .size-pills input:checked ~ span { background: var(--primary-gold); color: white; border-color: var(--primary-gold); box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2); }
-        
-        /* Premium Upload Zone */
-        .upload-zone { border: 2px dashed #e0e0e0; padding: 3rem 2rem; text-align: center; background: #faf9f6; border-radius: 16px; transition: all 0.3s ease; position: relative; overflow: hidden; }
-        .upload-zone:hover { border-color: var(--primary-gold); background: #fff; }
-        .upload-zone i { font-size: 2.5rem; color: var(--primary-gold); margin-bottom: 1rem; opacity: 0.8; }
-        .upload-zone p { margin: 0; color: #666; font-size: 0.9rem; }
-        
-        /* Premium Login Overlay Styles */
-        .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; display: flex; }
-        .login-left { flex: 1; background: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=1200') center/cover no-repeat; position: relative; display: flex; align-items: center; justify-content: center; }
-        .login-left::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); }
-        .login-glass { position: relative; z-index: 1; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); padding: 3.5rem; border-radius: 20px; text-align: center; color: #fff; max-width: 480px; border: 1px solid rgba(255, 255, 255, 0.15); }
     </style>
 </head>
 <body>
@@ -452,45 +375,59 @@
                 <!-- Hero -->
                 <div class="hp-panel">
                     <div class="hp-panel-title"><i class="fas fa-image"></i> Hero Section</div>
-                    <div class="form-grid" style="grid-template-columns:1fr 1fr;">
-                        <div class="form-group">
-                            <label>Background Image URL</label>
-                            <input type="text" id="hp_hero_bg" class="form-control" placeholder="https://...">
-                            <div id="hp_hero_bg_preview" class="img-preview"></div>
-                        </div>
-                        <div class="form-group">
-                            <label>Right Frame Portrait URL</label>
-                            <input type="text" id="hp_hero_frame" class="form-control" placeholder="https://...">
-                            <div id="hp_hero_frame_preview" class="img-preview"></div>
+
+                    <!-- Background Image -->
+                    <div class="form-group" style="margin-bottom:1.5rem;">
+                        <label>Background Image</label>
+                        <input type="text" id="hp_hero_bg" class="form-control" placeholder="https://..." style="margin-bottom:.5rem;">
+                        <div id="hp_hero_bg_preview" class="img-preview"></div>
+                        <div style="display:flex;align-items:center;gap:.8rem;margin-top:.6rem;padding:.8rem;background:#faf8f5;border-radius:8px;border:1px dashed #ddd;">
+                            <input type="file" id="hp_hero_bg_file" accept="image/*" style="font-size:.82rem;flex:1;">
+                            <button onclick="uploadAdminImage('hp_hero_bg_file','hp_hero_bg','hp_hero_bg_preview')" class="btn btn-sm btn-outline-gold"><i class="fas fa-upload"></i> Upload</button>
                         </div>
                     </div>
-                    <div class="form-group" style="margin-top:1rem;">
+
+                    <!-- Right Frame Portrait -->
+                    <div class="form-group" style="margin-bottom:1.5rem;">
+                        <label>Right Frame — Main Portrait Image</label>
+                        <input type="text" id="hp_hero_frame" class="form-control" placeholder="https://..." style="margin-bottom:.5rem;">
+                        <div id="hp_hero_frame_preview" class="img-preview"></div>
+                        <div style="display:flex;align-items:center;gap:.8rem;margin-top:.6rem;padding:.8rem;background:#faf8f5;border-radius:8px;border:1px dashed #ddd;">
+                            <input type="file" id="hp_hero_frame_file" accept="image/*" style="font-size:.82rem;flex:1;">
+                            <button onclick="uploadAdminImage('hp_hero_frame_file','hp_hero_frame','hp_hero_frame_preview')" class="btn btn-sm btn-outline-gold"><i class="fas fa-upload"></i> Upload</button>
+                        </div>
+                    </div>
+
+                    <!-- Two small floating images -->
+                    <div class="form-grid" style="grid-template-columns:1fr 1fr;margin-bottom:1.5rem;">
+                        <div class="form-group">
+                            <label>Small Image — Top Left (floating card)</label>
+                            <input type="text" id="hp_hero_float1" class="form-control" placeholder="https://..." style="margin-bottom:.5rem;">
+                            <div id="hp_hero_float1_preview" class="img-preview"></div>
+                            <div style="display:flex;align-items:center;gap:.6rem;margin-top:.6rem;padding:.7rem;background:#faf8f5;border-radius:8px;border:1px dashed #ddd;">
+                                <input type="file" id="hp_hero_float1_file" accept="image/*" style="font-size:.78rem;flex:1;">
+                                <button onclick="uploadAdminImage('hp_hero_float1_file','hp_hero_float1','hp_hero_float1_preview')" class="btn btn-sm btn-outline-gold"><i class="fas fa-upload"></i> Upload</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Small Image — Bottom Right (floating card)</label>
+                            <input type="text" id="hp_hero_float2" class="form-control" placeholder="https://..." style="margin-bottom:.5rem;">
+                            <div id="hp_hero_float2_preview" class="img-preview"></div>
+                            <div style="display:flex;align-items:center;gap:.6rem;margin-top:.6rem;padding:.7rem;background:#faf8f5;border-radius:8px;border:1px dashed #ddd;">
+                                <input type="file" id="hp_hero_float2_file" accept="image/*" style="font-size:.78rem;flex:1;">
+                                <button onclick="uploadAdminImage('hp_hero_float2_file','hp_hero_float2','hp_hero_float2_preview')" class="btn btn-sm btn-outline-gold"><i class="fas fa-upload"></i> Upload</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Headline & Subtext -->
+                    <div class="form-group" style="margin-bottom:1rem;">
                         <label>Main Headline</label>
                         <input type="text" id="hp_hero_headline" class="form-control" placeholder="The Art of Couture">
                     </div>
-                    <div class="form-group" style="margin-top:1rem;">
+                    <div class="form-group">
                         <label>Sub Text</label>
                         <textarea id="hp_hero_subtext" class="form-control" rows="2"></textarea>
-                    </div>
-                    <div style="margin-top:1.2rem;padding:1rem;background:#faf8f5;border-radius:10px;border:1px dashed #ddd;">
-                        <p style="font-size:.72rem;color:var(--muted);margin-bottom:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Upload Hero Background</p>
-                        <div style="display:flex;align-items:center;gap:.8rem;">
-                            <input type="file" id="hp_hero_bg_file" accept="image/*" style="font-size:.82rem;">
-                            <button onclick="uploadHeroImage('bg')" class="btn btn-sm btn-outline-gold">Upload</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Brand Intro -->
-                <div class="hp-panel">
-                    <div class="hp-panel-title"><i class="fas fa-pen-nib"></i> Brand Intro — "Luxury Redefined"</div>
-                    <div class="form-group" style="margin-bottom:1rem;">
-                        <label>Section Title</label>
-                        <input type="text" id="hp_brand_title" class="form-control" placeholder="Luxury Redefined">
-                    </div>
-                    <div class="form-group">
-                        <label>Brand Description</label>
-                        <textarea id="hp_brand_text" class="form-control" rows="4"></textarea>
                     </div>
                 </div>
 
@@ -498,6 +435,107 @@
                 <div class="hp-panel">
                     <div class="hp-panel-title"><i class="fas fa-th-large"></i> Signature Collections — 4 Cards</div>
                     <div id="sig-cards-editor" style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;"></div>
+                </div>
+
+                <!-- Brand Intro / Luxury Redefined -->
+                <div class="hp-panel">
+                    <div class="hp-panel-title"><i class="fas fa-film"></i> "Luxury Redefined" Section</div>
+
+                    <div class="form-grid" style="grid-template-columns:1fr 1fr;margin-bottom:1.2rem;">
+                        <div class="form-group">
+                            <label>Section Title</label>
+                            <input type="text" id="hp_brand_title" class="form-control" placeholder="Luxury Redefined">
+                        </div>
+                        <div class="form-group">
+                            <label>Description Text</label>
+                            <textarea id="hp_brand_text" class="form-control" rows="3" placeholder="Founded in 2019 by Ashitha Yejju..."></textarea>
+                        </div>
+                    </div>
+
+                    <p style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:1rem;">4 Videos (Instagram-style grid)</p>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;">
+
+                        <!-- Video 1 -->
+                        <div class="sig-card-editor">
+                            <p class="card-num">Video 1</p>
+                            <div class="form-group" style="margin-bottom:.8rem;">
+                                <label>Video URL</label>
+                                <input type="text" id="hp_video1" class="form-control" placeholder="https://...mp4">
+                            </div>
+                            <div class="form-group" style="margin-bottom:.8rem;">
+                                <label>Redirect Link (on click)</label>
+                                <input type="text" id="hp_video1_link" class="form-control" placeholder="https://instagram.com/...">
+                            </div>
+                            <div id="hp_video1_preview" style="display:none;margin-bottom:.8rem;border-radius:8px;overflow:hidden;aspect-ratio:9/16;background:#111;">
+                                <video id="hp_video1_el" muted loop playsinline style="width:100%;height:100%;object-fit:cover;opacity:.8;"></video>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:.6rem;padding:.7rem;background:#faf8f5;border-radius:8px;border:1px dashed #ddd;">
+                                <input type="file" id="hp_video1_file" accept="video/*" style="font-size:.78rem;flex:1;">
+                                <button onclick="uploadAdminVideo('hp_video1_file','hp_video1','hp_video1_preview','hp_video1_el')" class="btn btn-sm btn-outline-gold"><i class="fas fa-upload"></i> Upload</button>
+                            </div>
+                        </div>
+
+                        <!-- Video 2 -->
+                        <div class="sig-card-editor">
+                            <p class="card-num">Video 2</p>
+                            <div class="form-group" style="margin-bottom:.8rem;">
+                                <label>Video URL</label>
+                                <input type="text" id="hp_video2" class="form-control" placeholder="https://...mp4">
+                            </div>
+                            <div class="form-group" style="margin-bottom:.8rem;">
+                                <label>Redirect Link (on click)</label>
+                                <input type="text" id="hp_video2_link" class="form-control" placeholder="https://instagram.com/...">
+                            </div>
+                            <div id="hp_video2_preview" style="display:none;margin-bottom:.8rem;border-radius:8px;overflow:hidden;aspect-ratio:9/16;background:#111;">
+                                <video id="hp_video2_el" muted loop playsinline style="width:100%;height:100%;object-fit:cover;opacity:.8;"></video>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:.6rem;padding:.7rem;background:#faf8f5;border-radius:8px;border:1px dashed #ddd;">
+                                <input type="file" id="hp_video2_file" accept="video/*" style="font-size:.78rem;flex:1;">
+                                <button onclick="uploadAdminVideo('hp_video2_file','hp_video2','hp_video2_preview','hp_video2_el')" class="btn btn-sm btn-outline-gold"><i class="fas fa-upload"></i> Upload</button>
+                            </div>
+                        </div>
+
+                        <!-- Video 3 -->
+                        <div class="sig-card-editor">
+                            <p class="card-num">Video 3</p>
+                            <div class="form-group" style="margin-bottom:.8rem;">
+                                <label>Video URL</label>
+                                <input type="text" id="hp_video3" class="form-control" placeholder="https://...mp4">
+                            </div>
+                            <div class="form-group" style="margin-bottom:.8rem;">
+                                <label>Redirect Link (on click)</label>
+                                <input type="text" id="hp_video3_link" class="form-control" placeholder="https://instagram.com/...">
+                            </div>
+                            <div id="hp_video3_preview" style="display:none;margin-bottom:.8rem;border-radius:8px;overflow:hidden;aspect-ratio:9/16;background:#111;">
+                                <video id="hp_video3_el" muted loop playsinline style="width:100%;height:100%;object-fit:cover;opacity:.8;"></video>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:.6rem;padding:.7rem;background:#faf8f5;border-radius:8px;border:1px dashed #ddd;">
+                                <input type="file" id="hp_video3_file" accept="video/*" style="font-size:.78rem;flex:1;">
+                                <button onclick="uploadAdminVideo('hp_video3_file','hp_video3','hp_video3_preview','hp_video3_el')" class="btn btn-sm btn-outline-gold"><i class="fas fa-upload"></i> Upload</button>
+                            </div>
+                        </div>
+
+                        <!-- Video 4 -->
+                        <div class="sig-card-editor">
+                            <p class="card-num">Video 4</p>
+                            <div class="form-group" style="margin-bottom:.8rem;">
+                                <label>Video URL</label>
+                                <input type="text" id="hp_video4" class="form-control" placeholder="https://...mp4">
+                            </div>
+                            <div class="form-group" style="margin-bottom:.8rem;">
+                                <label>Redirect Link (on click)</label>
+                                <input type="text" id="hp_video4_link" class="form-control" placeholder="https://instagram.com/...">
+                            </div>
+                            <div id="hp_video4_preview" style="display:none;margin-bottom:.8rem;border-radius:8px;overflow:hidden;aspect-ratio:9/16;background:#111;">
+                                <video id="hp_video4_el" muted loop playsinline style="width:100%;height:100%;object-fit:cover;opacity:.8;"></video>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:.6rem;padding:.7rem;background:#faf8f5;border-radius:8px;border:1px dashed #ddd;">
+                                <input type="file" id="hp_video4_file" accept="video/*" style="font-size:.78rem;flex:1;">
+                                <button onclick="uploadAdminVideo('hp_video4_file','hp_video4','hp_video4_preview','hp_video4_el')" class="btn btn-sm btn-outline-gold"><i class="fas fa-upload"></i> Upload</button>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
 
                 <div style="text-align:right;margin-top:1rem;">
@@ -535,6 +573,7 @@
                                 <tr><td colspan="6" style="text-align:center;padding:3rem;color:var(--muted);">Loading products...</td></tr>
                             </tbody>
                         </table>
+                        <div id="prodPagination"></div>
                     </div>
                 </div>
             </div>
@@ -578,168 +617,6 @@
 
         </div><!-- /main-content -->
     </div><!-- /admin-wrap -->
-                <button onclick="handleLogin()" style="width:100%; padding:1.2rem; font-size:1rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; border:none; border-radius:10px; margin-top:1.5rem; cursor:pointer; background:linear-gradient(135deg,#D4AF37,#f5d97a,#D4AF37); background-size:200% auto; color:#1a1a1a; box-shadow:0 8px 24px rgba(212,175,55,0.35); transition:all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 30px rgba(212,175,55,0.5)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 8px 24px rgba(212,175,55,0.35)'">
-                    <i class="fas fa-lock" style="margin-right:0.6rem;"></i> Secure Login
-                </button>
-                <div style="text-align: center; margin-top: 2rem;">
-                    <a href="../index.html" style="color: #999; font-size: 0.9rem; text-decoration: none; transition: 0.3s;"><i class="fas fa-arrow-left"></i> Return to Main Website</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="admin-container">
-        <div class="sidebar">
-            <h2 class="logo">Sahnaa SA</h2>
-            <ul>
-                <li onclick="showSection('dashboard')" class="active"><i class="fas fa-th-large"></i> Dashboard</li>
-                <li onclick="showSection('homepage', this)"><i class="fas fa-home"></i> Homepage</li>
-                <li onclick="showSection('products', this)"><i class="fas fa-box"></i> Products</li>
-                <li onclick="showSection('orders', this)"><i class="fas fa-shopping-cart"></i> Orders</li>
-                <li onclick="showSection('enquiries', this)"><i class="fas fa-envelope"></i> Enquiries</li>
-                <li onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</li>
-            </ul>
-        </div>
-
-        <div class="main-content">
-            <!-- HOMEPAGE SECTION -->
-            <div id="section-homepage" class="section" style="display:none;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
-                    <h1 style="margin:0;">Homepage Editor</h1>
-                    <button onclick="saveHomepage()" class="btn-gold" style="display:flex;align-items:center;gap:0.5rem;"><i class="fas fa-save"></i> Save All Changes</button>
-                </div>
-
-                <!-- HERO SECTION -->
-                <div style="background:white;border-radius:20px;padding:2.5rem;margin-bottom:2rem;box-shadow:0 4px 20px rgba(0,0,0,0.04);border:1px solid #f0f0f0;">
-                    <h3 class="section-title" style="margin-bottom:1.5rem;"><i class="fas fa-image" style="color:var(--primary-gold);margin-right:0.6rem;"></i>Hero Section</h3>
-                    <div class="form-grid" style="grid-template-columns:1fr 1fr;">
-                        <div class="form-group">
-                            <label>Background Image URL</label>
-                            <input type="text" id="hp_hero_bg" class="form-control" placeholder="https://...">
-                            <div id="hp_hero_bg_preview" style="margin-top:0.8rem;height:100px;border-radius:8px;background-size:cover;background-position:center;border:1px solid #eee;display:none;"></div>
-                        </div>
-                        <div class="form-group">
-                            <label>Right Frame Portrait Image URL</label>
-                            <input type="text" id="hp_hero_frame" class="form-control" placeholder="https://...">
-                            <div id="hp_hero_frame_preview" style="margin-top:0.8rem;height:100px;border-radius:8px;background-size:cover;background-position:center top;border:1px solid #eee;display:none;"></div>
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin-top:1rem;">
-                        <label>Main Headline</label>
-                        <input type="text" id="hp_hero_headline" class="form-control" placeholder="The Art of Couture">
-                    </div>
-                    <div class="form-group" style="margin-top:1rem;">
-                        <label>Sub Text</label>
-                        <textarea id="hp_hero_subtext" class="form-control" rows="2" placeholder="Exquisite tailoring..."></textarea>
-                    </div>
-                    <!-- Upload option -->
-                    <div style="margin-top:1.5rem;padding:1.2rem;background:#faf9f6;border-radius:12px;border:1px dashed #ddd;">
-                        <p style="font-size:0.8rem;color:#888;margin-bottom:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Or Upload Hero Background Image</p>
-                        <input type="file" id="hp_hero_bg_file" accept="image/*" style="font-size:0.85rem;">
-                        <button onclick="uploadHeroImage('bg')" class="btn-outline" style="margin-top:0.6rem;padding:0.5rem 1rem;font-size:0.8rem;">Upload</button>
-                    </div>
-                </div>
-
-                <!-- BRAND INTRO SECTION -->
-                <div style="background:white;border-radius:20px;padding:2.5rem;margin-bottom:2rem;box-shadow:0 4px 20px rgba(0,0,0,0.04);border:1px solid #f0f0f0;">
-                    <h3 class="section-title" style="margin-bottom:1.5rem;"><i class="fas fa-pen-nib" style="color:var(--primary-gold);margin-right:0.6rem;"></i>Brand Intro — "Luxury Redefined"</h3>
-                    <div class="form-group">
-                        <label>Section Title</label>
-                        <input type="text" id="hp_brand_title" class="form-control" placeholder="Luxury Redefined">
-                    </div>
-                    <div class="form-group" style="margin-top:1rem;">
-                        <label>Brand Description</label>
-                        <textarea id="hp_brand_text" class="form-control" rows="4" placeholder="Founded in 2019 by Ashitha Yejju..."></textarea>
-                    </div>
-                </div>
-
-                <!-- SIGNATURE COLLECTIONS -->
-                <div style="background:white;border-radius:20px;padding:2.5rem;margin-bottom:2rem;box-shadow:0 4px 20px rgba(0,0,0,0.04);border:1px solid #f0f0f0;">
-                    <h3 class="section-title" style="margin-bottom:1.5rem;"><i class="fas fa-th-large" style="color:var(--primary-gold);margin-right:0.6rem;"></i>Signature Collections — 4 Cards</h3>
-                    <div id="sig-cards-editor" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;"></div>
-                </div>
-
-                <!-- Save button bottom -->
-                <div style="text-align:right;margin-top:1rem;">
-                    <button onclick="saveHomepage()" class="btn-gold" style="padding:1rem 3rem;font-size:1rem;"><i class="fas fa-save" style="margin-right:0.5rem;"></i>Save All Changes</button>
-                </div>
-            </div>
-
-            <!-- DASHBOARD SECTION -->
-            <div id="section-dashboard" class="section">
-                <h1 style="margin-bottom: 2rem;">Overview</h1>
-                <div class="stats-grid">
-                    <div class="stat-card"><i class="fas fa-wallet stat-icon"></i><h3>Total Revenue</h3><p id="stat-revenue">₹0</p></div>
-                    <div class="stat-card"><i class="fas fa-shopping-bag stat-icon"></i><h3>Total Orders</h3><p id="stat-orders">0</p></div>
-                    <div class="stat-card"><i class="fas fa-tshirt stat-icon"></i><h3>Products</h3><p id="stat-products">0</p></div>
-                    <div class="stat-card"><i class="fas fa-envelope-open-text stat-icon"></i><h3>Enquiries</h3><p id="stat-enquiries">0</p></div>
-                </div>
-            </div>
-
-            <!-- PRODUCTS SECTION -->
-            <div id="section-products" class="section" style="display:none;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h1>Manage Products</h1>
-                    <button onclick="openProductModal()" class="btn btn-gold">+ Add Product</button>
-                </div>
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th>Category</th>
-                                <th>Price</th>
-                                <th>Stock</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="productTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- ORDERS SECTION -->
-            <div id="section-orders" class="section" style="display:none;">
-                <h1>Orders</h1>
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Customer</th>
-                                <th>Shipping Info</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                                <th>Date</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="orderTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <!-- ENQUIRIES SECTION -->
-            <div id="section-enquiries" class="section" style="display:none;">
-                <h1>Enquiries & Requests</h1>
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>Name</th>
-                                <th>Contact</th>
-                                <th>Message</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody id="enquiryTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- PRODUCT MODAL -->
     <div id="productModal" class="modal">
@@ -749,6 +626,7 @@
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
+                <form id="productForm">
                 <h3 class="section-title">Core Details</h3>
                 <div class="form-grid">
                     <div class="form-group">
@@ -848,7 +726,7 @@
                 <div class="form-group" style="margin-bottom: 2rem;">
                     <label>Product Colors</label>
                     <div id="colorsContainer" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem;"></div>
-                    <button type="button" onclick="addColorRow()" class="btn btn-outline" style="width: fit-content; padding: 0.5rem 1rem; font-size: 0.85rem;"><i class="fas fa-plus"></i> Add Color Variant</button>
+                    <button type="button" onclick="addColorRow()" class="btn btn-outline-gold" style="width:fit-content;"><i class="fas fa-plus"></i> Add Color Variant</button>
                 </div>
 
                 <h3 class="section-title">Bespoke Customizations</h3>
@@ -858,7 +736,7 @@
                         <label for="pCustomEnabled" style="margin: 0; cursor: pointer; text-transform: none; color: #333; font-weight: 500;">Enable Customization Options</label>
                     </div>
                     <div id="customFieldsContainer" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem;"></div>
-                    <button type="button" onclick="addCustomFieldRow()" class="btn btn-outline" style="width: fit-content; padding: 0.5rem 1rem; font-size: 0.85rem;"><i class="fas fa-plus"></i> Add Customization Field</button>
+                    <button type="button" onclick="addCustomFieldRow()" class="btn btn-outline-gold" style="width:fit-content;"><i class="fas fa-plus"></i> Add Customization Field</button>
                 </div>
 
                 <div style="display:flex; justify-content: flex-end; gap:1.5rem; margin-top: 2rem; border-top: 1px solid #eee; padding-top: 2rem;">
@@ -894,16 +772,20 @@
     </div>
 
     <script>
-        // Smart API URL — Railway in production, relative on localhost
-        const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-        const API_URL = IS_LOCAL ? '/api' : 'https://saahna-production.up.railway.app/api';
+        // Auto-detect API URL: use localhost if opening as file, otherwise use relative path
+        const API_URL = window.location.protocol === 'file:' 
+            ? 'http://localhost:5000/api' 
+            : '/api';
+            
         let token = localStorage.getItem('sahnaa_admin_token');
         let allProducts = [];
         let editingProductId = null;
 
-        // If already logged in, hide login page immediately
+        // If already logged in, load data
         if (token) {
-            document.getElementById('loginPage').style.display = 'none';
+            loadStats();
+        } else {
+            document.getElementById('loginPage').classList.add('show');
         }
 
         // Helper functions for dynamic UI
@@ -923,7 +805,7 @@
                     <label>Swatch</label>
                     <input type="color" class="form-control color-hex" value="${data.hex}" style="height: 48px; padding: 5px;">
                 </div>
-                <button type="button" onclick="this.parentElement.remove()" class="btn btn-outline" style="border-color: #ff4d4d; color: #ff4d4d; padding: 0.8rem;"><i class="fas fa-trash"></i></button>
+                <button type="button" onclick="this.parentElement.remove()" class="btn btn-danger btn-sm" style=" padding: 0.8rem;"><i class="fas fa-trash"></i></button>
             `;
             container.appendChild(div);
         }
@@ -944,7 +826,7 @@
                     <label>Extra Price (₹)</label>
                     <input type="number" class="form-control custom-price" value="${data.extraPrice}" placeholder="0">
                 </div>
-                <button type="button" onclick="this.parentElement.remove()" class="btn btn-outline" style="border-color: #ff4d4d; color: #ff4d4d; padding: 0.8rem;"><i class="fas fa-trash"></i></button>
+                <button type="button" onclick="this.parentElement.remove()" class="btn btn-danger btn-sm" style=" padding: 0.8rem;"><i class="fas fa-trash"></i></button>
             `;
             container.appendChild(div);
         }
@@ -973,7 +855,7 @@
                 if (data.token) {
                     localStorage.setItem('sahnaa_admin_token', data.token);
                     token = data.token;
-                    document.getElementById('loginPage').style.display = 'none';
+                    document.getElementById('loginPage').classList.remove('show');
                     document.getElementById('adminBadge').textContent = data.admin.email;
                     loadStats();
                 } else {
@@ -1012,58 +894,89 @@
         }
 
         async function loadStats() {
-            const res = await fetch(`${API_URL}/stats`, { headers: { 'Authorization': `Bearer ${token}` } });
-            const stats = await res.json();
-            document.getElementById('stat-revenue').innerText = `₹${stats.revenue.toLocaleString()}`;
-            document.getElementById('stat-orders').innerText = stats.totalOrders;
-            document.getElementById('stat-products').innerText = stats.totalProducts;
-            document.getElementById('stat-enquiries').innerText = stats.totalEnquiries;
+            try {
+                const res = await fetch(`${API_URL}/stats`, { headers: { 'Authorization': `Bearer ${token}` } });
+                if (!res.ok) throw new Error('Failed to fetch stats');
+                const stats = await res.json();
+                document.getElementById('stat-revenue').innerText = `₹${(stats.revenue || 0).toLocaleString()}`;
+                document.getElementById('stat-orders').innerText = stats.totalOrders || 0;
+                document.getElementById('stat-products').innerText = stats.totalProducts || 0;
+                document.getElementById('stat-enquiries').innerText = stats.totalEnquiries || 0;
+            } catch (err) {
+                console.error("Dashboard stats load failed:", err);
+                // Optionally show error in UI
+            }
         }
 
         async function loadProducts() {
-            const res = await fetch(`${API_URL}/products`);
-            allProducts = await res.json();
-            document.getElementById('productCount').textContent = `${allProducts.length} products in your store`;
+            const body = document.getElementById('productTableBody');
+            body.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:#888;"><i class="fas fa-spinner fa-spin"></i>&nbsp; Loading products...</td></tr>';
+            try {
+                const res = await fetch(`${API_URL}/products`);
+                allProducts = await res.json();
+            } catch(e) {
+                body.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:#ef4444;">Failed to load. Is the server running?</td></tr>';
+                return;
+            }
+            document.getElementById('productCount').textContent = allProducts.length + ' products';
+            _prodPage = 1;
+            window._filteredProds = null;
             renderProductTable(allProducts);
         }
 
+        var _prodPage = 1;
+        var _prodPerPage = 15;
+
         function renderProductTable(products) {
-            const body = document.getElementById('productTableBody');
-            if (!products.length) {
-                body.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:3rem;color:var(--muted);">No products found. Add your first product!</td></tr>';
+            var body = document.getElementById('productTableBody');
+            var pg   = document.getElementById('prodPagination');
+            if (!products || !products.length) {
+                body.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:3rem;color:#888;">No products found.</td></tr>';
+                pg.innerHTML = '';
                 return;
             }
-            body.innerHTML = products.map(p => {
-                const img = (p.images && p.images[0]) || 'https://via.placeholder.com/52x64';
-                const stockClass = p.stock > 10 ? 'stock-ok' : p.stock > 0 ? 'stock-low' : 'stock-out';
-                const stockLabel = p.stock > 10 ? 'In Stock' : p.stock > 0 ? `Low (${p.stock})` : 'Out';
-                return `
-                <tr>
-                    <td><img src="${img}" class="product-thumb" alt="${p.name}" onerror="this.src='https://via.placeholder.com/52x64'"></td>
-                    <td>
-                        <div class="product-name-cell">${p.name}</div>
-                        <div class="product-cat">${p.category}</div>
-                    </td>
-                    <td style="color:var(--muted);font-size:.82rem;">${p.category}</td>
-                    <td>
-                        <div class="price-cell">&#8377;${(p.discountPrice || p.price).toLocaleString()}</div>
-                        ${p.discountPrice && p.discountPrice < p.price ? `<div class="disc-price">&#8377;${p.price.toLocaleString()}</div>` : ''}
-                    </td>
-                    <td><span class="stock-badge ${stockClass}">${stockLabel}</span></td>
-                    <td>
-                        <div class="actions-cell" style="justify-content:center;">
-                            <button class="btn btn-edit btn-sm" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i> Edit</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </td>
-                </tr>`;
-            }).join('');
+            var total = Math.ceil(products.length / _prodPerPage);
+            if (_prodPage > total) _prodPage = total;
+            var start = (_prodPage - 1) * _prodPerPage;
+            var slice = products.slice(start, start + _prodPerPage);
+            var rows = '';
+            for (var i = 0; i < slice.length; i++) {
+                var p = slice[i];
+                var img   = (p.images && p.images[0]) ? p.images[0] : '';
+                var price = p.discountPrice || p.price;
+                var sc    = p.stock > 10 ? 'stock-ok' : p.stock > 0 ? 'stock-low' : 'stock-out';
+                var sl    = p.stock > 10 ? 'In Stock' : p.stock > 0 ? 'Low (' + p.stock + ')' : 'Out';
+                rows += '<tr>';
+                rows += '<td>' + (img ? '<img src="' + img + '" class="product-thumb" loading="lazy" alt="">' : '<div class="product-thumb" style="background:#f0ede8;"></div>') + '</td>';
+                rows += '<td><div class="product-name-cell">' + p.name + '</div><div class="product-cat">' + p.category + '</div></td>';
+                rows += '<td style="color:var(--muted);font-size:.82rem;">' + p.category + '</td>';
+                rows += '<td><div class="price-cell">&#8377;' + price.toLocaleString() + '</div>' + (p.discountPrice && p.discountPrice < p.price ? '<div class="disc-price">&#8377;' + p.price.toLocaleString() + '</div>' : '') + '</td>';
+                rows += '<td><span class="stock-badge ' + sc + '">' + sl + '</span></td>';
+                rows += '<td><div class="actions-cell" style="justify-content:center;"><button class="btn btn-edit btn-sm" onclick="editProduct(' + p.id + ')"><i class="fas fa-edit"></i> Edit</button><button class="btn btn-danger btn-sm" onclick="deleteProduct(' + p.id + ')"><i class="fas fa-trash"></i></button></div></td>';
+                rows += '</tr>';
+            }
+            body.innerHTML = rows;
+            if (total <= 1) { pg.innerHTML = ''; return; }
+            var bar = '<div style="display:flex;align-items:center;gap:.4rem;padding:1rem 1.2rem;border-top:1px solid var(--border);flex-wrap:wrap;">';
+            bar += '<button class="btn btn-sm" style="background:rgba(0,0,0,.05);color:#555;" onclick="_prodPage=' + (_prodPage-1) + ';renderProductTable(window._filteredProds||allProducts)" ' + (_prodPage===1?'disabled':'') + '>&#8592;</button>';
+            for (var j = 1; j <= total; j++) {
+                if (j===1 || j===total || Math.abs(j-_prodPage)<=1) {
+                    bar += '<button class="btn btn-sm' + (j===_prodPage?' btn-primary':'') + '" style="' + (j!==_prodPage?'background:rgba(0,0,0,.05);color:#555;':'') + '" onclick="_prodPage=' + j + ';renderProductTable(window._filteredProds||allProducts)">' + j + '</button>';
+                } else if (Math.abs(j-_prodPage)===2) {
+                    bar += '<span style="color:#ccc;">&#8230;</span>';
+                }
+            }
+            bar += '<button class="btn btn-sm" style="background:rgba(0,0,0,.05);color:#555;" onclick="_prodPage=' + (_prodPage+1) + ';renderProductTable(window._filteredProds||allProducts)" ' + (_prodPage===total?'disabled':'') + '>&#8594;</button>';
+            bar += '<span style="font-size:.75rem;color:var(--muted);margin-left:.5rem;">' + (start+1) + '&#8211;' + Math.min(start+_prodPerPage,products.length) + ' of ' + products.length + '</span>';
+            bar += '</div>';
+            pg.innerHTML = bar;
         }
 
         function filterProducts() {
-            const q = document.getElementById('productSearch').value.toLowerCase();
-            const filtered = allProducts.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
-            renderProductTable(filtered);
+            var q = document.getElementById('productSearch').value.toLowerCase().trim();
+            window._filteredProds = q ? allProducts.filter(function(p){ return p.name.toLowerCase().indexOf(q)>-1 || p.category.toLowerCase().indexOf(q)>-1; }) : null;
+            _prodPage = 1;
+            renderProductTable(window._filteredProds || allProducts);
         }
 
         async function deleteProduct(id) {
@@ -1312,9 +1225,16 @@
             setTimeout(() => t.remove(), 3000);
         }
 
+        function handleLogout() {
+            localStorage.removeItem('sahnaa_admin_token');
+            token = null;
+            document.getElementById('loginPage').classList.add('show');
+        }
+
         if (token) {
-            document.getElementById('loginPage').style.display = 'none';
             loadStats();
+        } else {
+            document.getElementById('loginPage').classList.add('show');
         }
 
         // =============================================
@@ -1331,14 +1251,31 @@
             // Hero
             setVal('hp_hero_bg',       _hpData.hero_bg_image || '');
             setVal('hp_hero_frame',    _hpData.hero_frame_image || '');
+            setVal('hp_hero_float1',   _hpData.hero_float1 || '');
+            setVal('hp_hero_float2',   _hpData.hero_float2 || '');
             setVal('hp_hero_headline', _hpData.hero_headline || '');
             setVal('hp_hero_subtext',  _hpData.hero_subtext || '');
-            // Brand
+            // Brand Intro
             setVal('hp_brand_title', _hpData.brand_title || '');
-            setVal('hp_brand_text',  _hpData.brand_text || '');
+            setVal('hp_brand_text',  _hpData.brand_text  || '');
+            // Videos
+            setVal('hp_video1', _hpData.brand_video1 || '');
+            setVal('hp_video1_link', _hpData.brand_video1_link || '');
+            setVal('hp_video2', _hpData.brand_video2 || '');
+            setVal('hp_video2_link', _hpData.brand_video2_link || '');
+            setVal('hp_video3', _hpData.brand_video3 || '');
+            setVal('hp_video3_link', _hpData.brand_video3_link || '');
+            setVal('hp_video4', _hpData.brand_video4 || '');
+            setVal('hp_video4_link', _hpData.brand_video4_link || '');
+            [1,2,3,4].forEach(function(n){
+                var url = _hpData['brand_video'+n];
+                if(url){ previewVideo('hp_video'+n,'hp_video'+n+'_preview','hp_video'+n+'_el'); }
+            });
             // Previews
-            previewImg('hp_hero_bg',    'hp_hero_bg_preview');
-            previewImg('hp_hero_frame', 'hp_hero_frame_preview');
+            previewImg('hp_hero_bg',     'hp_hero_bg_preview');
+            previewImg('hp_hero_frame',  'hp_hero_frame_preview');
+            previewImg('hp_hero_float1', 'hp_hero_float1_preview');
+            previewImg('hp_hero_float2', 'hp_hero_float2_preview');
             // Sig cards
             renderSigCardsEditor();
         }
@@ -1426,18 +1363,34 @@
             });
         }
 
-        async function uploadHeroImage(type) {
-            const fileInput = document.getElementById('hp_hero_bg_file');
-            if (!fileInput.files[0]) return alert('Please select a file first.');
+        // Universal image upload helper
+        async function uploadAdminImage(fileInputId, urlInputId, previewId) {
+            const fileInput = document.getElementById(fileInputId);
+            if (!fileInput || !fileInput.files[0]) return alert('Please select a file first.');
+            
             const formData = new FormData();
             formData.append('image', fileInput.files[0]);
-            const res = await fetch(`${API_URL}/upload`, { method:'POST', headers:{'Authorization':`Bearer ${token}`}, body: formData });
-            const data = await res.json();
-            if (data.imageUrl) {
-                document.getElementById('hp_hero_bg').value = data.imageUrl;
-                previewImg('hp_hero_bg', 'hp_hero_bg_preview');
-                alert('Uploaded! Click "Save All Changes" to apply.');
-            } else alert('Upload failed: ' + (data.error || 'Unknown error'));
+            try {
+                const res = await fetch(`${API_URL}/upload`, { 
+                    method: 'POST', 
+                    headers: { 'Authorization': `Bearer ${token}` }, 
+                    body: formData 
+                });
+                const data = await res.json();
+                if (data.imageUrl) {
+                    document.getElementById(urlInputId).value = data.imageUrl;
+                    const prev = document.getElementById(previewId);
+                    if (prev) { 
+                        prev.style.backgroundImage = `url('${data.imageUrl}')`; 
+                        prev.style.display = 'block'; 
+                    }
+                    showToast('Image uploaded successfully!', 'success');
+                } else { 
+                    alert('Upload failed: ' + (data.error || 'Unknown error')); 
+                }
+            } catch(e) { 
+                alert('Upload error: ' + e.message); 
+            }
         }
 
         async function uploadSigImage(n) {
@@ -1452,7 +1405,6 @@
                 const preview = document.getElementById(`sig${n}_preview`);
                 preview.style.backgroundImage = `url('${data.imageUrl}')`;
                 preview.style.display = 'block';
-                alert('Uploaded! Click "Save All Changes" to apply.');
             } else alert('Upload failed: ' + (data.error || 'Unknown error'));
         }
 
@@ -1460,10 +1412,20 @@
             const updates = {
                 hero_bg_image:    document.getElementById('hp_hero_bg').value.trim(),
                 hero_frame_image: document.getElementById('hp_hero_frame').value.trim(),
+                hero_float1:      document.getElementById('hp_hero_float1').value.trim(),
+                hero_float2:      document.getElementById('hp_hero_float2').value.trim(),
                 hero_headline:    document.getElementById('hp_hero_headline').value.trim(),
                 hero_subtext:     document.getElementById('hp_hero_subtext').value.trim(),
                 brand_title:      document.getElementById('hp_brand_title').value.trim(),
                 brand_text:       document.getElementById('hp_brand_text').value.trim(),
+                brand_video1:     document.getElementById('hp_video1').value.trim(),
+                brand_video1_link:document.getElementById('hp_video1_link').value.trim(),
+                brand_video2:     document.getElementById('hp_video2').value.trim(),
+                brand_video2_link:document.getElementById('hp_video2_link').value.trim(),
+                brand_video3:     document.getElementById('hp_video3').value.trim(),
+                brand_video3_link:document.getElementById('hp_video3_link').value.trim(),
+                brand_video4:     document.getElementById('hp_video4').value.trim(),
+                brand_video4_link:document.getElementById('hp_video4_link').value.trim(),
             };
             [1,2,3,4].forEach(n => {
                 updates[`sig_card${n}`] = {
@@ -1484,14 +1446,44 @@
                 });
                 const data = await res.json();
                 if (data.success) {
-                    // Show toast
-                    const toast = document.createElement('div');
-                    toast.innerText = '✓ Homepage updated successfully!';
-                    toast.style.cssText = 'position:fixed;bottom:2rem;right:2rem;background:#22c55e;color:white;padding:1rem 2rem;border-radius:12px;font-weight:600;z-index:9999;box-shadow:0 8px 24px rgba(34,197,94,0.3);animation:fadeIn 0.3s ease;';
-                    document.body.appendChild(toast);
-                    setTimeout(() => toast.remove(), 3000);
+                    showToast('Homepage updated successfully!', 'success');
                 } else alert('Save failed: ' + (data.error || 'Unknown'));
             } catch(e) { alert('Connection error: ' + e.message); }
+        }
+
+        // Upload video helper
+        async function uploadAdminVideo(fileInputId, urlInputId, previewDivId, videoElId) {
+            const fileInput = document.getElementById(fileInputId);
+            if (!fileInput || !fileInput.files[0]) return alert('Please select a video file first.');
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]); // server uses 'image' field for multer
+            try {
+                const res = await fetch(`${API_URL}/upload`, { method:'POST', headers:{'Authorization':`Bearer ${token}`}, body: formData });
+                const data = await res.json();
+                if (data.imageUrl) {
+                    document.getElementById(urlInputId).value = data.imageUrl;
+                    previewVideo(urlInputId, previewDivId, videoElId);
+                    showToast('Video uploaded! Click Save to apply.', 'success');
+                } else alert('Upload failed: ' + (data.error || 'Unknown'));
+            } catch(e) { alert('Upload error: ' + e.message); }
+        }
+
+        // Preview video in admin
+        function previewVideo(urlInputId, previewDivId, videoElId) {
+            const url = document.getElementById(urlInputId).value.trim();
+            const div = document.getElementById(previewDivId);
+            const vid = document.getElementById(videoElId);
+            if (url && div && vid) {
+                vid.src = url;
+                vid.load();
+                vid.play().catch(()=>{});
+                div.style.display = 'block';
+            }
+            // Also update on URL input change
+            document.getElementById(urlInputId).addEventListener('input', function() {
+                const u = this.value.trim();
+                if (u && vid) { vid.src = u; vid.load(); div.style.display = u ? 'block' : 'none'; }
+            });
         }
     </script>
 </body>
