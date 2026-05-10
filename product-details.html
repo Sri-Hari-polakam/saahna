@@ -1,11 +1,107 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>Terms and Conditions</title><link rel="stylesheet" href="css/style.css"></head>
-<body style="padding: 50px; line-height: 1.6;">
-    <h1>Terms and Conditions</h1>
-    <p>Please read these Terms and Conditions ("Terms", "Terms and Conditions") carefully before using the Sahnaa SA website.</p>
-    <p>Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users and others who access or use the Service.</p>
-    <p>By accessing or using the Service you agree to be bound by these Terms. If you disagree with any part of the terms then you may not access the Service.</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | SAAHNA Luxury Boutique</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gold: #D4AF37;
+            --primary-vivid: #FF0055;
+            --off-white: #FAF9F6;
+            --text-dark: #1a1a1a;
+        }
+        body { font-family: 'Inter', sans-serif; background: #fff; color: var(--text-dark); margin: 0; }
+        .details-container { padding: 8rem 0; min-height: 100vh; }
+        .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+        .product-gallery { position: sticky; top: 120px; }
+        .main-image { width: 100%; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); object-fit: cover; aspect-ratio: 4/5; }
+        .product-meta { padding: 2rem 0; }
+        .product-meta h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin-bottom: 1rem; line-height: 1.1; }
+        .product-meta .category { color: var(--primary-vivid); text-transform: uppercase; letter-spacing: 4px; font-weight: 700; font-size: 0.9rem; margin-bottom: 2rem; display: block; }
+        .product-meta .price { font-size: 2.5rem; font-weight: 700; color: var(--primary-gold); margin-bottom: 2rem; }
+        .product-description { font-size: 1.1rem; line-height: 1.8; color: #555; margin-bottom: 3rem; }
+        .btn-buy { background: #1a1a1a; color: white; border: none; padding: 1.5rem 3rem; border-radius: 50px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.3s; width: 100%; letter-spacing: 2px; }
+        .btn-buy:hover { background: var(--primary-vivid); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(255,0,85,0.3); }
+        @media (max-width: 900px) {
+            .details-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .details-container { padding: 4rem 1rem; }
+            .product-meta h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">SAAHNA</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Shop</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="details-container container">
+        <div id="productDetailContent" class="details-grid">
+            <!-- Loading state -->
+            <div style="text-align: center; grid-column: span 2; padding: 5rem 0;">
+                <h2 style="font-family: 'Playfair Display', serif;">Loading Elegance...</h2>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = parseInt(urlParams.get('id'));
+            
+            // Try to find product in window.allHomeProductsData or localProducts
+            let products = window.allHomeProductsData || window.localProducts || [];
+            let p = products.find(x => x.id === productId);
+
+            if (!p) {
+                // Fallback: If not found, show error
+                document.getElementById('productDetailContent').innerHTML = `
+                    <div style="text-align: center; grid-column: span 2; padding: 5rem 0;">
+                        <h2 style="font-family: 'Playfair Display', serif;">Product Not Found</h2>
+                        <a href="index.html" class="btn btn-gold" style="margin-top: 2rem;">Back to Home</a>
+                    </div>
+                `;
+                return;
+            }
+
+            const html = `
+                <div class="product-gallery">
+                    <img src="${p.image}" alt="${p.name}" class="main-image">
+                </div>
+                <div class="product-meta">
+                    <span class="category">${p.category}</span>
+                    <h1>${p.name}</h1>
+                    <div class="price">₹${p.price.toLocaleString()}</div>
+                    <p class="product-description">${p.description || 'Experience the pinnacle of luxury with this bespoke creation. Each stitch tells a story of heritage and modern elegance, curated specifically for the discerning Saahna client.'}</p>
+                    
+                    <div style="margin-bottom: 3rem;">
+                        <h4 style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; color: #888; margin-bottom: 1rem;">Available Sizes</h4>
+                        <div style="display: flex; gap: 10px;">
+                            ${(p.sizes || ['S','M','L']).map(s => `<div style="border: 1px solid #ddd; padding: 10px 20px; border-radius: 8px; font-weight: 600;">${s}</div>`).join('')}
+                        </div>
+                    </div>
+
+                    <button class="btn-buy" onclick="alert('Added to Bag')">ADD TO BAG</button>
+                    
+                    <div style="margin-top: 4rem; border-top: 1px solid #eee; padding-top: 2rem; font-size: 0.9rem; color: #888; line-height: 2;">
+                        <div><i class="fas fa-shipping-fast" style="margin-right: 10px; color: var(--primary-gold);"></i> Free Express Shipping on this Item</div>
+                        <div><i class="fas fa-shield-alt" style="margin-right: 10px; color: var(--primary-gold);"></i> Authentic Saahna Master-grade Quality</div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('productDetailContent').innerHTML = html;
+        });
+    </script>
 
     <!-- PREMIUM FOOTER -->
     <footer style="background:#0A0A0B;color:#fff;position:relative;overflow:hidden;">

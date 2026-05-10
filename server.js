@@ -7,13 +7,19 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 const fs = require('fs');
 
-let stripe, multer;
+let Razorpay, multer;
 try {
-    stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+    Razorpay = require('razorpay');
     multer = require('multer');
 } catch (err) {
-    console.error("CRITICAL: Missing dependencies. Please run 'npm install stripe multer'");
+    console.error("CRITICAL: Missing dependencies. Please run 'npm install razorpay multer'");
 }
+
+// Razorpay instance
+const razorpay = Razorpay ? new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET
+}) : null;
 const app = express();
 const PORT = 5000;
 const SECRET_KEY = 'SAHNAA_SECRET_GOLD_2026';
@@ -21,32 +27,55 @@ const SECRET_KEY = 'SAHNAA_SECRET_GOLD_2026';
 // Middleware
 app.use(cors());
 
-// --- STRIPE WEBHOOK ---
-app.post('/api/webhook', express.raw({type: 'application/json'}), (req, res) => {
-    const sig = req.headers['stripe-signature'];
-    let event = req.body;
+// --- RAZORPAY WEBHOOK ---
+app.post('/api/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+    const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
+    if (!webhookSecret) {
+        console.error("RAZORPAY_WEBHOOK_SECRET is not set. Webhook rejected.");
+        return res.status(400).json({ error: 'Webhook secret not configured' });
+    }
+
+    const signature = req.headers['x-razorpay-signature'];
+    if (!signature) {
+        return res.status(400).json({ error: 'Missing Razorpay signature header' });
+    }
+
+    // Validate the webhook signature using HMAC-SHA256
+    const crypto = require('crypto');
+    const expectedSignature = crypto
+        .createHmac('sha256', webhookSecret)
+        .update(req.body)
+        .digest('hex');
+
+    if (expectedSignature !== signature) {
+        console.error("Webhook signature mismatch — possible spoofed request.");
+        return res.status(400).json({ error: 'Invalid webhook signature' });
+    }
+
+    let event;
     try {
-        if (process.env.STRIPE_WEBHOOK_SECRET) {
-            event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
-        } else {
-            event = JSON.parse(req.body.toString());
-        }
+        event = JSON.parse(req.body.toString());
     } catch (err) {
-        console.error("Webhook Error:", err.message);
-        return res.status(400).send(`Webhook Error: ${err.message}`);
+        return res.status(400).json({ error: 'Invalid JSON payload' });
     }
 
-    if (event.type === 'checkout.session.completed') {
-        const session = event.data.object;
-        
-        db.run(`UPDATE orders SET status = 'Paid', paymentId = ? WHERE orderId = ?`,
-            [session.payment_intent, session.id],
-            function(err) {
-                if(err) console.error("DB Update Error", err);
-            });
+    // Handle payment captured event
+    if (event.event === 'payment.captured') {
+        const payment = event.payload.payment.entity;
+        const orderId = payment.notes && payment.notes.orderId;
+
+        if (orderId) {
+            db.run(
+                `UPDATE orders SET status = 'Paid', paymentId = ? WHERE orderId = ?`,
+                [payment.id, orderId],
+                function (err) {
+                    if (err) console.error("DB Update Error", err);
+                }
+            );
+        }
     }
 
-    res.json({received: true});
+    res.json({ received: true });
 });
 
 app.use(express.json());
@@ -121,14 +150,35 @@ db.serialize(() => {
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
     )`);
 
+    // Homepage Content Table
+    db.run(`CREATE TABLE IF NOT EXISTS homepage_content (
+        key TEXT PRIMARY KEY,
+        value TEXT
+    )`);
+
+    // Seed defaults if not present
+    const defaults = {
+        hero_bg_image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=90&w=2000',
+        hero_frame_image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=90&w=900',
+        hero_headline: 'The Art of Couture',
+        hero_subtext: 'Exquisite tailoring for the discerning individual. Experience the pinnacle of personalised luxury fashion — crafted in Vijayawada, worn worldwide.',
+        brand_title: 'Luxury Redefined',
+        brand_text: 'Founded in 2019 by Ashitha Yejju, SAAHNA is the embodiment of bespoke elegance. From intricate fabric sourcing to master-grade tailoring, we create a fashion ecosystem that honors your individuality.',
+        sig_card1: JSON.stringify({ id:1, name:'Royal Gold Silk Saree', category:'Sarees', price:14000, discountPrice:12500, badge:'NEW', image:'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=85&w=600' }),
+        sig_card2: JSON.stringify({ id:4, name:'Elegant Velvet Evening Dress', category:'One-Piece Dress', price:5200, discountPrice:4500, badge:'TRENDING', image:'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=85&w=600' }),
+        sig_card3: JSON.stringify({ id:31, name:'Wedding Couture Set', category:'Lehangas', price:95000, discountPrice:85000, badge:'PREMIUM', image:'https://images.unsplash.com/photo-1583391733975-ac581b23cc7f?auto=format&fit=crop&q=85&w=600' }),
+        sig_card4: JSON.stringify({ id:5, name:'Designer Silk Frock', category:'Frocks', price:3800, discountPrice:3200, badge:'NEW', image:'https://images.unsplash.com/photo-1622290319146-7b63fd48a609?auto=format&fit=crop&q=85&w=600' })
+    };
+    const insertStmt = db.prepare(`INSERT OR IGNORE INTO homepage_content (key, value) VALUES (?, ?)`);
+    Object.entries(defaults).forEach(([k, v]) => insertStmt.run(k, v));
+    insertStmt.finalize();
+
     // Admin Table
     db.run(`CREATE TABLE IF NOT EXISTS admins (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         email TEXT UNIQUE,
         password TEXT
     )`);
-
-    // Create default admin if not exists
     const adminPass = bcrypt.hashSync('admin123', 10);
     db.run(`INSERT OR IGNORE INTO admins (email, password) VALUES (?, ?)`, ['admin@saahna.com', adminPass]);
     // Create default products to reach 200 total
@@ -247,6 +297,30 @@ app.put('/api/products/:id', verifyAdmin, (req, res) => {
         });
 });
 
+// --- HOMEPAGE CONTENT ROUTES ---
+app.get('/api/homepage', (req, res) => {
+    db.all(`SELECT key, value FROM homepage_content`, [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        const content = {};
+        rows.forEach(r => {
+            try { content[r.key] = JSON.parse(r.value); } catch { content[r.key] = r.value; }
+        });
+        res.json(content);
+    });
+});
+
+app.put('/api/homepage', verifyAdmin, (req, res) => {
+    const updates = req.body; // { key: value, ... }
+    const stmt = db.prepare(`INSERT OR REPLACE INTO homepage_content (key, value) VALUES (?, ?)`);
+    Object.entries(updates).forEach(([k, v]) => {
+        stmt.run(k, typeof v === 'object' ? JSON.stringify(v) : String(v));
+    });
+    stmt.finalize(err => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ success: true });
+    });
+});
+
 // --- ENQUIRY ROUTES ---
 app.post('/api/enquiry', (req, res) => {
     const { type, name, email, phone, message, details, image } = req.body;
@@ -274,48 +348,78 @@ app.post('/api/orders', (req, res) => {
             res.json({ success: true, orderId: orderId });
         });
 });
-app.post('/api/create-checkout-session', async (req, res) => {
+app.post('/api/create-razorpay-order', async (req, res) => {
     try {
-        const { items, customer } = req.body;
-        
-        const lineItems = items.map(item => ({
-            price_data: {
-                currency: 'inr',
-                product_data: {
-                    name: item.name,
-                    images: item.image ? [item.image] : [],
-                },
-                unit_amount: Math.round(item.price * 100),
-            },
-            quantity: item.quantity,
-        }));
+        if (!razorpay) return res.status(500).json({ error: 'Razorpay not initialised' });
 
+        const { items, customer } = req.body;
+        const totalAmount = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         const orderId = 'ORD_' + Date.now();
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            line_items: lineItems,
-            mode: 'payment',
-            success_url: `https://saahna.vercel.app/success.html?id=${orderId}`,
-            cancel_url: `https://saahna.vercel.app/checkout.html`,
-            metadata: {
-                customer: JSON.stringify(customer),
-                orderId: orderId,
-                items: JSON.stringify(items.map(i => ({ id: i.id, name: i.name, quantity: i.quantity })))
+
+        // Razorpay amount is in paise (1 INR = 100 paise)
+        const razorpayOrder = await razorpay.orders.create({
+            amount: Math.round(totalAmount * 100),
+            currency: 'INR',
+            receipt: orderId,
+            notes: {
+                orderId,
+                customerName: customer.name,
+                customerEmail: customer.email,
+                customerPhone: customer.phone
             }
         });
 
-        const totalAmount = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        db.run(`INSERT INTO orders (customerName, phone, email, address, city, country, totalAmount, paymentId, orderId, items, status) VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
-            [customer.name, customer.phone, customer.email, customer.address, customer.city, customer.country, totalAmount, 'online', orderId, JSON.stringify(items), 'Pending Payment'],
-            function(err) {
-                if(err) console.error("DB Insert Error", err);
-            });
+        // Save order as Pending Payment in DB
+        db.run(
+            `INSERT INTO orders (customerName, phone, email, address, city, country, totalAmount, paymentId, orderId, items, status)
+             VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
+            [
+                customer.name, customer.phone, customer.email,
+                customer.address, customer.city, customer.country,
+                totalAmount, razorpayOrder.id, orderId,
+                JSON.stringify(items), 'Pending Payment'
+            ],
+            function (err) {
+                if (err) console.error("DB Insert Error", err);
+            }
+        );
 
-        res.json({ id: session.id, url: session.url });
+        res.json({
+            razorpayOrderId: razorpayOrder.id,
+            amount: razorpayOrder.amount,
+            currency: razorpayOrder.currency,
+            orderId,
+            keyId: process.env.RAZORPAY_KEY_ID
+        });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: err.message });
     }
+});
+
+// Verify Razorpay payment signature after frontend payment success
+app.post('/api/verify-payment', (req, res) => {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, orderId } = req.body;
+    const crypto = require('crypto');
+
+    const expectedSignature = crypto
+        .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
+        .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+        .digest('hex');
+
+    if (expectedSignature !== razorpay_signature) {
+        return res.status(400).json({ success: false, error: 'Payment signature verification failed' });
+    }
+
+    // Signature valid — mark order as Paid
+    db.run(
+        `UPDATE orders SET status = 'Paid', paymentId = ? WHERE orderId = ?`,
+        [razorpay_payment_id, orderId],
+        function (err) {
+            if (err) return res.status(500).json({ success: false, error: err.message });
+            res.json({ success: true });
+        }
+    );
 });
 
 app.get('/api/orders', verifyAdmin, (req, res) => {

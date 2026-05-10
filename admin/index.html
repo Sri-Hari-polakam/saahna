@@ -117,7 +117,9 @@
                     <i class="fas fa-lock"></i>
                     <input type="password" id="loginPass" placeholder="Password">
                 </div>
-                <button onclick="handleLogin()" class="btn btn-gold" style="width: 100%; padding: 1.2rem; font-size: 1.1rem; border-radius: 8px; margin-top: 1rem; box-shadow: 0 10px 20px rgba(212,175,55,0.2);">Secure Login <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i></button>
+                <button onclick="handleLogin()" style="width:100%; padding:1.2rem; font-size:1rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; border:none; border-radius:10px; margin-top:1.5rem; cursor:pointer; background:linear-gradient(135deg,#D4AF37,#f5d97a,#D4AF37); background-size:200% auto; color:#1a1a1a; box-shadow:0 8px 24px rgba(212,175,55,0.35); transition:all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 30px rgba(212,175,55,0.5)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 8px 24px rgba(212,175,55,0.35)'">
+                    <i class="fas fa-lock" style="margin-right:0.6rem;"></i> Secure Login
+                </button>
                 <div style="text-align: center; margin-top: 2rem;">
                     <a href="../index.html" style="color: #999; font-size: 0.9rem; text-decoration: none; transition: 0.3s;"><i class="fas fa-arrow-left"></i> Return to Main Website</a>
                 </div>
@@ -130,14 +132,78 @@
             <h2 class="logo">Sahnaa SA</h2>
             <ul>
                 <li onclick="showSection('dashboard')" class="active"><i class="fas fa-th-large"></i> Dashboard</li>
-                <li onclick="showSection('products')"><i class="fas fa-box"></i> Products</li>
-                <li onclick="showSection('orders')"><i class="fas fa-shopping-cart"></i> Orders</li>
-                <li onclick="showSection('enquiries')"><i class="fas fa-envelope"></i> Enquiries</li>
+                <li onclick="showSection('homepage', this)"><i class="fas fa-home"></i> Homepage</li>
+                <li onclick="showSection('products', this)"><i class="fas fa-box"></i> Products</li>
+                <li onclick="showSection('orders', this)"><i class="fas fa-shopping-cart"></i> Orders</li>
+                <li onclick="showSection('enquiries', this)"><i class="fas fa-envelope"></i> Enquiries</li>
                 <li onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</li>
             </ul>
         </div>
 
         <div class="main-content">
+            <!-- HOMEPAGE SECTION -->
+            <div id="section-homepage" class="section" style="display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+                    <h1 style="margin:0;">Homepage Editor</h1>
+                    <button onclick="saveHomepage()" class="btn-gold" style="display:flex;align-items:center;gap:0.5rem;"><i class="fas fa-save"></i> Save All Changes</button>
+                </div>
+
+                <!-- HERO SECTION -->
+                <div style="background:white;border-radius:20px;padding:2.5rem;margin-bottom:2rem;box-shadow:0 4px 20px rgba(0,0,0,0.04);border:1px solid #f0f0f0;">
+                    <h3 class="section-title" style="margin-bottom:1.5rem;"><i class="fas fa-image" style="color:var(--primary-gold);margin-right:0.6rem;"></i>Hero Section</h3>
+                    <div class="form-grid" style="grid-template-columns:1fr 1fr;">
+                        <div class="form-group">
+                            <label>Background Image URL</label>
+                            <input type="text" id="hp_hero_bg" class="form-control" placeholder="https://...">
+                            <div id="hp_hero_bg_preview" style="margin-top:0.8rem;height:100px;border-radius:8px;background-size:cover;background-position:center;border:1px solid #eee;display:none;"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Right Frame Portrait Image URL</label>
+                            <input type="text" id="hp_hero_frame" class="form-control" placeholder="https://...">
+                            <div id="hp_hero_frame_preview" style="margin-top:0.8rem;height:100px;border-radius:8px;background-size:cover;background-position:center top;border:1px solid #eee;display:none;"></div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top:1rem;">
+                        <label>Main Headline</label>
+                        <input type="text" id="hp_hero_headline" class="form-control" placeholder="The Art of Couture">
+                    </div>
+                    <div class="form-group" style="margin-top:1rem;">
+                        <label>Sub Text</label>
+                        <textarea id="hp_hero_subtext" class="form-control" rows="2" placeholder="Exquisite tailoring..."></textarea>
+                    </div>
+                    <!-- Upload option -->
+                    <div style="margin-top:1.5rem;padding:1.2rem;background:#faf9f6;border-radius:12px;border:1px dashed #ddd;">
+                        <p style="font-size:0.8rem;color:#888;margin-bottom:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Or Upload Hero Background Image</p>
+                        <input type="file" id="hp_hero_bg_file" accept="image/*" style="font-size:0.85rem;">
+                        <button onclick="uploadHeroImage('bg')" class="btn-outline" style="margin-top:0.6rem;padding:0.5rem 1rem;font-size:0.8rem;">Upload</button>
+                    </div>
+                </div>
+
+                <!-- BRAND INTRO SECTION -->
+                <div style="background:white;border-radius:20px;padding:2.5rem;margin-bottom:2rem;box-shadow:0 4px 20px rgba(0,0,0,0.04);border:1px solid #f0f0f0;">
+                    <h3 class="section-title" style="margin-bottom:1.5rem;"><i class="fas fa-pen-nib" style="color:var(--primary-gold);margin-right:0.6rem;"></i>Brand Intro — "Luxury Redefined"</h3>
+                    <div class="form-group">
+                        <label>Section Title</label>
+                        <input type="text" id="hp_brand_title" class="form-control" placeholder="Luxury Redefined">
+                    </div>
+                    <div class="form-group" style="margin-top:1rem;">
+                        <label>Brand Description</label>
+                        <textarea id="hp_brand_text" class="form-control" rows="4" placeholder="Founded in 2019 by Ashitha Yejju..."></textarea>
+                    </div>
+                </div>
+
+                <!-- SIGNATURE COLLECTIONS -->
+                <div style="background:white;border-radius:20px;padding:2.5rem;margin-bottom:2rem;box-shadow:0 4px 20px rgba(0,0,0,0.04);border:1px solid #f0f0f0;">
+                    <h3 class="section-title" style="margin-bottom:1.5rem;"><i class="fas fa-th-large" style="color:var(--primary-gold);margin-right:0.6rem;"></i>Signature Collections — 4 Cards</h3>
+                    <div id="sig-cards-editor" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;"></div>
+                </div>
+
+                <!-- Save button bottom -->
+                <div style="text-align:right;margin-top:1rem;">
+                    <button onclick="saveHomepage()" class="btn-gold" style="padding:1rem 3rem;font-size:1rem;"><i class="fas fa-save" style="margin-right:0.5rem;"></i>Save All Changes</button>
+                </div>
+            </div>
+
             <!-- DASHBOARD SECTION -->
             <div id="section-dashboard" class="section">
                 <h1 style="margin-bottom: 2rem;">Overview</h1>
@@ -441,15 +507,16 @@
             location.reload();
         }
 
-        function showSection(name) {
+        function showSection(name, el) {
             document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
             document.getElementById(`section-${name}`).style.display = 'block';
             document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+            if (el) el.classList.add('active');
             if (name === 'products') loadProducts();
             if (name === 'orders') loadOrders();
             if (name === 'enquiries') loadEnquiries();
             if (name === 'dashboard') loadStats();
+            if (name === 'homepage') loadHomepageEditor();
         }
 
         async function loadStats() {
@@ -711,6 +778,183 @@
         }
 
         if (token) loadStats();
+
+        // =============================================
+        // HOMEPAGE EDITOR
+        // =============================================
+        let _hpData = {};
+
+        async function loadHomepageEditor() {
+            try {
+                const res = await fetch(`${API_URL}/homepage`);
+                _hpData = await res.json();
+            } catch(e) { _hpData = {}; }
+
+            // Hero
+            setVal('hp_hero_bg',       _hpData.hero_bg_image || '');
+            setVal('hp_hero_frame',    _hpData.hero_frame_image || '');
+            setVal('hp_hero_headline', _hpData.hero_headline || '');
+            setVal('hp_hero_subtext',  _hpData.hero_subtext || '');
+            // Brand
+            setVal('hp_brand_title', _hpData.brand_title || '');
+            setVal('hp_brand_text',  _hpData.brand_text || '');
+            // Previews
+            previewImg('hp_hero_bg',    'hp_hero_bg_preview');
+            previewImg('hp_hero_frame', 'hp_hero_frame_preview');
+            // Sig cards
+            renderSigCardsEditor();
+        }
+
+        function setVal(id, val) {
+            const el = document.getElementById(id);
+            if (el) el.value = val;
+        }
+
+        function previewImg(inputId, previewId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            if (!input || !preview) return;
+            const update = () => {
+                if (input.value.trim()) {
+                    preview.style.backgroundImage = `url('${input.value.trim()}')`;
+                    preview.style.display = 'block';
+                } else {
+                    preview.style.display = 'none';
+                }
+            };
+            update();
+            input.addEventListener('input', update);
+        }
+
+        function renderSigCardsEditor() {
+            const container = document.getElementById('sig-cards-editor');
+            if (!container) return;
+            container.innerHTML = '';
+            [1,2,3,4].forEach(n => {
+                const key = `sig_card${n}`;
+                let card = {};
+                try { card = typeof _hpData[key] === 'object' ? _hpData[key] : JSON.parse(_hpData[key] || '{}'); } catch {}
+                const div = document.createElement('div');
+                div.style.cssText = 'background:#faf9f6;border-radius:14px;padding:1.5rem;border:1px solid #eee;';
+                div.innerHTML = `
+                    <p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--primary-gold);margin-bottom:1rem;">Card ${n}</p>
+                    <div class="form-group" style="margin-bottom:0.8rem;">
+                        <label>Product Name</label>
+                        <input type="text" id="sig${n}_name" class="form-control" value="${card.name||''}" placeholder="Product name">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0.8rem;">
+                        <label>Category</label>
+                        <input type="text" id="sig${n}_cat" class="form-control" value="${card.category||''}" placeholder="e.g. Sarees">
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:0.8rem;">
+                        <div class="form-group">
+                            <label>Price (₹)</label>
+                            <input type="number" id="sig${n}_price" class="form-control" value="${card.price||''}" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Discount Price (₹)</label>
+                            <input type="number" id="sig${n}_disc" class="form-control" value="${card.discountPrice||''}" placeholder="0">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:0.8rem;">
+                        <label>Badge (NEW / TRENDING / PREMIUM)</label>
+                        <input type="text" id="sig${n}_badge" class="form-control" value="${card.badge||''}" placeholder="NEW">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0.8rem;">
+                        <label>Product ID (links to product-details page)</label>
+                        <input type="number" id="sig${n}_id" class="form-control" value="${card.id||''}" placeholder="1">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0.5rem;">
+                        <label>Image URL</label>
+                        <input type="text" id="sig${n}_img" class="form-control" value="${card.image||''}" placeholder="https://...">
+                    </div>
+                    <div id="sig${n}_preview" style="margin-top:0.6rem;height:80px;border-radius:8px;background-size:cover;background-position:center top;border:1px solid #eee;${card.image?'':'display:none;'}background-image:url('${card.image||''}');"></div>
+                    <div style="margin-top:0.8rem;padding:0.8rem;background:white;border-radius:8px;border:1px dashed #ddd;">
+                        <p style="font-size:0.72rem;color:#aaa;margin-bottom:0.5rem;font-weight:600;text-transform:uppercase;">Upload Image</p>
+                        <input type="file" id="sig${n}_file" accept="image/*" style="font-size:0.8rem;">
+                        <button onclick="uploadSigImage(${n})" class="btn-outline" style="margin-top:0.4rem;padding:0.4rem 0.8rem;font-size:0.75rem;">Upload</button>
+                    </div>
+                `;
+                container.appendChild(div);
+                // live preview on URL input
+                const imgInput = document.getElementById(`sig${n}_img`);
+                const preview  = document.getElementById(`sig${n}_preview`);
+                imgInput.addEventListener('input', () => {
+                    if (imgInput.value.trim()) {
+                        preview.style.backgroundImage = `url('${imgInput.value.trim()}')`;
+                        preview.style.display = 'block';
+                    } else { preview.style.display = 'none'; }
+                });
+            });
+        }
+
+        async function uploadHeroImage(type) {
+            const fileInput = document.getElementById('hp_hero_bg_file');
+            if (!fileInput.files[0]) return alert('Please select a file first.');
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
+            const res = await fetch(`${API_URL}/upload`, { method:'POST', headers:{'Authorization':`Bearer ${token}`}, body: formData });
+            const data = await res.json();
+            if (data.imageUrl) {
+                document.getElementById('hp_hero_bg').value = data.imageUrl;
+                previewImg('hp_hero_bg', 'hp_hero_bg_preview');
+                alert('Uploaded! Click "Save All Changes" to apply.');
+            } else alert('Upload failed: ' + (data.error || 'Unknown error'));
+        }
+
+        async function uploadSigImage(n) {
+            const fileInput = document.getElementById(`sig${n}_file`);
+            if (!fileInput.files[0]) return alert('Please select a file first.');
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
+            const res = await fetch(`${API_URL}/upload`, { method:'POST', headers:{'Authorization':`Bearer ${token}`}, body: formData });
+            const data = await res.json();
+            if (data.imageUrl) {
+                document.getElementById(`sig${n}_img`).value = data.imageUrl;
+                const preview = document.getElementById(`sig${n}_preview`);
+                preview.style.backgroundImage = `url('${data.imageUrl}')`;
+                preview.style.display = 'block';
+                alert('Uploaded! Click "Save All Changes" to apply.');
+            } else alert('Upload failed: ' + (data.error || 'Unknown error'));
+        }
+
+        async function saveHomepage() {
+            const updates = {
+                hero_bg_image:    document.getElementById('hp_hero_bg').value.trim(),
+                hero_frame_image: document.getElementById('hp_hero_frame').value.trim(),
+                hero_headline:    document.getElementById('hp_hero_headline').value.trim(),
+                hero_subtext:     document.getElementById('hp_hero_subtext').value.trim(),
+                brand_title:      document.getElementById('hp_brand_title').value.trim(),
+                brand_text:       document.getElementById('hp_brand_text').value.trim(),
+            };
+            [1,2,3,4].forEach(n => {
+                updates[`sig_card${n}`] = {
+                    id:            parseInt(document.getElementById(`sig${n}_id`).value) || n,
+                    name:          document.getElementById(`sig${n}_name`).value.trim(),
+                    category:      document.getElementById(`sig${n}_cat`).value.trim(),
+                    price:         parseFloat(document.getElementById(`sig${n}_price`).value) || 0,
+                    discountPrice: parseFloat(document.getElementById(`sig${n}_disc`).value) || 0,
+                    badge:         document.getElementById(`sig${n}_badge`).value.trim(),
+                    image:         document.getElementById(`sig${n}_img`).value.trim(),
+                };
+            });
+            try {
+                const res = await fetch(`${API_URL}/homepage`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${token}` },
+                    body: JSON.stringify(updates)
+                });
+                const data = await res.json();
+                if (data.success) {
+                    // Show toast
+                    const toast = document.createElement('div');
+                    toast.innerText = '✓ Homepage updated successfully!';
+                    toast.style.cssText = 'position:fixed;bottom:2rem;right:2rem;background:#22c55e;color:white;padding:1rem 2rem;border-radius:12px;font-weight:600;z-index:9999;box-shadow:0 8px 24px rgba(34,197,94,0.3);animation:fadeIn 0.3s ease;';
+                    document.body.appendChild(toast);
+                    setTimeout(() => toast.remove(), 3000);
+                } else alert('Save failed: ' + (data.error || 'Unknown'));
+            } catch(e) { alert('Connection error: ' + e.message); }
+        }
     </script>
 </body>
 </html>
