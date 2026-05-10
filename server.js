@@ -7,29 +7,13 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 const fs = require('fs');
 
-let Razorpay, multer;
+let multer;
 try {
-    Razorpay = require('razorpay');
     multer = require('multer');
 } catch (err) {
-    console.error("CRITICAL: Missing dependencies. Please run 'npm install razorpay multer'");
+    console.error("CRITICAL: Missing multer. Please run 'npm install multer'");
 }
 
-// Razorpay instance — only initialise when keys are present
-let razorpay = null;
-if (Razorpay && process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
-    try {
-        razorpay = new Razorpay({
-            key_id: process.env.RAZORPAY_KEY_ID,
-            key_secret: process.env.RAZORPAY_KEY_SECRET
-        });
-        console.log('Razorpay initialised.');
-    } catch (err) {
-        console.error('Razorpay init failed:', err.message);
-    }
-} else {
-    console.warn('Razorpay keys not set — payment features disabled.');
-}
 const app = express();
 const PORT = process.env.PORT || 5000;
 const SECRET_KEY = 'SAHNAA_SECRET_GOLD_2026';
@@ -38,56 +22,6 @@ const SECRET_KEY = 'SAHNAA_SECRET_GOLD_2026';
 app.use(cors());
 
 // --- RAZORPAY WEBHOOK ---
-app.post('/api/webhook', express.raw({ type: 'application/json' }), (req, res) => {
-    const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
-    if (!webhookSecret) {
-        console.error("RAZORPAY_WEBHOOK_SECRET is not set. Webhook rejected.");
-        return res.status(400).json({ error: 'Webhook secret not configured' });
-    }
-
-    const signature = req.headers['x-razorpay-signature'];
-    if (!signature) {
-        return res.status(400).json({ error: 'Missing Razorpay signature header' });
-    }
-
-    // Validate the webhook signature using HMAC-SHA256
-    const crypto = require('crypto');
-    const expectedSignature = crypto
-        .createHmac('sha256', webhookSecret)
-        .update(req.body)
-        .digest('hex');
-
-    if (expectedSignature !== signature) {
-        console.error("Webhook signature mismatch — possible spoofed request.");
-        return res.status(400).json({ error: 'Invalid webhook signature' });
-    }
-
-    let event;
-    try {
-        event = JSON.parse(req.body.toString());
-    } catch (err) {
-        return res.status(400).json({ error: 'Invalid JSON payload' });
-    }
-
-    // Handle payment captured event
-    if (event.event === 'payment.captured') {
-        const payment = event.payload.payment.entity;
-        const orderId = payment.notes && payment.notes.orderId;
-
-        if (orderId) {
-            db.run(
-                `UPDATE orders SET status = 'Paid', paymentId = ? WHERE orderId = ?`,
-                [payment.id, orderId],
-                function (err) {
-                    if (err) console.error("DB Update Error", err);
-                }
-            );
-        }
-    }
-
-    res.json({ received: true });
-});
-
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 app.use(express.static(__dirname)); // Serve frontend from root directory
@@ -372,79 +306,6 @@ app.post('/api/orders', (req, res) => {
             res.json({ success: true, orderId: orderId });
         });
 });
-app.post('/api/create-razorpay-order', async (req, res) => {
-    try {
-        if (!razorpay) return res.status(500).json({ error: 'Razorpay not initialised' });
-
-        const { items, customer } = req.body;
-        const totalAmount = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const orderId = 'ORD_' + Date.now();
-
-        // Razorpay amount is in paise (1 INR = 100 paise)
-        const razorpayOrder = await razorpay.orders.create({
-            amount: Math.round(totalAmount * 100),
-            currency: 'INR',
-            receipt: orderId,
-            notes: {
-                orderId,
-                customerName: customer.name,
-                customerEmail: customer.email,
-                customerPhone: customer.phone
-            }
-        });
-
-        // Save order as Pending Payment in DB
-        db.run(
-            `INSERT INTO orders (customerName, phone, email, address, city, country, totalAmount, paymentId, orderId, items, status)
-             VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
-            [
-                customer.name, customer.phone, customer.email,
-                customer.address, customer.city, customer.country,
-                totalAmount, razorpayOrder.id, orderId,
-                JSON.stringify(items), 'Pending Payment'
-            ],
-            function (err) {
-                if (err) console.error("DB Insert Error", err);
-            }
-        );
-
-        res.json({
-            razorpayOrderId: razorpayOrder.id,
-            amount: razorpayOrder.amount,
-            currency: razorpayOrder.currency,
-            orderId,
-            keyId: process.env.RAZORPAY_KEY_ID
-        });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// Verify Razorpay payment signature after frontend payment success
-app.post('/api/verify-payment', (req, res) => {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, orderId } = req.body;
-    const crypto = require('crypto');
-
-    const expectedSignature = crypto
-        .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
-        .update(`${razorpay_order_id}|${razorpay_payment_id}`)
-        .digest('hex');
-
-    if (expectedSignature !== razorpay_signature) {
-        return res.status(400).json({ success: false, error: 'Payment signature verification failed' });
-    }
-
-    // Signature valid — mark order as Paid
-    db.run(
-        `UPDATE orders SET status = 'Paid', paymentId = ? WHERE orderId = ?`,
-        [razorpay_payment_id, orderId],
-        function (err) {
-            if (err) return res.status(500).json({ success: false, error: err.message });
-            res.json({ success: true });
-        }
-    );
-});
 
 app.get('/api/orders', verifyAdmin, (req, res) => {
     db.all(`SELECT * FROM orders ORDER BY createdAt DESC`, [], (err, rows) => res.json(rows));
@@ -473,4 +334,10 @@ app.get('/api/stats', verifyAdmin, (req, res) => {
     });
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Health check route for Railway
+app.get('/api/health', (req, res) => res.json({ status: 'healthy', timestamp: new Date() }));
+
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Server fully operational on port ${PORT}`);
+    console.log(`🌍 Production URL: https://saahna-production.up.railway.app`);
+});
