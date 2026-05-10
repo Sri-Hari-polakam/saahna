@@ -19,7 +19,17 @@ const PORT = process.env.PORT || 5000;
 const SECRET_KEY = 'SAHNAA_SECRET_GOLD_2026';
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Request Logger
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    next();
+});
 
 // --- RAZORPAY WEBHOOK ---
 app.use(express.json());
@@ -38,9 +48,23 @@ if (!fs.existsSync('./uploads')) {
 // Multer config moved below
 
 // Database Initialization
-const db = new sqlite3.Database('./sahnaa_sa.db', (err) => {
-    if (err) console.error(err.message);
-    console.log('Connected to Sahnaa SA database.');
+const dbPath = path.join(__dirname, 'sahnaa_sa.db');
+console.log('Initializing database at:', dbPath);
+
+const db = new sqlite3.Database(dbPath, (err) => {
+    if (err) {
+        console.error('DATABASE ERROR:', err.message);
+    } else {
+        console.log('✅ Connected to Sahnaa SA database.');
+    }
+});
+
+// Global error handling to prevent silent crashes
+process.on('uncaughtException', (err) => {
+    console.error('UNCAUGHT EXCEPTION:', err);
+});
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('UNHANDLED REJECTION:', reason);
 });
 
 db.serialize(() => {

@@ -843,7 +843,7 @@
 
             try {
                 const controller = new AbortController();
-                const timeout = setTimeout(() => controller.abort(), 8000); // 8s timeout
+                const timeout = setTimeout(() => controller.abort(), 20000); // 20s timeout for wake-up
                 const res = await fetch(`${API_URL}/admin/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -866,8 +866,8 @@
             } catch (err) {
                 console.error(err);
                 const msg = err.name === 'AbortError'
-                    ? 'Request timed out. The server may be starting up — please try again in a moment.'
-                    : 'Connection failed. Server: ' + API_URL;
+                    ? 'Server Wake-up Timeout: The backend is taking a moment to start on Railway. Please wait 10 seconds and try again.'
+                    : 'Connection failed. Please ensure your Railway backend is "Active". URL: ' + API_URL;
                 alert(msg);
                 btn.innerHTML = origText;
                 btn.disabled = false;
