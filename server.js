@@ -41,150 +41,88 @@ app.get('/', (req, res) => {
 });
 
 // Ensure uploads directory exists
-if (!fs.existsSync('./uploads')) {
-    fs.mkdirSync('./uploads');
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Multer config moved below
-
-// Database Initialization
+// Database Initialization with extreme error trapping
 const dbPath = path.join(__dirname, 'sahnaa_sa.db');
-console.log('Initializing database at:', dbPath);
+console.log('📦 Database path:', dbPath);
 
-const db = new sqlite3.Database(dbPath, (err) => {
-    if (err) {
-        console.error('DATABASE ERROR:', err.message);
-    } else {
-        console.log('✅ Connected to Sahnaa SA database.');
-    }
-});
+let db;
+try {
+    db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
+        if (err) {
+            console.error('❌ DATABASE CONNECTION ERROR:', err.message);
+        } else {
+            console.log('✅ Database connected successfully.');
+            initializeTables();
+        }
+    });
+} catch (e) {
+    console.error('❌ CRITICAL DB INIT FAILURE:', e);
+}
+
+function initializeTables() {
+    db.serialize(() => {
+        console.log('🔨 Setting up tables...');
+        try {
+            db.run(`CREATE TABLE IF NOT EXISTS products (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT, category TEXT, price REAL, discountPrice REAL, stock INTEGER,
+                description TEXT, fabric TEXT, care TEXT, images TEXT, sizes TEXT,
+                colors TEXT, customization TEXT, policies TEXT
+            )`);
+
+            db.run(`CREATE TABLE IF NOT EXISTS orders (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                customerName TEXT, phone TEXT, email TEXT, address TEXT, city TEXT, country TEXT,
+                totalAmount REAL, status TEXT DEFAULT 'Pending', paymentId TEXT, orderId TEXT,
+                items TEXT, createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+            )`);
+
+            db.run(`CREATE TABLE IF NOT EXISTS enquiries (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                type TEXT, name TEXT, email TEXT, phone TEXT, message TEXT,
+                details TEXT, image TEXT, status TEXT DEFAULT 'New',
+                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+            )`);
+
+            db.run(`CREATE TABLE IF NOT EXISTS homepage_content (key TEXT PRIMARY KEY, value TEXT)`);
+            
+            // Seed defaults silently
+            const defaults = {
+                hero_bg_image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=90&w=2000',
+                hero_frame_image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=90&w=900',
+                hero_headline: 'The Art of Couture',
+                hero_subtext: 'Exquisite tailoring for the discerning individual.',
+                brand_title: 'Luxury Redefined'
+            };
+            const insertStmt = db.prepare(`INSERT OR IGNORE INTO homepage_content (key, value) VALUES (?, ?)`);
+            Object.entries(defaults).forEach(([k, v]) => insertStmt.run(k, v));
+            insertStmt.finalize();
+
+            // Admin default
+            const adminPass = bcrypt.hashSync('admin123', 10);
+            db.run(`INSERT OR IGNORE INTO admins (email, password) VALUES (?, ?)`, ['admin@saahna.com', adminPass]);
+
+            console.log('✅ Tables initialized.');
+        } catch (tableErr) {
+            console.error('❌ TABLE SETUP ERROR:', tableErr);
+        }
+    });
+}
 
 // Global error handling to prevent silent crashes
 process.on('uncaughtException', (err) => {
-    console.error('UNCAUGHT EXCEPTION:', err);
+    console.error('🔥 UNCAUGHT EXCEPTION:', err.message);
+    console.error(err.stack);
 });
 process.on('unhandledRejection', (reason, promise) => {
-    console.error('UNHANDLED REJECTION:', reason);
+    console.error('🔥 UNHANDLED REJECTION:', reason);
 });
-
-db.serialize(() => {
-    // Products Table
-    db.run(`CREATE TABLE IF NOT EXISTS products (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        category TEXT,
-        price REAL,
-        discountPrice REAL,
-        stock INTEGER,
-        description TEXT,
-        fabric TEXT,
-        care TEXT,
-        images TEXT,
-        sizes TEXT
-    )`);
-
-    db.run(`ALTER TABLE products ADD COLUMN colors TEXT`, () => {});
-    db.run(`ALTER TABLE products ADD COLUMN customization TEXT`, () => {});
-    db.run(`ALTER TABLE products ADD COLUMN policies TEXT`, () => {});
-
-    // Orders Table
-    db.run(`CREATE TABLE IF NOT EXISTS orders (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        customerName TEXT,
-        phone TEXT,
-        email TEXT,
-        address TEXT,
-        city TEXT,
-        country TEXT,
-        totalAmount REAL,
-        status TEXT DEFAULT 'Pending',
-        paymentId TEXT,
-        orderId TEXT,
-        items TEXT,
-        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
-    )`);
-
-    // Enquiries & Custom Orders Table
-    db.run(`CREATE TABLE IF NOT EXISTS enquiries (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        type TEXT, -- 'General' or 'Custom'
-        name TEXT,
-        email TEXT,
-        phone TEXT,
-        message TEXT,
-        details TEXT, -- For custom orders (size, quantity etc)
-        image TEXT,
-        status TEXT DEFAULT 'New',
-        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
-    )`);
-
-    // Homepage Content Table
-    db.run(`CREATE TABLE IF NOT EXISTS homepage_content (
-        key TEXT PRIMARY KEY,
-        value TEXT
-    )`);
-
-    // Seed defaults if not present
-    const defaults = {
-        hero_bg_image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=90&w=2000',
-        hero_frame_image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=90&w=900',
-        hero_headline: 'The Art of Couture',
-        hero_subtext: 'Exquisite tailoring for the discerning individual. Experience the pinnacle of personalised luxury fashion — crafted in Vijayawada, worn worldwide.',
-        brand_title: 'Luxury Redefined',
-        brand_text: 'Founded in 2019 by Ashitha Yejju, SAAHNA is the embodiment of bespoke elegance. From intricate fabric sourcing to master-grade tailoring, we create a fashion ecosystem that honors your individuality.',
-        sig_card1: JSON.stringify({ id:1, name:'Royal Gold Silk Saree', category:'Sarees', price:14000, discountPrice:12500, badge:'NEW', image:'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=85&w=600' }),
-        sig_card2: JSON.stringify({ id:4, name:'Elegant Velvet Evening Dress', category:'One-Piece Dress', price:5200, discountPrice:4500, badge:'TRENDING', image:'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=85&w=600' }),
-        sig_card3: JSON.stringify({ id:31, name:'Wedding Couture Set', category:'Lehangas', price:95000, discountPrice:85000, badge:'PREMIUM', image:'https://images.unsplash.com/photo-1583391733975-ac581b23cc7f?auto=format&fit=crop&q=85&w=600' }),
-        sig_card4: JSON.stringify({ id:5, name:'Designer Silk Frock', category:'Frocks', price:3800, discountPrice:3200, badge:'NEW', image:'https://images.unsplash.com/photo-1622290319146-7b63fd48a609?auto=format&fit=crop&q=85&w=600' })
-    };
-    const insertStmt = db.prepare(`INSERT OR IGNORE INTO homepage_content (key, value) VALUES (?, ?)`);
-    Object.entries(defaults).forEach(([k, v]) => insertStmt.run(k, v));
-    insertStmt.finalize();
-
-    // Admin Table
-    db.run(`CREATE TABLE IF NOT EXISTS admins (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        email TEXT UNIQUE,
-        password TEXT
-    )`);
-    const adminPass = bcrypt.hashSync('admin123', 10);
-    db.run(`INSERT OR IGNORE INTO admins (email, password) VALUES (?, ?)`, ['admin@saahna.com', adminPass]);
-    // Create default products to reach 200 total
-    db.get(`SELECT COUNT(*) as count FROM products`, (err, row) => {
-        if (row.count < 200) {
-            db.run("DELETE FROM products"); // clear existing to avoid duplicates
-            
-            const categories = ["Sarees", "Men's Wear", "Co - ord sets", "One - Piece Dress", "Frocks", "Fabrics", "Kurtis", "Lehangas", "Kid's Wear"];
-            const templates = [
-                { price: 12500, discountPrice: 11000, desc: "Classic Banarasi silk.", image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800", sizes: ["Free Size"] },
-                { price: 2500, discountPrice: 2200, desc: "Premium Italian linen.", image: "https://images.unsplash.com/photo-1598033129183-c4f50c7176c8?auto=format&fit=crop&q=80&w=800", sizes: ["S","M","L","XL"] },
-                { price: 85000, discountPrice: 80000, desc: "Matching bride & groom outfits.", image: "https://images.unsplash.com/photo-1583391733975-ac581b23cc7f?auto=format&fit=crop&q=80&w=800", sizes: ["Custom"] },
-                { price: 4500, discountPrice: 4000, desc: "Elegant velvet dress.", image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800", sizes: ["S","M","L","XL"] },
-                { price: 3200, discountPrice: 2800, desc: "Beautiful designer frock.", image: "https://images.unsplash.com/photo-1622290319146-7b63fd48a609?auto=format&fit=crop&q=80&w=800", sizes: ["S","M","L"] }
-            ];
-            const adjectives = ["Royal", "Classic", "Premium", "Elegant", "Luxury", "Designer", "Modern", "Traditional", "Festive", "Casual"];
-            const colors = ["Gold", "White", "Blue", "Peach", "Midnight", "Emerald", "Ruby", "Silver", "Ivory", "Rose", "Crimson"];
-
-            const stmt = db.prepare(`INSERT INTO products (name, category, price, discountPrice, stock, description, fabric, care, images, sizes) VALUES (?,?,?,?,?,?,?,?,?,?)`);
-            for (let i = 1; i <= 200; i++) {
-                const category = categories[i % categories.length];
-                const t = templates[i % templates.length];
-                const adj = adjectives[i % adjectives.length];
-                const color = colors[i % colors.length];
-                
-                const name = `${adj} ${color} ${category.split(" ")[0]} ${i}`;
-                
-                stmt.run([
-                    name, category, t.price + (i * 10), t.discountPrice + (i * 10), 20 + (i % 10),
-                    t.desc, "Mixed", "Dry Clean", JSON.stringify([t.image]), JSON.stringify(t.sizes)
-                ]);
-            }
-            stmt.finalize();
-        }
-    });
-});
-
-// --- AUTH ROUTES ---
+// --- ADMIN AUTH ---
 app.post('/api/admin/login', (req, res) => {
     const { email, password } = req.body;
     db.get(`SELECT * FROM admins WHERE email = ?`, [email], (err, admin) => {
@@ -196,7 +134,6 @@ app.post('/api/admin/login', (req, res) => {
     });
 });
 
-// Middleware to verify token
 const verifyAdmin = (req, res, next) => {
     const token = req.headers['authorization'];
     if (!token) return res.status(403).json({ error: 'No token provided' });
