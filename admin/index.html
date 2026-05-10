@@ -894,14 +894,17 @@
     </div>
 
     <script>
-        // Auto-detect: use Railway URL when not on localhost
+        // Smart API URL — Railway in production, relative on localhost
         const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
         const API_URL = IS_LOCAL ? '/api' : 'https://saahna-production.up.railway.app/api';
         let token = localStorage.getItem('sahnaa_admin_token');
         let allProducts = [];
         let editingProductId = null;
 
-        if (token) document.getElementById('loginPage').style.display = 'none';
+        // If already logged in, hide login page immediately
+        if (token) {
+            document.getElementById('loginPage').style.display = 'none';
+        }
 
         // Helper functions for dynamic UI
         function addColorRow(data = { name: '', hex: '#D4AF37' }) {
@@ -947,14 +950,25 @@
         }
 
         async function handleLogin() {
-            const email = document.getElementById('loginEmail').value;
+            const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPass').value;
+            if (!email || !password) { alert('Please enter email and password.'); return; }
+
+            const btn = document.querySelector('.login-form button');
+            const origText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:.5rem;"></i> Signing in...';
+            btn.disabled = true;
+
             try {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 8000); // 8s timeout
                 const res = await fetch(`${API_URL}/admin/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({ email, password }),
+                    signal: controller.signal
                 });
+                clearTimeout(timeout);
                 const data = await res.json();
                 if (data.token) {
                     localStorage.setItem('sahnaa_admin_token', data.token);
@@ -962,10 +976,19 @@
                     document.getElementById('loginPage').style.display = 'none';
                     document.getElementById('adminBadge').textContent = data.admin.email;
                     loadStats();
-                } else alert(data.error);
+                } else {
+                    alert(data.error || 'Invalid credentials');
+                    btn.innerHTML = origText;
+                    btn.disabled = false;
+                }
             } catch (err) {
                 console.error(err);
-                alert('Connection to server failed. Please ensure the backend server is running on port 5000.');
+                const msg = err.name === 'AbortError'
+                    ? 'Request timed out. The server may be starting up — please try again in a moment.'
+                    : 'Connection failed. Server: ' + API_URL;
+                alert(msg);
+                btn.innerHTML = origText;
+                btn.disabled = false;
             }
         }
 
