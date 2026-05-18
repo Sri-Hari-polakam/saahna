@@ -341,10 +341,11 @@
     <script>
 
         const ITEMS_PER_PAGE = 12;
-        const CATEGORIES = ['all','Sarees',"Men's Wear","Co - ord sets","One - Piece Dress","Frocks","Fabrics","Kurtis","Lehangas","Kid's Wear"];
+        const CATEGORIES = ['all','Sarees','Fusion Ware',"Men's Wear","Co - ord sets","One - Piece Dress","Frocks","Fabrics","Kurtis","Lehangas","Kid's Wear"];
         const CAT_IMGS = {
             'all':'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&q=80&w=200',
             'Sarees':'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=200',
+            'Fusion Ware':'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=200',
             "Men's Wear":'https://images.unsplash.com/photo-1621072156002-e2fccdc0b176?auto=format&fit=crop&q=80&w=200',
             "Co - ord sets":'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&q=80&w=200',
             "One - Piece Dress":'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=200',
@@ -370,7 +371,7 @@
             list.innerHTML = '';
             pills.innerHTML = '';
             CATEGORIES.forEach(cat => {
-                const count = cat === 'all' ? allProducts.length : allProducts.filter(p => p.category === cat).length;
+                const count = cat === 'all' ? allProducts.length : allProducts.filter(p => p.category && p.category.trim().toLowerCase() === cat.trim().toLowerCase()).length;
                 const label = cat === 'all' ? 'All Pieces' : cat;
                 // Sidebar button
                 const btn = document.createElement('button');
@@ -388,7 +389,7 @@
         }
 
         function applyFilters() {
-            let data = currentCat === 'all' ? [...allProducts] : allProducts.filter(p => p.category === currentCat);
+            let data = currentCat === 'all' ? [...allProducts] : allProducts.filter(p => p.category && p.category.trim().toLowerCase() === currentCat.trim().toLowerCase());
             if (priceMin > 0) data = data.filter(p => (p.discountPrice || p.price) >= priceMin);
             if (priceMax < Infinity) data = data.filter(p => (p.discountPrice || p.price) <= priceMax);
             // Sort
@@ -420,7 +421,6 @@
                               idx === 0 ? '<span class="p-badge p-badge-new">New</span>' :
                               discount >= 20 ? `<span class="p-badge p-badge-sale">${discount}% Off</span>` :
                               p.price >= 10000 ? '<span class="p-badge p-badge-premium">Premium</span>' : '';
-                const colorSwatches = colors.length > 0 ? `<div class="p-card-colors">${colors.map((c,i)=>`<div class="p-swatch${i===0?' active':''}" style="background:${c.hex}" title="${c.name}" onclick="event.stopPropagation();swapImg(${p.id},'${c.image}',this)"></div>`).join('')}</div>` : '';
                 const card = document.createElement('div');
                 card.className = 'p-card' + (isOutOfStock ? ' oos-card' : '');
                 card.style.transitionDelay = (idx % ITEMS_PER_PAGE % 3) * 0.08 + 's';
@@ -432,6 +432,7 @@
                         <div class="p-card-actions">
                             <button class="p-card-qv" onclick="event.stopPropagation();openQV(${p.id})">Quick View</button>
                             <button class="p-card-wish wishlist-btn" data-pid="${p.id}" onclick="event.stopPropagation();window.toggleWishlist(${p.id})"><i class="far fa-heart"></i></button>
+                            <button class="p-card-wish" title="Share Piece" onclick="event.stopPropagation();window.shareProduct(${p.id}, event)"><i class="fas fa-share-alt"></i></button>
                         </div>
                     </div>
                     <div class="p-card-body">
@@ -440,9 +441,8 @@
                         <div class="p-card-price-row">
                             <span class="p-card-price">&#8377;${price.toLocaleString()}</span>
                             ${p.discountPrice ? `<span class="p-card-orig">&#8377;${p.price.toLocaleString()}</span>` : ''}
-                            ${discount >= 5 ? `<span class="p-card-discount">${discount}% off</span>` : ''}
+                            ${p.discountPrice ? `<span class="p-card-discount">${discount}% off</span>` : ''}
                         </div>
-                        ${colorSwatches}
                     </div>`;
                 grid.appendChild(card);
             });
@@ -536,6 +536,7 @@
                 </div>
                 <div class="qv-right">
                     <div class="qv-top-actions">
+                        <button class="qv-btn-icon" title="Share Product" onclick="window.shareProduct(${p.id}, event)"><i class="fas fa-share-alt"></i></button>
                         <button class="qv-btn-icon wishlist-btn" data-pid="${p.id}" onclick="window.toggleWishlist(${p.id})"><i class="far fa-heart"></i></button>
                         <button class="qv-btn-icon" onclick="closeQV()">&times;</button>
                     </div>
@@ -553,9 +554,23 @@
                         <div><span>Care</span><strong>${p.care || 'N/A'}</strong></div>
                         <div><span>Stock</span><strong class="${p.stock>0?'qv-stock-in':'qv-stock-out'}">${p.stock>0?'In Stock':'Out of Stock'}</strong></div>
                     </div>
-                    ${colors.length > 0 ? `<div><p class="qv-label">Colour</p><div class="qv-colors">${colors.map((c,i)=>`<div class="qv-color-dot${i===0?' active':''}" style="background:${c.hex}" title="${c.name}" onclick="document.getElementById('qvMainImg').src='${c.image}';this.closest('.qv-colors').querySelectorAll('.qv-color-dot').forEach(d=>d.classList.remove('active'));this.classList.add('active');"></div>`).join('')}</div></div>` : ''}
+                    ${p.category === 'Fabrics' ? `
+                    <div style="margin-top: 0.5rem;">
+                        <a href="custom.html?pid=${p.id}&fabric=${encodeURIComponent(p.name)}" class="qv-add-btn" style="background: var(--dark); text-decoration: none; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-cut" style="margin-right: 10px;"></i> Custom Fabric Order
+                        </a>
+                        <p style="font-size: 0.7rem; color: #888; margin-top: 0.5rem; text-align: center;">Click to customize this fabric with your measurements</p>
+                    </div>
+                    ` : ''}
                     <div><p class="qv-label">Size</p><div class="qv-sizes">${sizes.map(s=>`<button class="qv-size-btn" onclick="this.closest('.qv-sizes').querySelectorAll('.qv-size-btn').forEach(b=>{b.classList.remove('active');});this.classList.add('active');document.getElementById('qvModal').dataset.size='${s}';">${s}</button>`).join('')}</div></div>
-                    <div><p class="qv-label">Quantity</p><div class="qv-qty"><button onclick="var i=document.getElementById('qvQtyInput');i.value=Math.max(1,parseInt(i.value)-1)">-</button><input id="qvQtyInput" type="number" value="1" min="1" readonly><button onclick="var i=document.getElementById('qvQtyInput');i.value=parseInt(i.value)+1">+</button></div></div>
+                    <div>
+                        <p class="qv-label">${p.category === 'Fabrics' ? 'Meters' : 'Quantity'}</p>
+                        <div class="qv-qty">
+                            <button onclick="var i=document.getElementById('qvQtyInput'); var step = ${p.category === 'Fabrics' ? 0.5 : 1}; i.value=Math.max(step, Math.round((parseFloat(i.value)-step)*10)/10)">-</button>
+                            <input id="qvQtyInput" type="number" value="${p.category === 'Fabrics' ? 0.5 : 1}" min="${p.category === 'Fabrics' ? 0.5 : 1}" step="${p.category === 'Fabrics' ? 0.5 : 1}" ${p.category === 'Fabrics' ? '' : 'readonly'}>
+                            <button onclick="var i=document.getElementById('qvQtyInput'); var step = ${p.category === 'Fabrics' ? 0.5 : 1}; i.value=Math.round((parseFloat(i.value)+step)*10)/10">+</button>
+                        </div>
+                    </div>
                     <button class="qv-add-btn" onclick="qvAddToCart(${p.id})">Add to Bag</button>
                     ${p.policies && (p.policies.shippingInfo || p.policies.returnPolicy) ? `<div class="qv-policies">${p.policies.shippingInfo?`<div><i class="fas fa-truck"></i>${p.policies.shippingInfo}</div>`:''}${p.policies.returnPolicy?`<div><i class="fas fa-undo"></i>${p.policies.returnPolicy}</div>`:''}</div>` : ''}
                 </div>`;
@@ -584,9 +599,15 @@
             const controller = new AbortController();
             setTimeout(() => controller.abort(), 5000);
             try {
-                const res = await fetch(`${API_URL}/products`, { signal: controller.signal });
-                if (!res.ok) throw new Error('API failed');
-                allProducts = await res.json();
+                const prodRes = await fetch(`${API_URL}/products`, { signal: controller.signal });
+                if (prodRes && prodRes.ok) {
+                    allProducts = await prodRes.json();
+                }
+
+                // If still empty, use everything from local
+                if (!allProducts || allProducts.length === 0) {
+                    allProducts = window.localProducts || [];
+                }
             } catch(e) {
                 console.warn("Falling back to local data:", e.message);
                 allProducts = window.localProducts || [];

@@ -1,20 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SAAHNA | Luxury Personalised Fashion Boutique</title>
-    <meta name="description" content="SAAHNA - Tailored clothing solutions for both men and women. Luxury boutique in Vijayawada offering fusion, ethnic, and western wear.">
+    <meta name="description"
+        content="SAAHNA - Tailored clothing solutions for both men and women. Luxury boutique in Vijayawada offering fusion, ethnic, and western wear.">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
-        .p-badge-oos { background: #555 !important; color: #fff !important; }
-        .oos-card img { filter: grayscale(0.8) opacity(0.7); }
-        .oos-card::after { content: 'OUT OF STOCK'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.4); padding: 0.4rem 0.8rem; border: 2px solid rgba(255,255,255,0.8); border-radius: 8px; pointer-events: none; z-index: 5; text-shadow: 0 0 10px rgba(0,0,0,0.5); letter-spacing: 2px; }
-        .oos-card .quick-view-btn { display: none !important; }
+        .p-badge-oos {
+            background: #555 !important;
+            color: #fff !important;
+        }
+
+        .oos-card img {
+            filter: grayscale(0.8) opacity(0.7);
+        }
+
+        .oos-card::after {
+            content: 'OUT OF STOCK';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(0, 0, 0, 0.4);
+            padding: 0.4rem 0.8rem;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            pointer-events: none;
+            z-index: 5;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .oos-card .quick-view-btn {
+            display: none !important;
+        }
     </style>
 </head>
+
 <body>
 
     <!-- NAVIGATION -->
@@ -29,9 +60,11 @@
                 <li><a href="contact.html">Contact</a></li>
             </ul>
             <div class="nav-icons">
-                <a href="wishlist.html" class="wishlist-icon" title="Wishlist" style="position: relative; margin-right: 15px;">
+                <a href="wishlist.html" class="wishlist-icon" title="Wishlist"
+                    style="position: relative; margin-right: 15px;">
                     <i class="far fa-heart"></i>
-                    <span class="wishlist-count" style="position: absolute; top: -8px; right: -10px; background: var(--primary-vivid); color: white; font-size: 0.65rem; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600;">0</span>
+                    <span class="wishlist-count"
+                        style="position: absolute; top: -8px; right: -10px; background: var(--primary-vivid); color: white; font-size: 0.65rem; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600;">0</span>
                 </a>
                 <div class="cart-icon" id="cartBtn">
                     <i class="fas fa-shopping-bag"></i>
@@ -42,7 +75,8 @@
     </nav>
 
     <!-- HERO SECTION — PREMIUM -->
-    <section id="heroSection" style="position: relative; width: 100%; height: 100vh; min-height: 700px; overflow: hidden; background: #0a0a0b;">
+    <section id="heroSection"
+        style="position: relative; width: 100%; height: 100vh; min-height: 700px; overflow: hidden; background: #0a0a0b;">
 
         <!-- Full-bleed background image with parallax -->
         <div id="heroBg" style="
@@ -64,13 +98,16 @@
         );"></div>
 
         <!-- Gold shimmer line — top -->
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent 0%, #D4AF37 40%, #FF0055 60%, transparent 100%); opacity: 0.7;"></div>
+        <div
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent 0%, #D4AF37 40%, #FF0055 60%, transparent 100%); opacity: 0.7;">
+        </div>
 
         <!-- Floating dust particles -->
         <canvas id="heroParticles" style="position: absolute; inset: 0; pointer-events: none; z-index: 1;"></canvas>
 
         <!-- Content -->
-        <div class="container" style="position: relative; z-index: 2; height: 100%; display: flex; align-items: center;">
+        <div class="container"
+            style="position: relative; z-index: 2; height: 100%; display: flex; align-items: center;">
             <div style="max-width: 700px; padding-top: 80px;">
 
                 <!-- Eyebrow label -->
@@ -84,8 +121,11 @@
                     opacity: 0; transform: translateY(20px);
                     transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
                 ">
-                    <span style="width: 6px; height: 6px; background: #D4AF37; border-radius: 50%; display: inline-block; animation: pulse-dot 2s infinite;"></span>
-                    <span style="font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; color: #D4AF37; font-weight: 600;">Luxury Personalised Fashion</span>
+                    <span
+                        style="width: 6px; height: 6px; background: #D4AF37; border-radius: 50%; display: inline-block; animation: pulse-dot 2s infinite;"></span>
+                    <span
+                        style="font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; color: #D4AF37; font-weight: 600;">Luxury
+                        Personalised Fashion</span>
                 </div>
 
                 <!-- Main headline -->
@@ -120,7 +160,8 @@
                     opacity: 0; transform: translateY(20px);
                     transition: opacity 0.9s ease 0.65s, transform 0.9s ease 0.65s;
                 ">
-                    Exquisite tailoring for the discerning individual. Experience the pinnacle of personalised luxury fashion — crafted in Vijayawada, worn worldwide.
+                    Exquisite tailoring for the discerning individual. Experience the pinnacle of personalised luxury
+                    fashion — crafted in Vijayawada, worn worldwide.
                 </p>
 
                 <!-- CTAs -->
@@ -145,7 +186,7 @@
                         box-shadow: 0 8px 30px rgba(212,175,55,0.35);
                         animation: goldShimmer 4s linear infinite;
                     " onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 16px 40px rgba(212,175,55,0.5)'"
-                       onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 8px 30px rgba(212,175,55,0.35)'">
+                        onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 8px 30px rgba(212,175,55,0.35)'">
                         Explore Collection
                         <i class="fas fa-arrow-right" style="font-size: 0.75rem;"></i>
                     </a>
@@ -164,7 +205,7 @@
                         backdrop-filter: blur(10px);
                         transition: all 0.4s ease;
                     " onmouseover="this.style.background='rgba(255,255,255,0.18)';this.style.transform='translateY(-4px)'"
-                       onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.transform='translateY(0)'">
+                        onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.transform='translateY(0)'">
                         Book Consultation
                     </a>
                 </div>
@@ -177,15 +218,21 @@
                 ">
                     <div style="display: flex; align-items: center; gap: 0.6rem;">
                         <i class="fas fa-scissors" style="color: #D4AF37; font-size: 0.9rem;"></i>
-                        <span style="font-size: 0.72rem; color: rgba(255,255,255,0.55); letter-spacing: 1.5px; text-transform: uppercase;">Bespoke Tailoring</span>
+                        <span
+                            style="font-size: 0.72rem; color: rgba(255,255,255,0.55); letter-spacing: 1.5px; text-transform: uppercase;">Bespoke
+                            Tailoring</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 0.6rem;">
                         <i class="fas fa-gem" style="color: #D4AF37; font-size: 0.9rem;"></i>
-                        <span style="font-size: 0.72rem; color: rgba(255,255,255,0.55); letter-spacing: 1.5px; text-transform: uppercase;">Premium Fabrics</span>
+                        <span
+                            style="font-size: 0.72rem; color: rgba(255,255,255,0.55); letter-spacing: 1.5px; text-transform: uppercase;">Premium
+                            Fabrics</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 0.6rem;">
                         <i class="fas fa-star" style="color: #D4AF37; font-size: 0.9rem;"></i>
-                        <span style="font-size: 0.72rem; color: rgba(255,255,255,0.55); letter-spacing: 1.5px; text-transform: uppercase;">Since 2019</span>
+                        <span
+                            style="font-size: 0.72rem; color: rgba(255,255,255,0.55); letter-spacing: 1.5px; text-transform: uppercase;">Since
+                            2019</span>
                     </div>
                 </div>
             </div>
@@ -203,15 +250,21 @@
             transition: opacity 1s ease 0.6s, transform 1s ease 0.6s;
         ">
             <!-- Gold corner accents -->
-            <div style="position: absolute; top: -12px; left: -12px; width: 40px; height: 40px; border-top: 2px solid #D4AF37; border-left: 2px solid #D4AF37; border-radius: 4px 0 0 0; z-index: 5;"></div>
-            <div style="position: absolute; top: -12px; right: -12px; width: 40px; height: 40px; border-top: 2px solid #D4AF37; border-right: 2px solid #D4AF37; border-radius: 0 4px 0 0; z-index: 5;"></div>
-            <div style="position: absolute; bottom: -12px; left: -12px; width: 40px; height: 40px; border-bottom: 2px solid #D4AF37; border-left: 2px solid #D4AF37; border-radius: 0 0 0 4px; z-index: 5;"></div>
-            <div style="position: absolute; bottom: -12px; right: -12px; width: 40px; height: 40px; border-bottom: 2px solid #D4AF37; border-right: 2px solid #D4AF37; border-radius: 0 0 4px 0; z-index: 5;"></div>
+            <div
+                style="position: absolute; top: -12px; left: -12px; width: 40px; height: 40px; border-top: 2px solid #D4AF37; border-left: 2px solid #D4AF37; border-radius: 4px 0 0 0; z-index: 5;">
+            </div>
+            <div
+                style="position: absolute; top: -12px; right: -12px; width: 40px; height: 40px; border-top: 2px solid #D4AF37; border-right: 2px solid #D4AF37; border-radius: 0 4px 0 0; z-index: 5;">
+            </div>
+            <div
+                style="position: absolute; bottom: -12px; left: -12px; width: 40px; height: 40px; border-bottom: 2px solid #D4AF37; border-left: 2px solid #D4AF37; border-radius: 0 0 0 4px; z-index: 5;">
+            </div>
+            <div
+                style="position: absolute; bottom: -12px; right: -12px; width: 40px; height: 40px; border-bottom: 2px solid #D4AF37; border-right: 2px solid #D4AF37; border-radius: 0 0 4px 0; z-index: 5;">
+            </div>
 
             <!-- Main portrait image — elegant saree model -->
-            <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=90&w=900"
-                 alt="Saahna Couture — Luxury Saree"
-                 style="
+            <img src="uploads/prod_1778438940521.png" alt="Saahna Couture — Luxury Saree" style="
                     width: 100%;
                     aspect-ratio: 3/4;
                     object-fit: cover;
@@ -241,7 +294,9 @@
                 display: flex; align-items: center; gap: 0.5rem;
             ">
                 <div style="width: 6px; height: 6px; background: #D4AF37; border-radius: 50%;"></div>
-                <span style="font-size: 0.62rem; color: rgba(255,255,255,0.75); letter-spacing: 2.5px; text-transform: uppercase; font-weight: 600;">Saahna Couture</span>
+                <span
+                    style="font-size: 0.62rem; color: rgba(255,255,255,0.75); letter-spacing: 2.5px; text-transform: uppercase; font-weight: 600;">Saahna
+                    Couture</span>
             </div>
 
             <!-- Floating small image — top left -->
@@ -258,9 +313,8 @@
                 z-index: 4;
                 animation: floatA 5s ease-in-out infinite;
             ">
-                <img id="heroFloat1" src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=85&w=300"
-                     alt="Velvet Dress"
-                     style="width:100%; height:100%; object-fit:cover; object-position: center top; filter: saturate(1.1);">
+                <img id="heroFloat1" src="uploads/prod_1778438971269.jpeg" alt="Velvet Dress"
+                    style="width:100%; height:100%; object-fit:cover; object-position: center top; filter: saturate(1.1);">
             </div>
 
             <!-- Floating small image — bottom right -->
@@ -277,19 +331,33 @@
                 z-index: 4;
                 animation: floatB 6s ease-in-out infinite;
             ">
-                <img id="heroFloat2" src="https://images.unsplash.com/photo-1622290319146-7b63fd48a609?auto=format&fit=crop&q=85&w=300"
-                     alt="Designer Frock"
-                     style="width:100%; height:100%; object-fit:cover; object-position: center top; filter: saturate(1.1);">
+                <img id="heroFloat2" src="uploads/prod_1778439075485.jpeg" alt="Designer Frock"
+                    style="width:100%; height:100%; object-fit:cover; object-position: center top; filter: saturate(1.1);">
             </div>
 
             <style>
                 @keyframes floatA {
-                    0%, 100% { transform: translateY(0px) rotate(-2deg); }
-                    50%       { transform: translateY(-8px) rotate(-2deg); }
+
+                    0%,
+                    100% {
+                        transform: translateY(0px) rotate(-2deg);
+                    }
+
+                    50% {
+                        transform: translateY(-8px) rotate(-2deg);
+                    }
                 }
+
                 @keyframes floatB {
-                    0%, 100% { transform: translateY(0px) rotate(2deg); }
-                    50%       { transform: translateY(-10px) rotate(2deg); }
+
+                    0%,
+                    100% {
+                        transform: translateY(0px) rotate(2deg);
+                    }
+
+                    50% {
+                        transform: translateY(-10px) rotate(2deg);
+                    }
                 }
             </style>
 
@@ -307,8 +375,12 @@
                 white-space: nowrap;
                 z-index: 6;
             ">
-                <div style="font-size: 1.6rem; font-weight: 700; color: #D4AF37; font-family: 'Playfair Display', serif; line-height: 1;">200+</div>
-                <div style="font-size: 0.65rem; color: rgba(255,255,255,0.5); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px;">Designs</div>
+                <div
+                    style="font-size: 1.6rem; font-weight: 700; color: #D4AF37; font-family: 'Playfair Display', serif; line-height: 1;">
+                    200+</div>
+                <div
+                    style="font-size: 0.65rem; color: rgba(255,255,255,0.5); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px;">
+                    Designs</div>
             </div>
 
             <!-- Floating review pill -->
@@ -343,45 +415,95 @@
             z-index: 2; opacity: 0.6;
             animation: fadeInUp 1s ease 1.5s both;
         ">
-            <span style="font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.5);">Scroll</span>
-            <div style="width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(212,175,55,0.8), transparent); animation: scrollLine 2s ease-in-out infinite;"></div>
+            <span
+                style="font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.5);">Scroll</span>
+            <div
+                style="width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(212,175,55,0.8), transparent); animation: scrollLine 2s ease-in-out infinite;">
+            </div>
         </div>
 
         <!-- Gold shimmer line — bottom -->
-        <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent 0%, #D4AF37 50%, transparent 100%); opacity: 0.3;"></div>
+        <div
+            style="position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent 0%, #D4AF37 50%, transparent 100%); opacity: 0.3;">
+        </div>
     </section>
 
     <style>
         @keyframes goldShimmer {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
+            0% {
+                background-position: 0% center;
+            }
+
+            100% {
+                background-position: 200% center;
+            }
         }
+
         @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.7); }
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(0.7);
+            }
         }
+
         @keyframes scrollLine {
-            0% { transform: scaleY(0); transform-origin: top; }
-            50% { transform: scaleY(1); transform-origin: top; }
-            51% { transform: scaleY(1); transform-origin: bottom; }
-            100% { transform: scaleY(0); transform-origin: bottom; }
+            0% {
+                transform: scaleY(0);
+                transform-origin: top;
+            }
+
+            50% {
+                transform: scaleY(1);
+                transform-origin: top;
+            }
+
+            51% {
+                transform: scaleY(1);
+                transform-origin: bottom;
+            }
+
+            100% {
+                transform: scaleY(0);
+                transform-origin: bottom;
+            }
         }
+
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateX(-50%) translateY(10px); }
-            to { opacity: 0.6; transform: translateX(-50%) translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(10px);
+            }
+
+            to {
+                opacity: 0.6;
+                transform: translateX(-50%) translateY(0);
+            }
         }
+
         @media (max-width: 992px) {
-            #heroFrame { display: none; }
+            #heroFrame {
+                display: none;
+            }
         }
+
         @media (max-width: 768px) {
-            #heroSection { height: 100svh; }
+            #heroSection {
+                height: 100svh;
+            }
         }
     </style>
 
     <script>
         // Animate hero elements on load
         window.addEventListener('DOMContentLoaded', () => {
-            const els = ['heroEyebrow','heroHeadline','heroSub','heroCtas','heroTrust','heroFrame'];
+            const els = ['heroEyebrow', 'heroHeadline', 'heroSub', 'heroCtas', 'heroTrust', 'heroFrame'];
             els.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) {
@@ -403,7 +525,7 @@
         }, { passive: true });
 
         // Floating particles
-        (function() {
+        (function () {
             const canvas = document.getElementById('heroParticles');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
@@ -450,99 +572,196 @@
     </script>
 
     <!-- SIGNATURE COLLECTIONS — 4 CARD GRID -->
-    <section class="new-arrivals" id="signatureSection" style="padding: 3rem 0 3rem; background: #faf9f6; position: relative; overflow: hidden;">
-        <div style="position: absolute; top: -10%; left: -5%; width: 40%; height: 60%; background: radial-gradient(circle, rgba(255,0,85,0.03) 0%, transparent 70%); pointer-events: none;"></div>
+    <section class="new-arrivals" id="signatureSection"
+        style="padding: 3rem 0 3rem; background: #faf9f6; position: relative; overflow: hidden;">
+        <div
+            style="position: absolute; top: -10%; left: -5%; width: 40%; height: 60%; background: radial-gradient(circle, rgba(255,0,85,0.03) 0%, transparent 70%); pointer-events: none;">
+        </div>
         <div class="container" style="position: relative; z-index: 2;">
             <!-- Section header -->
             <div style="text-align: center; margin-bottom: 3rem;">
-                <h2 style="font-size: clamp(2rem, 4vw, 2.8rem); font-family: 'Playfair Display', serif; background: linear-gradient(135deg, #FF0055, #D4AF37); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.6rem; letter-spacing: -0.5px;">Signature Collections</h2>
-                <div style="width: 40px; height: 2px; background: linear-gradient(90deg, #FF0055, #D4AF37); margin: 0 auto 0.8rem;"></div>
-                <p style="color: var(--text-muted); font-size: 0.72rem; letter-spacing: 4px; text-transform: uppercase; font-weight: 600;">Curated Excellence</p>
+                <h2
+                    style="font-size: clamp(2rem, 4vw, 2.8rem); font-family: 'Playfair Display', serif; background: linear-gradient(135deg, #FF0055, #D4AF37); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.6rem; letter-spacing: -0.5px;">
+                    Signature Collections</h2>
+                <div
+                    style="width: 40px; height: 2px; background: linear-gradient(90deg, #FF0055, #D4AF37); margin: 0 auto 0.8rem;">
+                </div>
+                <p
+                    style="color: var(--text-muted); font-size: 0.72rem; letter-spacing: 4px; text-transform: uppercase; font-weight: 600;">
+                    Curated Excellence</p>
             </div>
             <!-- 4-card grid — populated dynamically from database -->
-            <div id="homeProductGrid" style="display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; margin-bottom:2.5rem;">
+            <div id="homeProductGrid"
+                style="display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; margin-bottom:2.5rem;">
                 <!-- Loading skeleton -->
-                <div style="border-radius:16px;overflow:hidden;background:white;border:1px solid #f0f0f0;box-shadow:0 4px 20px rgba(0,0,0,0.04);">
-                    <div style="height:320px;background:linear-gradient(90deg,#f0ede8 25%,#faf8f5 50%,#f0ede8 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;"></div>
-                    <div style="padding:1.4rem 1.2rem;"><div style="height:10px;background:#f0ede8;border-radius:4px;margin-bottom:8px;width:60%;"></div><div style="height:14px;background:#f0ede8;border-radius:4px;margin-bottom:8px;"></div><div style="height:12px;background:#f0ede8;border-radius:4px;width:40%;margin:0 auto;"></div></div>
+                <div
+                    style="border-radius:16px;overflow:hidden;background:white;border:1px solid #f0f0f0;box-shadow:0 4px 20px rgba(0,0,0,0.04);">
+                    <div
+                        style="height:320px;background:linear-gradient(90deg,#f0ede8 25%,#faf8f5 50%,#f0ede8 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;">
+                    </div>
+                    <div style="padding:1.4rem 1.2rem;">
+                        <div style="height:10px;background:#f0ede8;border-radius:4px;margin-bottom:8px;width:60%;">
+                        </div>
+                        <div style="height:14px;background:#f0ede8;border-radius:4px;margin-bottom:8px;"></div>
+                        <div style="height:12px;background:#f0ede8;border-radius:4px;width:40%;margin:0 auto;"></div>
+                    </div>
                 </div>
-                <div style="border-radius:16px;overflow:hidden;background:white;border:1px solid #f0f0f0;box-shadow:0 4px 20px rgba(0,0,0,0.04);">
-                    <div style="height:320px;background:linear-gradient(90deg,#f0ede8 25%,#faf8f5 50%,#f0ede8 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;animation-delay:.15s;"></div>
-                    <div style="padding:1.4rem 1.2rem;"><div style="height:10px;background:#f0ede8;border-radius:4px;margin-bottom:8px;width:60%;"></div><div style="height:14px;background:#f0ede8;border-radius:4px;margin-bottom:8px;"></div><div style="height:12px;background:#f0ede8;border-radius:4px;width:40%;margin:0 auto;"></div></div>
+                <div
+                    style="border-radius:16px;overflow:hidden;background:white;border:1px solid #f0f0f0;box-shadow:0 4px 20px rgba(0,0,0,0.04);">
+                    <div
+                        style="height:320px;background:linear-gradient(90deg,#f0ede8 25%,#faf8f5 50%,#f0ede8 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;animation-delay:.15s;">
+                    </div>
+                    <div style="padding:1.4rem 1.2rem;">
+                        <div style="height:10px;background:#f0ede8;border-radius:4px;margin-bottom:8px;width:60%;">
+                        </div>
+                        <div style="height:14px;background:#f0ede8;border-radius:4px;margin-bottom:8px;"></div>
+                        <div style="height:12px;background:#f0ede8;border-radius:4px;width:40%;margin:0 auto;"></div>
+                    </div>
                 </div>
-                <div style="border-radius:16px;overflow:hidden;background:white;border:1px solid #f0f0f0;box-shadow:0 4px 20px rgba(0,0,0,0.04);">
-                    <div style="height:320px;background:linear-gradient(90deg,#f0ede8 25%,#faf8f5 50%,#f0ede8 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;animation-delay:.3s;"></div>
-                    <div style="padding:1.4rem 1.2rem;"><div style="height:10px;background:#f0ede8;border-radius:4px;margin-bottom:8px;width:60%;"></div><div style="height:14px;background:#f0ede8;border-radius:4px;margin-bottom:8px;"></div><div style="height:12px;background:#f0ede8;border-radius:4px;width:40%;margin:0 auto;"></div></div>
+                <div
+                    style="border-radius:16px;overflow:hidden;background:white;border:1px solid #f0f0f0;box-shadow:0 4px 20px rgba(0,0,0,0.04);">
+                    <div
+                        style="height:320px;background:linear-gradient(90deg,#f0ede8 25%,#faf8f5 50%,#f0ede8 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;animation-delay:.3s;">
+                    </div>
+                    <div style="padding:1.4rem 1.2rem;">
+                        <div style="height:10px;background:#f0ede8;border-radius:4px;margin-bottom:8px;width:60%;">
+                        </div>
+                        <div style="height:14px;background:#f0ede8;border-radius:4px;margin-bottom:8px;"></div>
+                        <div style="height:12px;background:#f0ede8;border-radius:4px;width:40%;margin:0 auto;"></div>
+                    </div>
                 </div>
-                <div style="border-radius:16px;overflow:hidden;background:white;border:1px solid #f0f0f0;box-shadow:0 4px 20px rgba(0,0,0,0.04);">
-                    <div style="height:320px;background:linear-gradient(90deg,#f0ede8 25%,#faf8f5 50%,#f0ede8 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;animation-delay:.45s;"></div>
-                    <div style="padding:1.4rem 1.2rem;"><div style="height:10px;background:#f0ede8;border-radius:4px;margin-bottom:8px;width:60%;"></div><div style="height:14px;background:#f0ede8;border-radius:4px;margin-bottom:8px;"></div><div style="height:12px;background:#f0ede8;border-radius:4px;width:40%;margin:0 auto;"></div></div>
+                <div
+                    style="border-radius:16px;overflow:hidden;background:white;border:1px solid #f0f0f0;box-shadow:0 4px 20px rgba(0,0,0,0.04);">
+                    <div
+                        style="height:320px;background:linear-gradient(90deg,#f0ede8 25%,#faf8f5 50%,#f0ede8 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;animation-delay:.45s;">
+                    </div>
+                    <div style="padding:1.4rem 1.2rem;">
+                        <div style="height:10px;background:#f0ede8;border-radius:4px;margin-bottom:8px;width:60%;">
+                        </div>
+                        <div style="height:14px;background:#f0ede8;border-radius:4px;margin-bottom:8px;"></div>
+                        <div style="height:12px;background:#f0ede8;border-radius:4px;width:40%;margin:0 auto;"></div>
+                    </div>
                 </div>
             </div>
             <style>
-                @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+                @keyframes shimmer {
+                    0% {
+                        background-position: 200% 0
+                    }
+
+                    100% {
+                        background-position: -200% 0
+                    }
+                }
             </style>
 
             <!-- View All Collections -->
             <div style="text-align:center; margin-top:0.5rem;">
-                <a href="products.html" style="display:inline-flex; align-items:center; gap:0.6rem; padding:0.9rem 2.5rem; border:1px solid #ddd; color:#1a1a1a; font-weight:600; border-radius:50px; letter-spacing:1.5px; font-size:0.75rem; text-decoration:none; text-transform:uppercase; transition:0.3s;"
-                   onmouseover="this.style.borderColor='#D4AF37';this.style.color='#D4AF37'"
-                   onmouseout="this.style.borderColor='#ddd';this.style.color='#1a1a1a'">
+                <a href="products.html"
+                    style="display:inline-flex; align-items:center; gap:0.6rem; padding:0.9rem 2.5rem; border:1px solid #ddd; color:#1a1a1a; font-weight:600; border-radius:50px; letter-spacing:1.5px; font-size:0.75rem; text-decoration:none; text-transform:uppercase; transition:0.3s;"
+                    onmouseover="this.style.borderColor='#D4AF37';this.style.color='#D4AF37'"
+                    onmouseout="this.style.borderColor='#ddd';this.style.color='#1a1a1a'">
                     View All Collections &nbsp;<i class="fas fa-arrow-right" style="font-size:0.7rem;"></i>
                 </a>
             </div>
         </div>
         <style>
-            .sig-card:hover { transform:translateY(-6px); box-shadow:0 16px 40px rgba(0,0,0,0.09) !important; }
-            .sig-card:hover img { transform:scale(1.06); }
-            @media (max-width:1024px) { #homeProductGrid { grid-template-columns:repeat(2,1fr) !important; } }
-            @media (max-width:540px)  { #homeProductGrid { grid-template-columns:1fr !important; } }
+            .sig-card:hover {
+                transform: translateY(-6px);
+                box-shadow: 0 16px 40px rgba(0, 0, 0, 0.09) !important;
+            }
+
+            .sig-card:hover img {
+                transform: scale(1.06);
+            }
+
+            @media (max-width:1024px) {
+                #homeProductGrid {
+                    grid-template-columns: repeat(2, 1fr) !important;
+                }
+            }
+
+            @media (max-width:540px) {
+                #homeProductGrid {
+                    grid-template-columns: 1fr !important;
+                }
+            }
         </style>
     </section>
 
+    </section>
+
     <!-- BRAND INTRO -->
-    <section class="brand-intro" style="padding: 5rem 0 4rem; text-align: center; background: #0A0A0B; color: white; position: relative; overflow: hidden;">
+    <section class="brand-intro"
+        style="padding: 5rem 0 4rem; text-align: center; background: #0A0A0B; color: white; position: relative; overflow: hidden;">
         <div class="container">
-            <h2 id="brandTitle" class="text-gold-gradient" style="font-size: 3rem; margin-bottom: 1.2rem; letter-spacing: 4px;">Luxury Redefined</h2>
-            <p id="brandText" style="max-width: 800px; margin: 0 auto 3rem; font-size: 1.1rem; color: #aaa; line-height: 1.9; font-weight: 300;">
-                Founded in 2019 by <span style="color: var(--primary-vivid); font-weight: 600;">Ashitha Yejju</span>, SAAHNA is the embodiment of bespoke elegance. From intricate fabric sourcing to master-grade tailoring, we create a fashion ecosystem that honors your individuality.
+            <h2 id="brandTitle" class="text-gold-gradient"
+                style="font-size: 3rem; margin-bottom: 1.2rem; letter-spacing: 4px;">Luxury Redefined</h2>
+            <p id="brandText"
+                style="max-width: 800px; margin: 0 auto 3rem; font-size: 1.1rem; color: #aaa; line-height: 1.9; font-weight: 300;">
+                Founded in 2019 by <span style="color: var(--primary-vivid); font-weight: 600;">Ashitha Yejju</span>,
+                SAAHNA is the embodiment of bespoke elegance. From intricate fabric sourcing to master-grade tailoring,
+                we create a fashion ecosystem that honors your individuality.
             </p>
-            
+
             <!-- Instagram Video Grid -->
             <div class="video-grid">
-                <div id="brandVideo1Container" style="aspect-ratio: 9/16; background: #222; border-radius: 20px; overflow: hidden; position: relative; cursor: pointer;">
-                    <video id="brandVideo1" autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-fashion-model-walking-in-front-of-a-white-wall-34255-large.mp4" type="video/mp4">
+                <div id="brandVideo1Container"
+                    style="aspect-ratio: 9/16; background: #222; border-radius: 20px; overflow: hidden; position: relative; cursor: pointer;">
+                    <video id="brandVideo1" autoplay muted loop playsinline
+                        style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
+                        <source src="videos/saahna%20video.mp4" type="video/mp4">
                     </video>
                     <div style="position: absolute; bottom: 20px; left: 20px;"><i class="fab fa-instagram"></i></div>
-                    <button class="v-mute-btn" onclick="event.stopPropagation(); toggleVidMute(1)" style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5;"><i class="fas fa-volume-mute"></i></button>
+                    <button class="v-mute-btn" onclick="event.stopPropagation(); toggleVidMute(1)"
+                        style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5;"><i
+                            class="fas fa-volume-mute"></i></button>
                 </div>
-                <div id="brandVideo2Container" style="aspect-ratio: 9/16; background: #222; border-radius: 20px; overflow: hidden; position: relative; cursor: pointer;">
-                    <video id="brandVideo2" autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-beautiful-woman-posing-with-a-red-background-34257-large.mp4" type="video/mp4">
+                <div id="brandVideo2Container"
+                    style="aspect-ratio: 9/16; background: #222; border-radius: 20px; overflow: hidden; position: relative; cursor: pointer;">
+                    <video id="brandVideo2" autoplay muted loop playsinline
+                        style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
+                        <source
+                            src="https://assets.mixkit.co/videos/preview/mixkit-beautiful-woman-posing-with-a-red-background-34257-large.mp4"
+                            type="video/mp4">
                     </video>
                     <div style="position: absolute; bottom: 20px; left: 20px;"><i class="fab fa-instagram"></i></div>
-                    <button class="v-mute-btn" onclick="event.stopPropagation(); toggleVidMute(2)" style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5;"><i class="fas fa-volume-mute"></i></button>
+                    <button class="v-mute-btn" onclick="event.stopPropagation(); toggleVidMute(2)"
+                        style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5;"><i
+                            class="fas fa-volume-mute"></i></button>
                 </div>
-                <div id="brandVideo3Container" style="aspect-ratio: 9/16; background: #222; border-radius: 20px; overflow: hidden; position: relative; cursor: pointer;">
-                    <video id="brandVideo3" autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-with-red-dress-and-hat-posing-34258-large.mp4" type="video/mp4">
+                <div id="brandVideo3Container"
+                    style="aspect-ratio: 9/16; background: #222; border-radius: 20px; overflow: hidden; position: relative; cursor: pointer;">
+                    <video id="brandVideo3" autoplay muted loop playsinline
+                        style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
+                        <source
+                            src="https://assets.mixkit.co/videos/preview/mixkit-woman-with-red-dress-and-hat-posing-34258-large.mp4"
+                            type="video/mp4">
                     </video>
                     <div style="position: absolute; bottom: 20px; left: 20px;"><i class="fab fa-instagram"></i></div>
-                    <button class="v-mute-btn" onclick="event.stopPropagation(); toggleVidMute(3)" style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5;"><i class="fas fa-volume-mute"></i></button>
+                    <button class="v-mute-btn" onclick="event.stopPropagation(); toggleVidMute(3)"
+                        style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5;"><i
+                            class="fas fa-volume-mute"></i></button>
                 </div>
-                <div id="brandVideo4Container" style="aspect-ratio: 9/16; background: #222; border-radius: 20px; overflow: hidden; position: relative; cursor: pointer;">
-                    <video id="brandVideo4" autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-in-white-dress-walking-slowly-34259-large.mp4" type="video/mp4">
+                <div id="brandVideo4Container"
+                    style="aspect-ratio: 9/16; background: #222; border-radius: 20px; overflow: hidden; position: relative; cursor: pointer;">
+                    <video id="brandVideo4" autoplay muted loop playsinline
+                        style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
+                        <source
+                            src="https://assets.mixkit.co/videos/preview/mixkit-woman-in-white-dress-walking-slowly-34259-large.mp4"
+                            type="video/mp4">
                     </video>
                     <div style="position: absolute; bottom: 20px; left: 20px;"><i class="fab fa-instagram"></i></div>
-                    <button class="v-mute-btn" onclick="event.stopPropagation(); toggleVidMute(4)" style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5;"><i class="fas fa-volume-mute"></i></button>
+                    <button class="v-mute-btn" onclick="event.stopPropagation(); toggleVidMute(4)"
+                        style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5;"><i
+                            class="fas fa-volume-mute"></i></button>
                 </div>
             </div>
 
             <div style="display: flex; justify-content: center; gap: 2rem;">
                 <a href="about.html" class="btn btn-gold">Our Legacy</a>
-                <a href="custom.html" class="btn btn-outline" style="border-color: #444; color: white;">Custom Orders</a>
+                <a href="custom.html" class="btn btn-outline" style="border-color: #444; color: white;">Custom
+                    Orders</a>
             </div>
         </div>
     </section>
@@ -551,18 +770,21 @@
     <section class="reviews" style="padding: 4rem 0; background: var(--off-white);">
         <div class="container">
             <div style="text-align: center; margin-bottom: 2.5rem;">
-                <h2 class="text-gold-gradient" style="font-size: 2.5rem;">Client Testimonials</h2>
-                <p style="color: var(--text-muted); margin-top: 0.6rem;">What our esteemed clients say about their Saahna experience.</p>
+                <h2 class="text-gold-gradient" style="font-size: 2.5rem;">Happy Customers</h2>
+                <p style="color: var(--text-muted); margin-top: 0.6rem;">Hear from people who love our designs.</p>
             </div>
             <div class="review-grid">
                 <!-- Review 1 -->
                 <div class="testimonial-card">
                     <div class="stars">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                            class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
-                    <p class="quote">"Absolutely thrilled with my bespoke outfit! The fit was perfect and the fabric quality is unmatched. SAAHNA truly understands luxury tailoring."</p>
+                    <p class="quote">"Absolutely thrilled with my bespoke outfit! The fit was perfect and the fabric
+                        quality is unmatched. SAAHNA truly understands luxury tailoring."</p>
                     <div class="client-info">
-                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150" alt="Priya Reddy" class="client-img">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150"
+                            alt="Priya Reddy" class="client-img">
                         <div>
                             <h4>Priya Reddy</h4>
                             <p class="client-type">Verified Client</p>
@@ -573,11 +795,14 @@
                 <!-- Review 2 -->
                 <div class="testimonial-card">
                     <div class="stars">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                            class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
-                    <p class="quote">"The team at SAAHNA brought my dream dress to life. The intricate embroidery work is stunning and the customer service is top-notch."</p>
+                    <p class="quote">"The team at SAAHNA brought my dream dress to life. The intricate embroidery work
+                        is stunning and the customer service is top-notch."</p>
                     <div class="client-info">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150" alt="Anjali Sharma" class="client-img">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150"
+                            alt="Anjali Sharma" class="client-img">
                         <div>
                             <h4>Anjali Sharma</h4>
                             <p class="client-type">Verified Client</p>
@@ -588,11 +813,14 @@
                 <!-- Review 3 -->
                 <div class="testimonial-card">
                     <div class="stars">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                            class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
-                    <p class="quote">"I ordered a couple's combo for my anniversary. Not only was it delivered on time, but it fit both of us flawlessly. Highly recommend!"</p>
+                    <p class="quote">"I ordered a couple's combo for my anniversary. Not only was it delivered on time,
+                        but it fit both of us flawlessly. Highly recommend!"</p>
                     <div class="client-info">
-                        <img src="https://images.unsplash.com/photo-1516585427167-9f4af9627e6c?auto=format&fit=crop&q=80&w=150" alt="Rohan & Sneha" class="client-img">
+                        <img src="https://images.unsplash.com/photo-1516585427167-9f4af9627e6c?auto=format&fit=crop&q=80&w=150"
+                            alt="Rohan & Sneha" class="client-img">
                         <div>
                             <h4>Rohan & Sneha</h4>
                             <p class="client-type">Verified Clients</p>
@@ -610,22 +838,36 @@
         </div>
     </div>
 
-        <!-- PREMIUM FOOTER -->
+    <!-- PREMIUM FOOTER -->
     <footer style="background:#0A0A0B;color:#fff;position:relative;overflow:hidden;">
 
         <!-- Gold shimmer top line -->
-        <div style="width:100%;height:1px;background:linear-gradient(90deg,transparent,#D4AF37,transparent);opacity:.5;"></div>
+        <div
+            style="width:100%;height:1px;background:linear-gradient(90deg,transparent,#D4AF37,transparent);opacity:.5;">
+        </div>
 
         <!-- Newsletter strip -->
         <div style="border-bottom:1px solid rgba(255,255,255,.06);padding:3rem 0;">
-            <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;">
+            <div class="container"
+                style="display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;">
                 <div>
-                    <p style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#D4AF37;font-weight:600;margin-bottom:.5rem;">Stay in the loop</p>
-                    <h3 style="font-family:'Playfair Display',serif;font-size:1.6rem;color:#fff;font-weight:600;">Get exclusive offers &amp; new arrivals</h3>
+                    <p
+                        style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#D4AF37;font-weight:600;margin-bottom:.5rem;">
+                        Stay in the loop</p>
+                    <h3 style="font-family:'Playfair Display',serif;font-size:1.6rem;color:#fff;font-weight:600;">Get
+                        exclusive offers &amp; new arrivals</h3>
                 </div>
-                <form onsubmit="event.preventDefault();this.querySelector('input').value='';this.querySelector('button').textContent='Subscribed ✓';" style="display:flex;gap:.6rem;flex-wrap:wrap;">
-                    <input type="email" placeholder="Your email address" required style="padding:.85rem 1.4rem;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:rgba(255,255,255,.05);color:#fff;font-size:.85rem;font-family:'Inter',sans-serif;outline:none;min-width:260px;transition:.3s;" onfocus="this.style.borderColor='#D4AF37'" onblur="this.style.borderColor='rgba(255,255,255,.12)'">
-                    <button type="submit" style="padding:.85rem 2rem;background:linear-gradient(135deg,#D4AF37,#f5d97a,#D4AF37);background-size:200% auto;color:#0A0A0B;border:none;border-radius:10px;font-size:.78rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:.3s;white-space:nowrap;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Subscribe</button>
+                <form
+                    onsubmit="event.preventDefault();this.querySelector('input').value='';this.querySelector('button').textContent='Subscribed ✓';"
+                    style="display:flex;gap:.6rem;flex-wrap:wrap;">
+                    <input type="email" placeholder="Your email address" required
+                        style="padding:.85rem 1.4rem;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:rgba(255,255,255,.05);color:#fff;font-size:.85rem;font-family:'Inter',sans-serif;outline:none;min-width:260px;transition:.3s;"
+                        onfocus="this.style.borderColor='#D4AF37'"
+                        onblur="this.style.borderColor='rgba(255,255,255,.12)'">
+                    <button type="submit"
+                        style="padding:.85rem 2rem;background:linear-gradient(135deg,#D4AF37,#f5d97a,#D4AF37);background-size:200% auto;color:#0A0A0B;border:none;border-radius:10px;font-size:.78rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:.3s;white-space:nowrap;"
+                        onmouseover="this.style.transform='translateY(-2px)'"
+                        onmouseout="this.style.transform='translateY(0)'">Subscribe</button>
                 </form>
             </div>
         </div>
@@ -636,73 +878,162 @@
 
                 <!-- Brand col -->
                 <div>
-                    <a href="index.html" style="font-family:'Playfair Display',serif;font-size:2rem;letter-spacing:5px;color:#fff;text-decoration:none;font-weight:700;display:block;margin-bottom:1.2rem;">SAAHNA</a>
-                    <p style="font-size:.85rem;color:rgba(255,255,255,.45);line-height:1.8;margin-bottom:1.5rem;max-width:260px;">Luxury personalised fashion boutique in Vijayawada. Crafting bespoke elegance since 2019.</p>
+                    <a href="index.html"
+                        style="font-family:'Playfair Display',serif;font-size:2rem;letter-spacing:5px;color:#fff;text-decoration:none;font-weight:700;display:block;margin-bottom:1.2rem;">SAAHNA</a>
+                    <p
+                        style="font-size:.85rem;color:rgba(255,255,255,.45);line-height:1.8;margin-bottom:1.5rem;max-width:260px;">
+                        Luxury personalised fashion boutique in Vijayawada. Crafting bespoke elegance since 2019.</p>
                     <div style="display:flex;gap:.7rem;">
-                        <a href="https://instagram.com/saahna.sa" target="_blank" style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5);font-size:1rem;text-decoration:none;transition:.3s;" onmouseover="this.style.background='#D4AF37';this.style.color='#0A0A0B';this.style.borderColor='#D4AF37'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.color='rgba(255,255,255,.5)';this.style.borderColor='rgba(255,255,255,.08)'"><i class="fab fa-instagram"></i></a>
-                        <a href="#" target="_blank" style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5);font-size:1rem;text-decoration:none;transition:.3s;" onmouseover="this.style.background='#D4AF37';this.style.color='#0A0A0B';this.style.borderColor='#D4AF37'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.color='rgba(255,255,255,.5)';this.style.borderColor='rgba(255,255,255,.08)'"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" target="_blank" style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5);font-size:1rem;text-decoration:none;transition:.3s;" onmouseover="this.style.background='#D4AF37';this.style.color='#0A0A0B';this.style.borderColor='#D4AF37'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.color='rgba(255,255,255,.5)';this.style.borderColor='rgba(255,255,255,.08)'"><i class="fab fa-youtube"></i></a>
-                        <a href="#" target="_blank" style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5);font-size:1rem;text-decoration:none;transition:.3s;" onmouseover="this.style.background='#D4AF37';this.style.color='#0A0A0B';this.style.borderColor='#D4AF37'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.color='rgba(255,255,255,.5)';this.style.borderColor='rgba(255,255,255,.08)'"><i class="fab fa-pinterest"></i></a>
+                        <a href="https://instagram.com/saahna.sa" target="_blank"
+                            style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5);font-size:1rem;text-decoration:none;transition:.3s;"
+                            onmouseover="this.style.background='#D4AF37';this.style.color='#0A0A0B';this.style.borderColor='#D4AF37'"
+                            onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.color='rgba(255,255,255,.5)';this.style.borderColor='rgba(255,255,255,.08)'"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank"
+                            style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5);font-size:1rem;text-decoration:none;transition:.3s;"
+                            onmouseover="this.style.background='#D4AF37';this.style.color='#0A0A0B';this.style.borderColor='#D4AF37'"
+                            onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.color='rgba(255,255,255,.5)';this.style.borderColor='rgba(255,255,255,.08)'"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="#" target="_blank"
+                            style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5);font-size:1rem;text-decoration:none;transition:.3s;"
+                            onmouseover="this.style.background='#D4AF37';this.style.color='#0A0A0B';this.style.borderColor='#D4AF37'"
+                            onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.color='rgba(255,255,255,.5)';this.style.borderColor='rgba(255,255,255,.08)'"><i
+                                class="fab fa-youtube"></i></a>
+                        <a href="#" target="_blank"
+                            style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5);font-size:1rem;text-decoration:none;transition:.3s;"
+                            onmouseover="this.style.background='#D4AF37';this.style.color='#0A0A0B';this.style.borderColor='#D4AF37'"
+                            onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.color='rgba(255,255,255,.5)';this.style.borderColor='rgba(255,255,255,.08)'"><i
+                                class="fab fa-pinterest"></i></a>
                     </div>
                 </div>
 
                 <!-- Quick Links -->
                 <div>
-                    <h5 style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#D4AF37;font-weight:700;margin-bottom:1.5rem;">Navigate</h5>
+                    <h5
+                        style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#D4AF37;font-weight:700;margin-bottom:1.5rem;">
+                        Navigate</h5>
                     <ul style="list-style:none;display:flex;flex-direction:column;gap:.7rem;">
-                        <li><a href="index.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;display:flex;align-items:center;gap:.5rem;" onmouseover="this.style.color='#fff';this.style.paddingLeft='.3rem'" onmouseout="this.style.color='rgba(255,255,255,.5)';this.style.paddingLeft='0'">Home</a></li>
-                        <li><a href="about.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;display:flex;align-items:center;gap:.5rem;" onmouseover="this.style.color='#fff';this.style.paddingLeft='.3rem'" onmouseout="this.style.color='rgba(255,255,255,.5)';this.style.paddingLeft='0'">About Us</a></li>
-                        <li><a href="services.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;display:flex;align-items:center;gap:.5rem;" onmouseover="this.style.color='#fff';this.style.paddingLeft='.3rem'" onmouseout="this.style.color='rgba(255,255,255,.5)';this.style.paddingLeft='0'">Services</a></li>
-                        <li><a href="products.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;display:flex;align-items:center;gap:.5rem;" onmouseover="this.style.color='#fff';this.style.paddingLeft='.3rem'" onmouseout="this.style.color='rgba(255,255,255,.5)';this.style.paddingLeft='0'">Shop</a></li>
-                        <li><a href="custom.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;display:flex;align-items:center;gap:.5rem;" onmouseover="this.style.color='#fff';this.style.paddingLeft='.3rem'" onmouseout="this.style.color='rgba(255,255,255,.5)';this.style.paddingLeft='0'">Custom Orders</a></li>
-                        <li><a href="contact.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;display:flex;align-items:center;gap:.5rem;" onmouseover="this.style.color='#fff';this.style.paddingLeft='.3rem'" onmouseout="this.style.color='rgba(255,255,255,.5)';this.style.paddingLeft='0'">Contact</a></li>
+                        <li><a href="index.html"
+                                style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;display:flex;align-items:center;gap:.5rem;"
+                                onmouseover="this.style.color='#fff';this.style.paddingLeft='.3rem'"
+                                onmouseout="this.style.color='rgba(255,255,255,.5)';this.style.paddingLeft='0'">Home</a>
+                        </li>
+                        <li><a href="about.html"
+                                style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;display:flex;align-items:center;gap:.5rem;"
+                                onmouseover="this.style.color='#fff';this.style.paddingLeft='.3rem'"
+                                onmouseout="this.style.color='rgba(255,255,255,.5)';this.style.paddingLeft='0'">About
+                                Us</a></li>
+                        <li><a href="services.html"
+                                style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;display:flex;align-items:center;gap:.5rem;"
+                                onmouseover="this.style.color='#fff';this.style.paddingLeft='.3rem'"
+                                onmouseout="this.style.color='rgba(255,255,255,.5)';this.style.paddingLeft='0'">Services</a>
+                        </li>
+                        <li><a href="products.html"
+                                style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;display:flex;align-items:center;gap:.5rem;"
+                                onmouseover="this.style.color='#fff';this.style.paddingLeft='.3rem'"
+                                onmouseout="this.style.color='rgba(255,255,255,.5)';this.style.paddingLeft='0'">Shop</a>
+                        </li>
+                        <li><a href="custom.html"
+                                style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;display:flex;align-items:center;gap:.5rem;"
+                                onmouseover="this.style.color='#fff';this.style.paddingLeft='.3rem'"
+                                onmouseout="this.style.color='rgba(255,255,255,.5)';this.style.paddingLeft='0'">Custom
+                                Orders</a></li>
+                        <li><a href="contact.html"
+                                style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;display:flex;align-items:center;gap:.5rem;"
+                                onmouseover="this.style.color='#fff';this.style.paddingLeft='.3rem'"
+                                onmouseout="this.style.color='rgba(255,255,255,.5)';this.style.paddingLeft='0'">Contact</a>
+                        </li>
                     </ul>
                 </div>
 
                 <!-- Policies -->
                 <div>
-                    <h5 style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#D4AF37;font-weight:700;margin-bottom:1.5rem;">Policies</h5>
+                    <h5
+                        style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#D4AF37;font-weight:700;margin-bottom:1.5rem;">
+                        Policies</h5>
                     <ul style="list-style:none;display:flex;flex-direction:column;gap:.7rem;">
-                        <li><a href="refund-policy.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Refund Policy</a></li>
-                        <li><a href="shipping-policy.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Shipping Policy</a></li>
-                        <li><a href="privacy-policy.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Privacy Policy</a></li>
-                        <li><a href="terms.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Terms &amp; Conditions</a></li>
+                        <li><a href="refund-policy.html"
+                                style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;"
+                                onmouseover="this.style.color='#fff'"
+                                onmouseout="this.style.color='rgba(255,255,255,.5)'">Refund Policy</a></li>
+                        <li><a href="shipping-policy.html"
+                                style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;"
+                                onmouseover="this.style.color='#fff'"
+                                onmouseout="this.style.color='rgba(255,255,255,.5)'">Shipping Policy</a></li>
+                        <li><a href="privacy-policy.html"
+                                style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;"
+                                onmouseover="this.style.color='#fff'"
+                                onmouseout="this.style.color='rgba(255,255,255,.5)'">Privacy Policy</a></li>
+                        <li><a href="terms.html"
+                                style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;"
+                                onmouseover="this.style.color='#fff'"
+                                onmouseout="this.style.color='rgba(255,255,255,.5)'">Terms &amp; Conditions</a></li>
                     </ul>
                 </div>
 
                 <!-- Contact -->
                 <div>
-                    <h5 style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#D4AF37;font-weight:700;margin-bottom:1.5rem;">Contact</h5>
+                    <h5
+                        style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#D4AF37;font-weight:700;margin-bottom:1.5rem;">
+                        Contact</h5>
                     <div style="display:flex;flex-direction:column;gap:1rem;">
-                        <a href="tel:+919652926366" style="display:flex;align-items:flex-start;gap:.8rem;text-decoration:none;" onmouseover="this.querySelector('span').style.color='#fff'" onmouseout="this.querySelector('span').style.color='rgba(255,255,255,.5)'">
-                            <div style="width:32px;height:32px;border-radius:8px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-phone" style="font-size:.75rem;color:#D4AF37;"></i></div>
-                            <span style="font-size:.83rem;color:rgba(255,255,255,.5);line-height:1.5;transition:.3s;padding-top:.3rem;">+91 9652926366</span>
+                        <a href="tel:+919652926366"
+                            style="display:flex;align-items:flex-start;gap:.8rem;text-decoration:none;"
+                            onmouseover="this.querySelector('span').style.color='#fff'"
+                            onmouseout="this.querySelector('span').style.color='rgba(255,255,255,.5)'">
+                            <div
+                                style="width:32px;height:32px;border-radius:8px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="fas fa-phone" style="font-size:.75rem;color:#D4AF37;"></i></div>
+                            <span
+                                style="font-size:.83rem;color:rgba(255,255,255,.5);line-height:1.5;transition:.3s;padding-top:.3rem;">+91
+                                9652926366</span>
                         </a>
-                        <a href="mailto:saahna.sa@gmail.com" style="display:flex;align-items:flex-start;gap:.8rem;text-decoration:none;" onmouseover="this.querySelector('span').style.color='#fff'" onmouseout="this.querySelector('span').style.color='rgba(255,255,255,.5)'">
-                            <div style="width:32px;height:32px;border-radius:8px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-envelope" style="font-size:.75rem;color:#D4AF37;"></i></div>
-                            <span style="font-size:.83rem;color:rgba(255,255,255,.5);line-height:1.5;transition:.3s;padding-top:.3rem;">saahna.sa@gmail.com</span>
+                        <a href="mailto:saahna.sa@gmail.com"
+                            style="display:flex;align-items:flex-start;gap:.8rem;text-decoration:none;"
+                            onmouseover="this.querySelector('span').style.color='#fff'"
+                            onmouseout="this.querySelector('span').style.color='rgba(255,255,255,.5)'">
+                            <div
+                                style="width:32px;height:32px;border-radius:8px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="fas fa-envelope" style="font-size:.75rem;color:#D4AF37;"></i></div>
+                            <span
+                                style="font-size:.83rem;color:rgba(255,255,255,.5);line-height:1.5;transition:.3s;padding-top:.3rem;">saahna.sa@gmail.com</span>
                         </a>
-                        <a href="https://maps.google.com" target="_blank" style="display:flex;align-items:flex-start;gap:.8rem;text-decoration:none;" onmouseover="this.querySelector('span').style.color='#fff'" onmouseout="this.querySelector('span').style.color='rgba(255,255,255,.5)'">
-                            <div style="width:32px;height:32px;border-radius:8px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-map-marker-alt" style="font-size:.75rem;color:#D4AF37;"></i></div>
-                            <span style="font-size:.83rem;color:rgba(255,255,255,.5);line-height:1.5;transition:.3s;padding-top:.3rem;">2nd Floor, Thota's Vivedha Apartment, Vijayawada</span>
+                        <a href="https://maps.google.com" target="_blank"
+                            style="display:flex;align-items:flex-start;gap:.8rem;text-decoration:none;"
+                            onmouseover="this.querySelector('span').style.color='#fff'"
+                            onmouseout="this.querySelector('span').style.color='rgba(255,255,255,.5)'">
+                            <div
+                                style="width:32px;height:32px;border-radius:8px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="fas fa-map-marker-alt" style="font-size:.75rem;color:#D4AF37;"></i></div>
+                            <span
+                                style="font-size:.83rem;color:rgba(255,255,255,.5);line-height:1.5;transition:.3s;padding-top:.3rem;">2nd
+                                Floor, Thota's Vivedha Apartment, Vijayawada</span>
                         </a>
                     </div>
                 </div>
 
                 <!-- Hours -->
                 <div>
-                    <h5 style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#D4AF37;font-weight:700;margin-bottom:1.5rem;">Studio Hours</h5>
+                    <h5
+                        style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#D4AF37;font-weight:700;margin-bottom:1.5rem;">
+                        Studio Hours</h5>
                     <div style="display:flex;flex-direction:column;gap:.6rem;">
-                        <div style="display:flex;justify-content:space-between;font-size:.82rem;padding-bottom:.6rem;border-bottom:1px solid rgba(255,255,255,.06);">
+                        <div
+                            style="display:flex;justify-content:space-between;font-size:.82rem;padding-bottom:.6rem;border-bottom:1px solid rgba(255,255,255,.06);">
                             <span style="color:rgba(255,255,255,.4);">Mon – Sat</span>
                             <span style="color:#fff;font-weight:500;">10am – 8pm</span>
                         </div>
-                        <div style="display:flex;justify-content:space-between;font-size:.82rem;padding-bottom:.6rem;border-bottom:1px solid rgba(255,255,255,.06);">
+                        <div
+                            style="display:flex;justify-content:space-between;font-size:.82rem;padding-bottom:.6rem;border-bottom:1px solid rgba(255,255,255,.06);">
                             <span style="color:rgba(255,255,255,.4);">Sunday</span>
                             <span style="color:#D4AF37;font-weight:500;">By Appt.</span>
                         </div>
                         <div style="margin-top:.8rem;">
-                            <a href="contact.html" style="display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.4rem;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.25);border-radius:8px;color:#D4AF37;font-size:.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:.3s;" onmouseover="this.style.background='#D4AF37';this.style.color='#0A0A0B'" onmouseout="this.style.background='rgba(212,175,55,.1)';this.style.color='#D4AF37'"><i class="fas fa-calendar-alt"></i> Book Visit</a>
+                            <a href="contact.html"
+                                style="display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.4rem;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.25);border-radius:8px;color:#D4AF37;font-size:.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:.3s;"
+                                onmouseover="this.style.background='#D4AF37';this.style.color='#0A0A0B'"
+                                onmouseout="this.style.background='rgba(212,175,55,.1)';this.style.color='#D4AF37'"><i
+                                    class="fas fa-calendar-alt"></i> Book Visit</a>
                         </div>
                     </div>
                 </div>
@@ -712,18 +1043,34 @@
 
         <!-- Bottom bar -->
         <div style="border-top:1px solid rgba(255,255,255,.06);padding:1.5rem 0;">
-            <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
-                <p style="font-size:.75rem;color:rgba(255,255,255,.25);">&copy; 2025 SAAHNA SA. All rights reserved. Crafted By <a href="https://instagram.com/Funniii_media" target="_blank" style="color:rgba(255,255,255,.4);text-decoration:none;transition:.3s;" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,.4)'">@Funniii_media</a></p>
+            <div class="container"
+                style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+                <p style="font-size:.75rem;color:rgba(255,255,255,.25);">&copy; 2025 SAAHNA SA. All rights reserved.
+                    Crafted By <a href="https://instagram.com/Funniii_media" target="_blank"
+                        style="color:rgba(255,255,255,.4);text-decoration:none;transition:.3s;"
+                        onmouseover="this.style.color='#D4AF37'"
+                        onmouseout="this.style.color='rgba(255,255,255,.4)'">@Funniii_media</a></p>
                 <div style="display:flex;gap:1.5rem;">
-                    <a href="privacy-policy.html" style="font-size:.72rem;color:rgba(255,255,255,.25);text-decoration:none;transition:.3s;" onmouseover="this.style.color='rgba(255,255,255,.6)'" onmouseout="this.style.color='rgba(255,255,255,.25)'">Privacy</a>
-                    <a href="terms.html" style="font-size:.72rem;color:rgba(255,255,255,.25);text-decoration:none;transition:.3s;" onmouseover="this.style.color='rgba(255,255,255,.6)'" onmouseout="this.style.color='rgba(255,255,255,.25)'">Terms</a>
-                    <a href="refund-policy.html" style="font-size:.72rem;color:rgba(255,255,255,.25);text-decoration:none;transition:.3s;" onmouseover="this.style.color='rgba(255,255,255,.6)'" onmouseout="this.style.color='rgba(255,255,255,.25)'">Refunds</a>
+                    <a href="privacy-policy.html"
+                        style="font-size:.72rem;color:rgba(255,255,255,.25);text-decoration:none;transition:.3s;"
+                        onmouseover="this.style.color='rgba(255,255,255,.6)'"
+                        onmouseout="this.style.color='rgba(255,255,255,.25)'">Privacy</a>
+                    <a href="terms.html"
+                        style="font-size:.72rem;color:rgba(255,255,255,.25);text-decoration:none;transition:.3s;"
+                        onmouseover="this.style.color='rgba(255,255,255,.6)'"
+                        onmouseout="this.style.color='rgba(255,255,255,.25)'">Terms</a>
+                    <a href="refund-policy.html"
+                        style="font-size:.72rem;color:rgba(255,255,255,.25);text-decoration:none;transition:.3s;"
+                        onmouseover="this.style.color='rgba(255,255,255,.6)'"
+                        onmouseout="this.style.color='rgba(255,255,255,.25)'">Refunds</a>
                 </div>
             </div>
         </div>
 
         <!-- Decorative background text -->
-        <div style="position:absolute;bottom:-1rem;right:2rem;font-family:'Playfair Display',serif;font-size:8rem;font-weight:700;color:rgba(255,255,255,.015);pointer-events:none;user-select:none;line-height:1;">SAAHNA</div>
+        <div
+            style="position:absolute;bottom:-1rem;right:2rem;font-family:'Playfair Display',serif;font-size:8rem;font-weight:700;color:rgba(255,255,255,.015);pointer-events:none;user-select:none;line-height:1;">
+            SAAHNA</div>
     </footer>
 
 
@@ -734,7 +1081,7 @@
     <script>
         // Auto-detect API URL
         const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-            ? 'http://localhost:5000/api' 
+            ? 'http://localhost:5000/api'
             : 'https://saahna-production.up.railway.app/api';
 
         // ── Apply homepage content from API ──────────────────────────────
@@ -788,7 +1135,7 @@
                     if (bx) bx.innerHTML = c.brand_text.replace('Ashitha Yejju', '<span style="color:var(--primary-vivid);font-weight:600;">Ashitha Yejju</span>');
                 }
                 // Brand videos and links
-                [1,2,3,4].forEach(n => {
+                [1, 2, 3, 4].forEach(n => {
                     const vUrl = c[`brand_video${n}`];
                     const vLink = c[`brand_video${n}_link`];
                     const vEl = document.getElementById(`brandVideo${n}`);
@@ -804,7 +1151,7 @@
                         vEl.play().catch(e => {
                             console.warn("Autoplay failed:", e);
                             // Some browsers need a second attempt after load
-                            vEl.oncanplay = () => vEl.play().catch(() => {});
+                            vEl.oncanplay = () => vEl.play().catch(() => { });
                         });
                     }
                     if (vContainer) {
@@ -816,11 +1163,17 @@
                 });
 
                 // Define global toggle function
+                window.userInteractedWithSound = false;
                 window.toggleVidMute = (n) => {
                     const v = document.getElementById(`brandVideo${n}`);
                     const btn = document.querySelector(`#brandVideo${n}Container .v-mute-btn i`);
                     if (v && btn) {
+                        window.userInteractedWithSound = true;
                         v.muted = !v.muted;
+                        // Ensure video is playing when unmuting
+                        if (!v.muted) {
+                            v.play().catch(() => { });
+                        }
                         btn.className = v.muted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
                     }
                 };
@@ -839,50 +1192,54 @@
                     }
                 };
 
-                // Try to unmute on scroll entry and mute on exit
-                const videoGrid = document.querySelector('.video-grid');
-                if (videoGrid) {
+                // Handle video playback on scroll entry/exit for Luxury Redefined
+                const brandSection = document.querySelector('.brand-intro');
+                if (brandSection) {
                     const observer = new IntersectionObserver((entries) => {
                         entries.forEach(entry => {
-                            const v1 = document.getElementById('brandVideo1');
-                            const btn1 = document.querySelector('#brandVideo1Container .v-mute-btn i');
-                            
+                            const mainVideo = document.getElementById('brandVideo1');
+                            const muteBtnIcon = document.querySelector('#brandVideo1Container .v-mute-btn i');
+
                             if (entry.isIntersecting) {
-                                // Scroll Entry: Try to unmute
-                                if (v1) {
-                                    v1.muted = false;
-                                    v1.play().then(() => {
-                                        if (btn1) btn1.className = 'fas fa-volume-up';
+                                // Scroll Entry: Try to play with sound
+                                if (mainVideo) {
+                                    mainVideo.muted = false;
+                                    mainVideo.play().then(() => {
+                                        if (muteBtnIcon) muteBtnIcon.className = 'fas fa-volume-up';
                                     }).catch(() => {
-                                        v1.muted = true;
-                                        if (btn1) btn1.className = 'fas fa-volume-mute';
+                                        // Browser blocked unmuted autoplay, play muted
+                                        mainVideo.muted = true;
+                                        mainVideo.play().catch(() => { });
+                                        if (muteBtnIcon) muteBtnIcon.className = 'fas fa-volume-mute';
+                                        console.log('🔇 Autoplay with sound blocked by browser');
                                     });
                                 }
                             } else {
-                                // Scroll Exit: Mute
-                                if (v1) {
-                                    v1.muted = true;
-                                    if (btn1) btn1.className = 'fas fa-volume-mute';
+                                // Scroll Exit: Pause and Mute
+                                if (mainVideo) {
+                                    mainVideo.pause();
+                                    mainVideo.muted = true;
+                                    if (muteBtnIcon) muteBtnIcon.className = 'fas fa-volume-mute';
                                 }
                             }
                         });
-                    }, { threshold: 0.1 }); 
-                    observer.observe(videoGrid);
+                    }, { threshold: 0.4 }); // Higher threshold for more intentional feel
+                    observer.observe(brandSection);
                 }
 
                 // Signature cards
-                [1,2,3,4].forEach(n => {
+                [1, 2, 3, 4].forEach(n => {
                     const card = c[`sig_card${n}`];
                     if (!card) return;
                     const el = document.getElementById(`sigCard${n}`);
                     if (!el) return;
-                    const img   = el.querySelector('img');
+                    const img = el.querySelector('img');
                     const badge = el.querySelector('.sig-badge');
-                    const cat   = el.querySelector('.sig-cat');
-                    const name  = el.querySelector('.sig-name');
+                    const cat = el.querySelector('.sig-cat');
+                    const name = el.querySelector('.sig-name');
                     const price = el.querySelector('.sig-price');
-                    const orig  = el.querySelector('.sig-orig');
-                    if (img)   img.src = card.image || img.src;
+                    const orig = el.querySelector('.sig-orig');
+                    if (img) img.src = card.image || img.src;
                     const isOutOfStock = card.stock <= 0;
                     if (badge) {
                         if (isOutOfStock) {
@@ -896,9 +1253,9 @@
                         }
                         badge.style.display = (card.badge || isOutOfStock) ? 'block' : 'none';
                     }
-                    if (cat)   cat.innerText = card.category || '';
-                    if (name)  name.innerText = card.name || '';
-                    if (price) price.innerHTML = `&#8377;${(card.discountPrice||card.price||0).toLocaleString()}`;
+                    if (cat) cat.innerText = card.category || '';
+                    if (name) name.innerText = card.name || '';
+                    if (price) price.innerHTML = `&#8377;${(card.discountPrice || card.price || 0).toLocaleString()}`;
                     if (orig && card.price && card.discountPrice)
                         orig.innerHTML = `&#8377;${card.price.toLocaleString()}`;
                     // Update onclick to correct product id
@@ -911,11 +1268,88 @@
                     const wlBtn = el.querySelector('.wishlist-btn');
                     if (wlBtn) { wlBtn.setAttribute('onclick', `event.stopPropagation(); window.toggleWishlist(${card.id})`); wlBtn.dataset.pid = card.id; }
                     // Update _sigFallback
-                    if (window._sigFallback) window._sigFallback[card.id] = { ...card, images:[card.image], sizes:['S','M','L','XL'], colors:[], stock:10, description:'' };
+                    if (window._sigFallback) window._sigFallback[card.id] = { ...card, images: [card.image], sizes: ['S', 'M', 'L', 'XL'], colors: [], stock: 10, description: '' };
                 });
-            } catch(e) { /* silent — fallback to hardcoded */ }
+            } catch (e) { /* silent — fallback to hardcoded */ }
+
+            // Apply hardcoded fallbacks for specifically requested cards if still missing
+            const fallbacks = {
+                sig_card2: { id: 2, name: 'Magenta Silk Saree', category: 'Sarees', price: 12500, discountPrice: 9500, badge: 'TRENDING', image: 'uploads/prod_1778432770197.png', stock: 10 },
+                sig_card4: { id: 4, name: 'Emerald Designer Suit', category: 'Kid\'s Wear', price: 8500, discountPrice: 6500, badge: 'PREMIUM', image: 'uploads/grenn ai.png', stock: 10 }
+            };
+
+            [2, 4].forEach(n => {
+                const el = document.getElementById(`sigCard${n}`);
+                if (!el || (el.querySelector('.sig-name') && el.querySelector('.sig-name').innerText !== '')) return;
+                const card = fallbacks[`sig_card${n}`];
+                const img = el.querySelector('img');
+                const badge = el.querySelector('.sig-badge');
+                const cat = el.querySelector('.sig-cat');
+                const name = el.querySelector('.sig-name');
+                const price = el.querySelector('.sig-price');
+                const orig = el.querySelector('.sig-orig');
+                if (img) img.src = card.image;
+                if (badge) {
+                    badge.innerText = card.badge;
+                    badge.style.display = 'block';
+                }
+                if (cat) cat.innerText = card.category;
+                if (name) name.innerText = card.name;
+                if (price) price.innerHTML = `&#8377;${card.discountPrice.toLocaleString()}`;
+                if (orig) orig.innerHTML = `&#8377;${card.price.toLocaleString()}`;
+                el.onclick = () => window.openQuickView(card.id);
+            });
+
+            // FORCE OVERRIDES moved to a separate function called at the end
         }
         applyHomepageContent();
+
+        window.runForceOverrides = () => {
+            console.log("Applying force overrides...");
+            // Video
+            const v1 = document.getElementById('brandVideo1');
+            if (v1 && !v1.src.includes('saahna%20video.mp4')) {
+                v1.src = 'videos/saahna%20video.mp4';
+                v1.load();
+                v1.muted = true; // Always start muted to ensure autoplay works
+                v1.play().catch(() => { });
+            }
+
+            // Hero
+            const heroBg = document.getElementById('heroBg');
+            if (heroBg) heroBg.style.backgroundImage = "url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=90&w=2000')";
+
+            const heroPortrait = document.querySelector('#heroFrame img:not([id])');
+            if (heroPortrait) heroPortrait.src = 'uploads/prod_1778438940521.png';
+
+            const f1 = document.getElementById('heroFloat1');
+            if (f1) f1.src = 'uploads/prod_1778438971269.jpeg';
+
+            const f2 = document.getElementById('heroFloat2');
+            if (f2) f2.src = 'uploads/prod_1778439075485.jpeg';
+
+            // Signature cards
+            const s2 = document.getElementById('sigCard2');
+            if (s2) {
+                if (s2.querySelector('img')) s2.querySelector('img').src = 'uploads/prod_1778432770197.png';
+                if (s2.querySelector('.sig-name')) s2.querySelector('.sig-name').innerText = 'Magenta Silk Saree';
+                if (s2.querySelector('.sig-cat')) s2.querySelector('.sig-cat').innerText = 'Sarees';
+                if (s2.querySelector('.sig-price')) s2.querySelector('.sig-price').innerHTML = '&#8377;9,500';
+            }
+
+            const s4 = document.getElementById('sigCard4');
+            if (s4) {
+                if (s4.querySelector('img')) s4.querySelector('img').src = 'uploads/grenn ai.png';
+                if (s4.querySelector('.sig-name')) s4.querySelector('.sig-name').innerText = 'Emerald Designer Suit';
+                if (s4.querySelector('.sig-cat')) s4.querySelector('.sig-cat').innerText = 'Kid\'s Wear';
+                if (s4.querySelector('.sig-price')) s4.querySelector('.sig-price').innerHTML = '&#8377;6,500';
+            }
+        };
+
+        // Call overrides multiple times to ensure they stick after dynamic loads
+        window.addEventListener('DOMContentLoaded', runForceOverrides);
+        setTimeout(runForceOverrides, 1000);
+        setTimeout(runForceOverrides, 3000);
     </script>
 
     <script>
@@ -938,14 +1372,14 @@
                 hpRes = results[0];
                 prodRes = results[1];
 
-                if (hpRes && hpRes.ok)   hpContent  = await hpRes.json();
+                if (hpRes && hpRes.ok) hpContent = await hpRes.json();
                 if (prodRes && prodRes.ok) allProducts = await prodRes.json();
-                
+
                 // If API fails or we are in local mode, use local data
                 if (!allProducts || allProducts.length === 0) {
                     allProducts = window.localProducts || [];
                 }
-            } catch(e) {
+            } catch (e) {
                 allProducts = window.localProducts || [];
             }
 
@@ -957,28 +1391,28 @@
 
             if (hasAdminCards) {
                 // Build the 4 cards from admin homepage settings
-                const adminCards = [1,2,3,4].map(n => {
+                const adminCards = [1, 2, 3, 4].map(n => {
                     const c = hpContent[`sig_card${n}`];
                     if (!c) return null;
                     // Try to find full product data from DB for Quick View
                     const dbProduct = allProducts.find(p => p.id === c.id);
                     return {
-                        id:            c.id,
-                        name:          c.name,
-                        category:      c.category,
-                        price:         c.price,
+                        id: c.id,
+                        name: c.name,
+                        category: c.category,
+                        price: c.price,
                         discountPrice: c.discountPrice,
-                        badge:         c.badge || 'NEW',
-                        images:        [c.image],
-                        image:         c.image,
+                        badge: c.badge || 'NEW',
+                        images: [c.image],
+                        image: c.image,
                         // merge DB data for Quick View
                         ...(dbProduct || {}),
                         // keep admin-set display values
-                        name:          c.name,
-                        category:      c.category,
-                        price:         c.price,
+                        name: c.name,
+                        category: c.category,
+                        price: c.price,
                         discountPrice: c.discountPrice,
-                        images:        [c.image],
+                        images: [c.image],
                     };
                 }).filter(Boolean);
 
@@ -994,8 +1428,8 @@
 
         function renderHomeProducts(products, hpContent) {
             const grid = document.getElementById('homeProductGrid');
-            grid.innerHTML = products.map(p => {
-                const img   = (p.images && p.images[0]) || p.image || 'https://via.placeholder.com/600x400';
+            grid.innerHTML = products.map((p, idx) => {
+                const img = (p.images && p.images[0]) || p.image || 'https://via.placeholder.com/600x400';
                 const price = p.discountPrice || p.price;
                 const badgeText = p.badge || (p.discountPrice && p.discountPrice < p.price ? 'SALE' : 'NEW');
                 const badgeColor = badgeText === 'PREMIUM' ? '#D4AF37' : badgeText === 'SALE' ? '#FF0055' : badgeText === 'TRENDING' ? '#FF0055' : '#D4AF37';
@@ -1004,18 +1438,21 @@
                     ? `<span style="font-size:.85rem;color:#ccc;text-decoration:line-through;">&#8377;${p.price.toLocaleString()}</span>` : '';
 
                 return `
-                <div class="advanced-card sig-card" onclick="location.href='product-details.html?id=${p.id}'" style="cursor:pointer;border-radius:16px;overflow:hidden;background:white;border:1px solid #f0f0f0;box-shadow:0 4px 20px rgba(0,0,0,0.04);transition:all 0.3s ease;">
+                <div id="sigCard${idx + 1}" class="advanced-card sig-card" onclick="window.openQuickView(${p.id})" style="cursor:pointer;border-radius:16px;overflow:hidden;background:white;border:1px solid #f0f0f0;box-shadow:0 4px 20px rgba(0,0,0,0.04);transition:all 0.3s ease;">
                     <div style="position:relative;height:320px;overflow:hidden;background:#f8f8f8;">
                         <img src="${img}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform 0.8s ease;" loading="lazy">
-                        <button onclick="event.stopPropagation();window.toggleWishlist(${p.id})" class="wishlist-btn" data-pid="${p.id}" style="position:absolute;top:12px;right:12px;background:white;border:none;width:34px;height:34px;border-radius:50%;box-shadow:0 4px 12px rgba(0,0,0,0.1);cursor:pointer;font-size:1rem;color:#aaa;display:flex;align-items:center;justify-content:center;z-index:3;transition:0.3s;"><i class="far fa-heart"></i></button>
+                        <div style="position:absolute;top:12px;right:12px;display:flex;flex-direction:column;gap:8px;z-index:3;">
+                            <button onclick="event.stopPropagation();window.toggleWishlist(${p.id})" class="wishlist-btn" data-pid="${p.id}" style="background:white;border:none;width:34px;height:34px;border-radius:50%;box-shadow:0 4px 12px rgba(0,0,0,0.1);cursor:pointer;font-size:1rem;color:#aaa;display:flex;align-items:center;justify-content:center;transition:0.3s;"><i class="far fa-heart"></i></button>
+                            <button onclick="event.stopPropagation();window.shareProduct(${p.id}, event)" style="background:white;border:none;width:34px;height:34px;border-radius:50%;box-shadow:0 4px 12px rgba(0,0,0,0.1);cursor:pointer;font-size:0.9rem;color:#aaa;display:flex;align-items:center;justify-content:center;transition:0.3s;"><i class="fas fa-share-alt"></i></button>
+                        </div>
                         <div style="position:absolute;top:12px;left:12px;background:${badgeColor};color:${badgeTextColor};font-size:.58rem;font-weight:700;padding:4px 10px;border-radius:4px;letter-spacing:1.5px;z-index:3;">${badgeText}</div>
                         <button class="quick-view-btn" onclick="event.stopPropagation();window.openQuickView(${p.id})">Quick View</button>
                     </div>
                     <div style="padding:1.4rem 1.2rem;border-top:1px solid #f5f5f5;text-align:center;">
-                        <p style="font-size:.65rem;letter-spacing:2.5px;text-transform:uppercase;color:#aaa;font-weight:600;margin-bottom:.5rem;">${p.category}</p>
-                        <h3 style="font-family:'Playfair Display',serif;font-size:1.05rem;color:#1a1a1a;margin-bottom:.8rem;font-weight:700;">${p.name}</h3>
+                        <p style="font-size:.65rem;letter-spacing:2.5px;text-transform:uppercase;color:#aaa;font-weight:600;margin-bottom:.5rem;" class="sig-cat">${p.category}</p>
+                        <h3 style="font-family:'Playfair Display',serif;font-size:1.05rem;color:#1a1a1a;margin-bottom:.8rem;font-weight:700;" class="sig-name">${p.name}</h3>
                         <div style="display:flex;align-items:center;justify-content:center;gap:.6rem;">
-                            <span style="font-size:1.1rem;font-weight:700;color:#FF0055;">&#8377;${price.toLocaleString()}</span>
+                            <span style="font-size:1.1rem;font-weight:700;color:#FF0055;" class="sig-price">&#8377;${price.toLocaleString()}</span>
                             ${origHtml}
                         </div>
                     </div>
@@ -1039,10 +1476,10 @@
         // Fallback data for the 4 hardcoded signature cards
         // so Quick View works even before the API responds
         window._sigFallback = {
-            1:  { id:1,  name:'Royal Gold Silk Saree',       category:'Sarees',          price:14000, discountPrice:12500, stock:10, description:'Classic Banarasi silk crafted with intricate gold zari work. A timeless piece for every celebration.', fabric:'Banarasi Silk', care:'Dry Clean Only',  images:['https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=85&w=900'], sizes:['Free Size'], colors:[] },
-            4:  { id:4,  name:'Elegant Velvet Evening Dress', category:'One-Piece Dress', price:5200,  discountPrice:4500,  stock:8,  description:'Luxurious velvet with a sculpted silhouette. Designed for evenings that demand presence.',              fabric:'Velvet',        care:'Dry Clean Only',  images:['https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=85&w=900'], sizes:['S','M','L','XL'], colors:[] },
-            31: { id:31, name:'Wedding Couture Set',          category:'Lehangas',        price:95000, discountPrice:85000, stock:5,  description:'Matching bride & groom outfits crafted with master-grade embroidery. Your dream wedding look, realised.',  fabric:'Silk Blend',    care:'Dry Clean Only',  images:['https://images.unsplash.com/photo-1583391733975-ac581b23cc7f?auto=format&fit=crop&q=85&w=900'], sizes:['Custom'], colors:[] },
-            5:  { id:5,  name:'Designer Silk Frock',          category:'Frocks',          price:3800,  discountPrice:3200,  stock:15, description:'Beautiful designer frock in pure silk. Light, breathable, and effortlessly elegant for any occasion.',       fabric:'Pure Silk',     care:'Hand Wash Cold',  images:['https://images.unsplash.com/photo-1622290319146-7b63fd48a609?auto=format&fit=crop&q=85&w=900'], sizes:['S','M','L'], colors:[] }
+            1: { id: 1, name: 'Royal Gold Silk Saree', category: 'Sarees', price: 14000, discountPrice: 12500, stock: 10, description: 'Classic Banarasi silk crafted with intricate gold zari work. A timeless piece for every celebration.', fabric: 'Banarasi Silk', care: 'Dry Clean Only', images: ['https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=85&w=900'], sizes: ['Free Size'], colors: [] },
+            4: { id: 4, name: 'Elegant Velvet Evening Dress', category: 'One-Piece Dress', price: 5200, discountPrice: 4500, stock: 8, description: 'Luxurious velvet with a sculpted silhouette. Designed for evenings that demand presence.', fabric: 'Velvet', care: 'Dry Clean Only', images: ['https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=85&w=900'], sizes: ['S', 'M', 'L', 'XL'], colors: [] },
+            31: { id: 31, name: 'Wedding Couture Set', category: 'Lehangas', price: 95000, discountPrice: 85000, stock: 5, description: 'Matching bride & groom outfits crafted with master-grade embroidery. Your dream wedding look, realised.', fabric: 'Silk Blend', care: 'Dry Clean Only', images: ['https://images.unsplash.com/photo-1583391733975-ac581b23cc7f?auto=format&fit=crop&q=85&w=900'], sizes: ['Custom'], colors: [] },
+            5: { id: 5, name: 'Designer Silk Frock', category: 'Frocks', price: 3800, discountPrice: 3200, stock: 15, description: 'Beautiful designer frock in pure silk. Light, breathable, and effortlessly elegant for any occasion.', fabric: 'Pure Silk', care: 'Hand Wash Cold', images: ['https://images.unsplash.com/photo-1622290319146-7b63fd48a609?auto=format&fit=crop&q=85&w=900'], sizes: ['S', 'M', 'L'], colors: [] }
         };
 
         window.openQuickView = (pid) => {
@@ -1053,7 +1490,7 @@
             if (!p) return;
             const modal = document.getElementById('quickViewModal');
             const content = document.getElementById('quickViewContent');
-            const sizes = p.sizes && p.sizes.length ? p.sizes : ['S','M','L','XL'];
+            const sizes = p.sizes && p.sizes.length ? p.sizes : ['S', 'M', 'L', 'XL'];
             const colors = p.colors || [];
             let images = p.images && p.images.length > 0 ? p.images : [p.image];
             if (!images[0]) images = ['https://via.placeholder.com/800'];
@@ -1069,9 +1506,9 @@
                                  style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;transition:opacity 0.3s;">
                         </div>
                         <div style="display:flex;gap:8px;padding:12px 16px;overflow-x:auto;scrollbar-width:none;background:#f7f7f7;flex-shrink:0;">
-                            ${images.map((img,i) => `
+                            ${images.map((img, i) => `
                                 <img src="${img}" alt="thumb"
-                                     style="width:70px;height:90px;object-fit:cover;object-position:center top;cursor:pointer;border-radius:6px;border:2px solid ${i===0?'#FF0055':'#e0e0e0'};flex-shrink:0;transition:border-color 0.2s;"
+                                     style="width:70px;height:90px;object-fit:cover;object-position:center top;cursor:pointer;border-radius:6px;border:2px solid ${i === 0 ? '#FF0055' : '#e0e0e0'};flex-shrink:0;transition:border-color 0.2s;"
                                      onclick="document.getElementById('qvMainImgEl').src='${img}';
                                              this.closest('.qv-thumbs').querySelectorAll('img').forEach(t=>t.style.borderColor='#e0e0e0');
                                              this.style.borderColor='#FF0055';"
@@ -1083,6 +1520,10 @@
                     <div style="padding:2rem 2rem 1.5rem;overflow-y:auto;display:flex;flex-direction:column;gap:0.9rem;max-height:90vh;">
                         <!-- Close + Wishlist -->
                         <div style="display:flex;justify-content:flex-end;gap:0.6rem;flex-shrink:0;">
+                            <button onclick="window.shareProduct(${p.id}, event)" title="Share Product"
+                                    style="width:38px;height:38px;border-radius:50%;border:1px solid #eee;background:white;cursor:pointer;font-size:1rem;color:#aaa;display:flex;align-items:center;justify-content:center;transition:0.3s;">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
                             <button onclick="window.toggleWishlist(${p.id})" class="wishlist-btn" data-pid="${p.id}"
                                     style="width:38px;height:38px;border-radius:50%;border:1px solid #eee;background:white;cursor:pointer;font-size:1rem;color:#aaa;display:flex;align-items:center;justify-content:center;transition:0.3s;">
                                 <i class="far fa-heart"></i>
@@ -1108,16 +1549,8 @@
                         <div style="background:#f9f9f9;border-radius:10px;padding:1rem 1.2rem;display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;font-size:0.85rem;">
                             <div><span style="color:#999;font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:2px;">Fabric</span><strong>${p.fabric || 'N/A'}</strong></div>
                             <div><span style="color:#999;font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:2px;">Care</span><strong>${p.care || 'N/A'}</strong></div>
-                            <div style="grid-column:1/-1;"><span style="color:#999;font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:2px;">Stock</span><strong style="color:${p.stock>0?'#22c55e':'#ef4444'}">${p.stock>0?'In Stock':'Out of Stock'}</strong></div>
+                            <div style="grid-column:1/-1;"><span style="color:#999;font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:2px;">Stock</span><strong style="color:${p.stock > 0 ? '#22c55e' : '#ef4444'}">${p.stock > 0 ? 'In Stock' : 'Out of Stock'}</strong></div>
                         </div>
-                        <!-- Colors -->
-                        ${colors.length > 0 ? `
-                        <div>
-                            <p style="font-size:0.72rem;text-transform:uppercase;letter-spacing:1.5px;color:#999;font-weight:600;margin-bottom:0.5rem;">Select Color:</p>
-                            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                                ${colors.map((c,i) => `<div title="${c.name}" style="width:26px;height:26px;border-radius:50%;background:${c.hex};border:2px solid ${i===0?'#1a1a1a':'#ddd'};cursor:pointer;transition:0.2s;" onclick="document.getElementById('qvMainImgEl').src='${c.image}';this.parentElement.querySelectorAll('div').forEach(d=>d.style.borderColor='#ddd');this.style.borderColor='#1a1a1a';"></div>`).join('')}
-                            </div>
-                        </div>` : ''}
                         <!-- Sizes -->
                         <div>
                             <p style="font-size:0.72rem;text-transform:uppercase;letter-spacing:1.5px;color:#999;font-weight:600;margin-bottom:0.5rem;">Select Size:</p>
@@ -1131,14 +1564,14 @@
                         </div>
                         <!-- Quantity -->
                         <div>
-                            <p style="font-size:0.72rem;text-transform:uppercase;letter-spacing:1.5px;color:#999;font-weight:600;margin-bottom:0.5rem;">Quantity:</p>
+                            <p style="font-size:0.72rem;text-transform:uppercase;letter-spacing:1.5px;color:#999;font-weight:600;margin-bottom:0.5rem;">${p.category === 'Fabrics' ? 'Meters' : 'Quantity'}:</p>
                             <div style="display:inline-flex;align-items:center;border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;">
-                                <button onclick="var i=document.getElementById('qvQty');var v=parseInt(i.value)-1;if(v<1)v=1;i.value=v;"
+                                <button onclick="var i=document.getElementById('qvQty'); var step = ${p.category === 'Fabrics' ? 0.5 : 1}; var v=Math.max(step, Math.round((parseFloat(i.value)-step)*10)/10); i.value=v;"
                                         style="width:38px;height:38px;border:none;background:white;font-size:1.2rem;cursor:pointer;color:#555;transition:0.2s;"
                                         onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='white'">-</button>
-                                <input id="qvQty" type="number" value="1" min="1" readonly
+                                <input id="qvQty" type="number" value="${p.category === 'Fabrics' ? 0.5 : 1}" min="${p.category === 'Fabrics' ? 0.5 : 1}" step="${p.category === 'Fabrics' ? 0.5 : 1}" ${p.category === 'Fabrics' ? '' : 'readonly'}
                                        style="width:44px;height:38px;border:none;border-left:1px solid #e0e0e0;border-right:1px solid #e0e0e0;text-align:center;font-size:0.95rem;font-weight:700;color:#1a1a1a;background:white;">
-                                <button onclick="var i=document.getElementById('qvQty');i.value=parseInt(i.value)+1;"
+                                <button onclick="var i=document.getElementById('qvQty'); var step = ${p.category === 'Fabrics' ? 0.5 : 1}; i.value=Math.round((parseFloat(i.value)+step)*10)/10;"
                                         style="width:38px;height:38px;border:none;background:white;font-size:1.2rem;cursor:pointer;color:#555;transition:0.2s;"
                                         onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='white'">+</button>
                             </div>
@@ -1158,14 +1591,14 @@
             });
             /* size btn scope fix */
             content.querySelector('[style*="grid-template-columns:1fr 1fr"]') &&
-                content.querySelector('[style*="grid-template-columns:1fr 1fr"]').setAttribute('data-qv','1');
+                content.querySelector('[style*="grid-template-columns:1fr 1fr"]').setAttribute('data-qv', '1');
             content.querySelectorAll('.qv-size').forEach(b => {
                 b.closest('div[style*="display:flex"]') &&
-                    b.closest('div[style*="display:flex"]').parentElement.setAttribute('data-qv','1');
+                    b.closest('div[style*="display:flex"]').parentElement.setAttribute('data-qv', '1');
             });
             /* simpler: mark the right panel */
             const rightPanel = content.querySelector('div > div:last-child');
-            if (rightPanel) rightPanel.setAttribute('data-qv','1');
+            if (rightPanel) rightPanel.setAttribute('data-qv', '1');
             modal.style.display = 'block';
             modal.dataset.size = '';
             if (window.updateWishlistUI) window.updateWishlistUI();
@@ -1176,7 +1609,7 @@
                 ? window.allHomeProductsData : (window.allProductsData || []);
             const p = source.find(x => x.id === pid);
             const size = document.getElementById('quickViewModal').dataset.size;
-            const qty = parseInt(document.getElementById('qvQty').value) || 1;
+            const qty = parseFloat(document.getElementById('qvQty').value) || 1;
             if (!size) { alert('Please select a size'); return; }
             if (window.addToCart) {
                 window.addToCart(pid, size, p, qty);
@@ -1192,11 +1625,12 @@
         };
 
         // Close modal on backdrop click
-        document.getElementById('quickViewModal').addEventListener('click', function(e) {
+        document.getElementById('quickViewModal').addEventListener('click', function (e) {
             if (e.target === this) this.style.display = 'none';
         });
     </script>
     <script src="js/wishlist.js"></script>
     <script src="js/cart.js"></script>
 </body>
+
 </html>

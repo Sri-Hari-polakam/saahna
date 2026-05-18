@@ -376,6 +376,7 @@
                             <input type="radio" name="payment" value="cod">
                             <i class="fas fa-money-bill-wave"></i>
                             <span>Cash on Delivery</span>
+                            <div id="codNotice" style="display:none; color:#ff4d4d; font-size:0.75rem; margin-top:0.5rem; font-weight:500;">Temporarily Unavailable</div>
                         </div>
                     </div>
                     
@@ -433,18 +434,26 @@
             element.querySelector('input').checked = true;
             
             const btn = document.getElementById('placeOrderBtn');
-            btn.innerText = method === 'cod' ? 'Place Order (COD)' : 'Pay & Place Order';
+            btn.innerText = method === 'cod' ? 'Submit Interest (COD)' : 'Pay & Place Order';
+            
+            document.getElementById('codNotice').style.display = method === 'cod' ? 'block' : 'none';
         }
 
         function renderCheckout() {
             const list = document.getElementById('checkoutItemsList');
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             
-            list.innerHTML = cart.map((item, index) => `
+            list.innerHTML = cart.map((item, index) => {
+                const isFabric = item.category === 'Fabrics';
+                const step = isFabric ? 0.5 : 1;
+                return `
                 <div class="cart-item-mini">
                     <img src="${item.image}" alt="${item.name}">
                     <div class="item-details">
-                        <h4>${item.name}</h4>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <h4>${item.name}</h4>
+                            <button onclick="removeCheckoutItem(${index})" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:0.8rem; padding:0 0 0 10px;"><i class="fas fa-trash-alt"></i></button>
+                        </div>
                         <div class="size-selector-mini">
                             ${(item.availableSizes || ['S','M','L','XL']).map(s => `
                                 <div class="size-btn-mini ${item.size === s ? 'active' : ''}" onclick="updateCheckoutSize(${index}, '${s}')">${s}</div>
@@ -452,18 +461,32 @@
                         </div>
                         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 5px;">
                             <div class="quantity-controls-mini" style="border-radius: 8px; padding: 0 5px; transform: scale(0.9); transform-origin: left;">
-                                <button onclick="updateCheckoutQty(${index}, -1)" style="padding: 2px 8px; font-size: 0.9rem;">-</button>
-                                <span style="font-size: 0.8rem; width: 15px;">${item.quantity}</span>
-                                <button onclick="updateCheckoutQty(${index}, 1)" style="padding: 2px 8px; font-size: 0.9rem;">+</button>
+                                <button onclick="updateCheckoutQty(${index}, ${-step})" style="padding: 2px 8px; font-size: 0.9rem;">-</button>
+                                <span style="font-size: 0.8rem; min-width: 25px;">${item.quantity}${isFabric ? 'm' : ''}</span>
+                                <button onclick="updateCheckoutQty(${index}, ${step})" style="padding: 2px 8px; font-size: 0.9rem;">+</button>
                             </div>
                             <span style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark); min-width: fit-content; text-align: right;">₹${(item.price * item.quantity).toLocaleString()}</span>
                         </div>
                     </div>
                 </div>
-            `).join('');
+            `;}).join('');
 
             document.getElementById('subtotalAmount').innerText = `₹${subtotal.toLocaleString()}`;
             document.getElementById('grandTotalAmount').innerText = `₹${subtotal.toLocaleString()}`;
+
+            if (cart.length === 0) {
+                list.innerHTML = '<div style="text-align:center; padding:2rem; color:#666;">Your bag is empty. <a href="products.html" style="color:var(--primary-gold); text-decoration:none;">Go back to shop</a></div>';
+            }
+        }
+
+        window.removeCheckoutItem = (index) => {
+            if(!confirm('Remove this item from your order?')) return;
+            cart.splice(index, 1);
+            localStorage.setItem('sahnaa_cart', JSON.stringify(cart));
+            renderCheckout();
+            if (cart.length === 0) {
+                setTimeout(() => window.location.href = 'index.html', 2000);
+            }
         }
 
         window.updateCheckoutSize = (index, newSize) => {
@@ -474,10 +497,15 @@
 
         window.updateCheckoutQty = (index, change) => {
             cart[index].quantity += change;
-            if (cart[index].quantity < 1) cart[index].quantity = 1;
+            const isFabric = cart[index].category === 'Fabrics';
+            const minQty = isFabric ? 0.5 : 1;
+            if (cart[index].quantity < minQty) cart[index].quantity = minQty;
+            
+            // Round to avoid floating point issues
+            cart[index].quantity = Math.round(cart[index].quantity * 10) / 10;
+            
             localStorage.setItem('sahnaa_cart', JSON.stringify(cart));
             renderCheckout();
-            // Sync with global cart if needed (since it's loaded from localStorage)
         };
 
         document.getElementById('placeOrderBtn').addEventListener('click', async () => {
@@ -515,12 +543,19 @@
             const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
 
             if (paymentMethod === 'cod') {
+                alert("Sorry, Cash on Delivery is temporarily unavailable. However, we have recorded your details and our team will get back to you soon to help you complete your order via alternative methods.");
                 try {
                     const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
                     const res = await fetch(`${API_URL}/orders`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ items: cart, customer, paymentMethod: 'cod', totalAmount })
+                        body: JSON.stringify({ 
+                            items: cart, 
+                            customer, 
+                            paymentMethod: 'cod_unavailable', 
+                            totalAmount,
+                            status: 'COD Unavailable - Follow up needed'
+                        })
                     });
                     const data = await res.json();
                     if (res.ok) {
@@ -536,10 +571,11 @@
             }
 
             try {
-                const res = await fetch(`${API_URL}/create-razorpay-order`, {
+                const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const res = await fetch(`${API_URL}/payments/create-order`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ items: cart, customer })
+                    body: JSON.stringify({ amount: totalAmount })
                 });
 
                 const data = await res.json();
@@ -551,28 +587,28 @@
                 }
 
                 const options = {
-                    key: data.keyId,
+                    key: "rzp_test_YOUR_KEY_ID", // This should ideally come from backend or .env
                     amount: data.amount,
                     currency: data.currency,
                     name: 'Sahnaa SA',
                     description: 'Luxury Fashion Order',
                     image: 'https://saahna.vercel.app/favicon.ico',
-                    order_id: data.razorpayOrderId,
+                    order_id: data.id,
                     handler: async function (response) {
                         // Verify payment signature on the server
-                        const verifyRes = await fetch(`${API_URL}/verify-payment`, {
+                        const verifyRes = await fetch(`${API_URL}/payments/verify`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 razorpay_order_id: response.razorpay_order_id,
                                 razorpay_payment_id: response.razorpay_payment_id,
                                 razorpay_signature: response.razorpay_signature,
-                                orderId: data.orderId
+                                orderDetails: { items: cart, customer, totalAmount }
                             })
                         });
                         const verifyData = await verifyRes.json();
                         if (verifyData.success) {
-                            showSuccessModal(data.orderId);
+                            showSuccessModal(verifyData.orderId);
                         } else {
                             alert('Payment verification failed. Please contact support.');
                             btn.innerText = "Pay & Place Order";

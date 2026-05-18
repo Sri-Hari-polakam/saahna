@@ -1,19 +1,143 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>Refund Policy</title><link rel="stylesheet" href="css/style.css"></head>
-<body style="padding: 50px; line-height: 1.6;">
-    <h1>Refund & Return Policy</h1>
-    <p>Thank you for shopping at Sahnaa SA. If you are not entirely satisfied with your purchase, we're here to help.</p>
-    <h3>Returns</h3>
-    <p>You have 30 calendar days to return an item from the date you received it. To be eligible for a return, your item must be unused and in the same condition that you received it.</p>
-    <h3>Refunds</h3>
-    <p>Once we receive your item, we will inspect it and notify you that we have received your returned item. If your return is approved, we will initiate a refund to your credit card (or original method of payment).</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refund & Return Policy | Saahna Boutique</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #D4AF37; --vivid: #FF0055; --dark: #0A0A0B; --off: #faf9f6; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; color:#1a1a1a; background:#fff; overflow-x:hidden; }
+        
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            padding: 1.5rem 0; transition: 0.3s;
+            background: rgba(10,10,11,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav-container {
+            max-width: 1400px; margin: 0 auto; padding: 0 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700;
+            color: #fff; text-decoration: none; letter-spacing: 4px;
+        }
+        .nav-links { display: flex; gap: 2.5rem; }
+        .nav-links a {
+            text-decoration: none; color: rgba(255,255,255,0.7);
+            font-size: 0.75rem; font-weight: 500; text-transform: uppercase;
+            letter-spacing: 2px; transition: 0.3s;
+        }
+        .nav-links a:hover { color: var(--gold); }
+
+        .policy-header {
+            background: var(--dark);
+            padding: 10rem 0 5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .policy-header::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            opacity: 0.3;
+        }
+        .policy-header .eyebrow {
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .policy-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: #fff;
+            line-height: 1.2;
+        }
+
+        .policy-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+            line-height: 1.8;
+            color: #444;
+        }
+        .policy-content h2, .policy-content h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--dark);
+            margin: 2.5rem 0 1rem;
+        }
+        .policy-content h2 { font-size: 1.8rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
+        .policy-content p { margin-bottom: 1.5rem; font-size: 1.05rem; }
+        
+        .contact-box {
+            background: var(--off);
+            border: 1px solid #eee;
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin-top: 4rem;
+            text-align: center;
+        }
+        .contact-box h4 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 1rem; }
+        .contact-box p { margin-bottom: 1.5rem; font-size: 0.95rem; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">SAAHNA</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="products.html">Shop</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="policy-header">
+        <div class="container">
+            <span class="eyebrow">Customer Care</span>
+            <h1>Refund & Return Policy</h1>
+        </div>
+    </header>
+
+    <main class="policy-content">
+        <p>At Saahna SA, we take immense pride in the craftsmanship and quality of our bespoke creations. We want you to be completely satisfied with your purchase. If you are not entirely happy, we are here to assist you.</p>
+        
+        <h2>Returns</h2>
+        <p>You have <strong>30 calendar days</strong> to return an item from the date you received it. To be eligible for a return, your item must be:</p>
+        <ul>
+            <li>Unused and in the same condition that you received it.</li>
+            <li>In the original packaging with all tags intact.</li>
+            <li>Accompanied by the receipt or proof of purchase.</li>
+        </ul>
+
+        <h2>Refunds</h2>
+        <p>Once we receive your item, we will inspect it and notify you that we have received your returned item. We will immediately notify you on the status of your refund after inspecting the item.</p>
+        <p>If your return is approved, we will initiate a refund to your credit card (or original method of payment). You will receive the credit within a certain amount of days, depending on your card issuer's policies.</p>
+
+        <div class="contact-box">
+            <h4>Need Assistance?</h4>
+            <p>If you have any questions on how to return your item to us, our dedicated concierge team is ready to help.</p>
+            <a href="contact.html" class="btn btn-gold">Contact Support</a>
+        </div>
+    </main>
 
     <!-- PREMIUM FOOTER -->
     <footer style="background:#0A0A0B;color:#fff;position:relative;overflow:hidden;">
         <div style="width:100%;height:1px;background:linear-gradient(90deg,transparent,#D4AF37,transparent);opacity:.5;"></div>
         <div style="border-bottom:1px solid rgba(255,255,255,.06);padding:3rem 0;">
-            <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;">
+            <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap; max-width:1400px; margin:0 auto; padding:0 2rem;">
                 <div>
                     <p style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#D4AF37;font-weight:600;margin-bottom:.5rem;">Stay in the loop</p>
                     <h3 style="font-family:'Playfair Display',serif;font-size:1.6rem;color:#fff;font-weight:600;">Get exclusive offers &amp; new arrivals</h3>
@@ -24,76 +148,45 @@
                 </form>
             </div>
         </div>
-        <div class="container" style="padding:4rem 2rem 3rem;">
+        <div class="container" style="padding:4rem 2rem 3rem; max-width:1400px; margin:0 auto;">
             <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1.2fr;gap:3rem;">
                 <div>
                     <a href="index.html" style="font-family:'Playfair Display',serif;font-size:2rem;letter-spacing:5px;color:#fff;text-decoration:none;font-weight:700;display:block;margin-bottom:1.2rem;">SAAHNA</a>
                     <p style="font-size:.85rem;color:rgba(255,255,255,.45);line-height:1.8;margin-bottom:1.5rem;max-width:260px;">Luxury personalised fashion boutique in Vijayawada. Crafting bespoke elegance since 2019.</p>
-                    <div style="display:flex;gap:.7rem;">
-                        <a href="https://instagram.com/saahna.sa" target="_blank" style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5);font-size:1rem;text-decoration:none;transition:.3s;" onmouseover="this.style.background='#D4AF37';this.style.color='#0A0A0B'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.color='rgba(255,255,255,.5)'"><i class="fab fa-instagram"></i></a>
-                        <a href="#" style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5);font-size:1rem;text-decoration:none;transition:.3s;" onmouseover="this.style.background='#D4AF37';this.style.color='#0A0A0B'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.color='rgba(255,255,255,.5)'"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5);font-size:1rem;text-decoration:none;transition:.3s;" onmouseover="this.style.background='#D4AF37';this.style.color='#0A0A0B'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.color='rgba(255,255,255,.5)'"><i class="fab fa-youtube"></i></a>
-                        <a href="#" style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5);font-size:1rem;text-decoration:none;transition:.3s;" onmouseover="this.style.background='#D4AF37';this.style.color='#0A0A0B'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.color='rgba(255,255,255,.5)'"><i class="fab fa-pinterest"></i></a>
-                    </div>
                 </div>
                 <div>
                     <h5 style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#D4AF37;font-weight:700;margin-bottom:1.5rem;">Navigate</h5>
                     <ul style="list-style:none;display:flex;flex-direction:column;gap:.7rem;">
-                        <li><a href="index.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Home</a></li>
-                        <li><a href="about.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">About Us</a></li>
-                        <li><a href="services.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Services</a></li>
-                        <li><a href="products.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Shop</a></li>
-                        <li><a href="custom.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Custom Orders</a></li>
-                        <li><a href="contact.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Contact</a></li>
+                        <li><a href="index.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;">Home</a></li>
+                        <li><a href="about.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;">About</a></li>
+                        <li><a href="products.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;">Shop</a></li>
+                        <li><a href="contact.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;">Contact</a></li>
                     </ul>
                 </div>
                 <div>
                     <h5 style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#D4AF37;font-weight:700;margin-bottom:1.5rem;">Policies</h5>
                     <ul style="list-style:none;display:flex;flex-direction:column;gap:.7rem;">
-                        <li><a href="refund-policy.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Refund Policy</a></li>
-                        <li><a href="shipping-policy.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Shipping Policy</a></li>
-                        <li><a href="privacy-policy.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Privacy Policy</a></li>
-                        <li><a href="terms.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Terms &amp; Conditions</a></li>
+                        <li><a href="refund-policy.html" style="font-size:.85rem;color:#D4AF37;text-decoration:none;">Refund Policy</a></li>
+                        <li><a href="shipping-policy.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;">Shipping Policy</a></li>
+                        <li><a href="privacy-policy.html" style="font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;">Privacy Policy</a></li>
                     </ul>
                 </div>
                 <div>
                     <h5 style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#D4AF37;font-weight:700;margin-bottom:1.5rem;">Contact</h5>
                     <div style="display:flex;flex-direction:column;gap:1rem;">
-                        <a href="tel:+919652926366" style="display:flex;align-items:flex-start;gap:.8rem;text-decoration:none;">
-                            <div style="width:32px;height:32px;border-radius:8px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-phone" style="font-size:.75rem;color:#D4AF37;"></i></div>
-                            <span style="font-size:.83rem;color:rgba(255,255,255,.5);line-height:1.5;padding-top:.3rem;">+91 9652926366</span>
-                        </a>
-                        <a href="mailto:saahna.sa@gmail.com" style="display:flex;align-items:flex-start;gap:.8rem;text-decoration:none;">
-                            <div style="width:32px;height:32px;border-radius:8px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-envelope" style="font-size:.75rem;color:#D4AF37;"></i></div>
-                            <span style="font-size:.83rem;color:rgba(255,255,255,.5);line-height:1.5;padding-top:.3rem;">saahna.sa@gmail.com</span>
-                        </a>
-                        <a href="https://maps.google.com" target="_blank" style="display:flex;align-items:flex-start;gap:.8rem;text-decoration:none;">
-                            <div style="width:32px;height:32px;border-radius:8px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-map-marker-alt" style="font-size:.75rem;color:#D4AF37;"></i></div>
-                            <span style="font-size:.83rem;color:rgba(255,255,255,.5);line-height:1.5;padding-top:.3rem;">2nd Floor, Thota's Vivedha Apartment, Vijayawada</span>
-                        </a>
+                        <span style="font-size:.83rem;color:rgba(255,255,255,.5);">+91 9652926366</span>
+                        <span style="font-size:.83rem;color:rgba(255,255,255,.5);">saahna.sa@gmail.com</span>
                     </div>
                 </div>
                 <div>
-                    <h5 style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#D4AF37;font-weight:700;margin-bottom:1.5rem;">Studio Hours</h5>
-                    <div style="display:flex;flex-direction:column;gap:.6rem;">
-                        <div style="display:flex;justify-content:space-between;font-size:.82rem;padding-bottom:.6rem;border-bottom:1px solid rgba(255,255,255,.06);"><span style="color:rgba(255,255,255,.4);">Mon - Sat</span><span style="color:#fff;font-weight:500;">10am - 8pm</span></div>
-                        <div style="display:flex;justify-content:space-between;font-size:.82rem;padding-bottom:.6rem;border-bottom:1px solid rgba(255,255,255,.06);"><span style="color:rgba(255,255,255,.4);">Sunday</span><span style="color:#D4AF37;font-weight:500;">By Appt.</span></div>
-                        <div style="margin-top:.8rem;"><a href="contact.html" style="display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.4rem;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.25);border-radius:8px;color:#D4AF37;font-size:.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:.3s;" onmouseover="this.style.background='#D4AF37';this.style.color='#0A0A0B'" onmouseout="this.style.background='rgba(212,175,55,.1)';this.style.color='#D4AF37'"><i class="fas fa-calendar-alt"></i> Book Visit</a></div>
-                    </div>
+                    <h5 style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#D4AF37;font-weight:700;margin-bottom:1.5rem;">Hours</h5>
+                    <div style="font-size:.82rem;color:rgba(255,255,255,.5);">Mon - Sat: 10am - 8pm</div>
                 </div>
             </div>
         </div>
-        <div style="border-top:1px solid rgba(255,255,255,.06);padding:1.5rem 0;">
-            <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
-                <p style="font-size:.75rem;color:rgba(255,255,255,.25);">&copy; 2025 SAAHNA SA. All rights reserved. Crafted By <a href="https://instagram.com/Funniii_media" target="_blank" style="color:rgba(255,255,255,.4);text-decoration:none;transition:.3s;" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,.4)'">@Funniii_media</a></p>
-                <div style="display:flex;gap:1.5rem;">
-                    <a href="privacy-policy.html" style="font-size:.72rem;color:rgba(255,255,255,.25);text-decoration:none;transition:.3s;" onmouseover="this.style.color='rgba(255,255,255,.6)'" onmouseout="this.style.color='rgba(255,255,255,.25)'">Privacy</a>
-                    <a href="terms.html" style="font-size:.72rem;color:rgba(255,255,255,.25);text-decoration:none;transition:.3s;" onmouseover="this.style.color='rgba(255,255,255,.6)'" onmouseout="this.style.color='rgba(255,255,255,.25)'">Terms</a>
-                    <a href="refund-policy.html" style="font-size:.72rem;color:rgba(255,255,255,.25);text-decoration:none;transition:.3s;" onmouseover="this.style.color='rgba(255,255,255,.6)'" onmouseout="this.style.color='rgba(255,255,255,.25)'">Refunds</a>
-                </div>
-            </div>
+        <div style="border-top:1px solid rgba(255,255,255,.06);padding:1.5rem 0; text-align:center;">
+            <p style="font-size:.75rem;color:rgba(255,255,255,.25);">&copy; 2025 SAAHNA SA. All rights reserved.</p>
         </div>
-        <div style="position:absolute;bottom:-1rem;right:2rem;font-family:'Playfair Display',serif;font-size:8rem;font-weight:700;color:rgba(255,255,255,.015);pointer-events:none;user-select:none;line-height:1;">SAAHNA</div>
     </footer>
 </body>
 </html>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -83,34 +83,97 @@
                     <form id="appointmentForm">
                         <div class="form-group">
                             <label>Full Name</label>
-                            <input type="text" required>
+                            <input type="text" id="ap_name" required>
                         </div>
                         <div class="form-group">
                             <label>Phone Number</label>
-                            <input type="tel" required>
+                            <input type="tel" id="ap_phone" required>
                         </div>
                         <div class="form-group">
                             <label>Preferred Service</label>
-                            <select style="width: 100%; padding: 1rem; border: 1px solid #ddd;">
+                            <select id="ap_service" style="width: 100%; padding: 1rem; border: 1px solid #ddd;">
                                 <option>Professional Stitching</option>
+                                <option>Hand Art</option>
+                                <option>Digital Printing</option>
+                                <option>Maggam Work</option>
+                                <option>Computer Embroidery</option>
                                 <option>Bridal Consultation</option>
                                 <option>Wardrobe Upcycling</option>
-                                <option>B2B Query</option>
+                                <option>B2B Services</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label>Your Message (Optional)</label>
-                            <textarea rows="4"></textarea>
+                            <textarea id="ap_message" rows="4"></textarea>
                         </div>
                         <button type="submit" class="btn btn-gold" style="width: 100%;">Schedule Appointment</button>
                     </form>
                     <div style="margin-top: 2rem; text-align: center;">
-                        <a href="https://wa.me/919652926366" class="btn btn-outline" style="width: 100%;">Quick WhatsApp Booking</a>
+                        <button onclick="quickWhatsAppBooking()" class="btn btn-outline" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                            <i class="fab fa-whatsapp"></i> Quick WhatsApp Booking
+                        </button>
+                        <p style="font-size: 0.7rem; color: #888; margin-top: 1rem;">Instantly send your details via WhatsApp for faster booking</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:5000/api' 
+            : 'https://saahna-production.up.railway.app/api';
+
+        document.getElementById('appointmentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = 'Scheduling...';
+            btn.disabled = true;
+
+            const name = document.getElementById('ap_name').value;
+            const phone = document.getElementById('ap_phone').value;
+            const service = document.getElementById('ap_service').value;
+            const message = document.getElementById('ap_message').value;
+
+            try {
+                const res = await fetch(`${API_URL}/enquiries`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'Appointment',
+                        name: name,
+                        phone: phone,
+                        message: `Service: ${service} | Message: ${message}`,
+                        details: JSON.stringify({ service: service, originalMessage: message })
+                    })
+                });
+
+                if (res.ok) {
+                    alert('Appointment Scheduled! Our team will contact you soon.');
+                    e.target.reset();
+                } else {
+                    alert('Something went wrong. Please try again.');
+                }
+            } catch (err) {
+                alert('Connection error. Please try again.');
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        });
+
+        function quickWhatsAppBooking() {
+            const name = document.getElementById('ap_name').value || 'Customer';
+            const phone = document.getElementById('ap_phone').value || 'N/A';
+            const service = document.getElementById('ap_service').value;
+            const message = document.getElementById('ap_message').value || 'None';
+
+            const text = `*New Appointment Booking*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Service:* ${service}%0A*Message:* ${message}%0A%0AI want to book an appointment. Please confirm my slot.`;
+            const waUrl = `https://wa.me/919652926366?text=${text}`;
+            window.open(waUrl, '_blank');
+        }
+    </script>
 
     <!-- MAP SECTION -->
     <section>

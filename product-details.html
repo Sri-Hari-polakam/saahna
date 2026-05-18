@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -55,16 +55,34 @@
 
     <script src="js/data.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:5000/api' 
+            : 'https://saahna-production.up.railway.app/api';
+
+        document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const productId = parseInt(urlParams.get('id'));
             
-            // Try to find product in window.allHomeProductsData or localProducts
-            let products = window.allHomeProductsData || window.localProducts || [];
-            let p = products.find(x => x.id === productId);
+            if (!productId) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            let p = null;
+            
+            // Try to fetch from API directly for latest data
+            try {
+                const res = await fetch(`${API_URL}/products/${productId}`);
+                if (res.ok) {
+                    p = await res.json();
+                }
+            } catch (err) {
+                console.warn('API fetch failed, falling back to local data');
+                let products = window.allHomeProductsData || window.localProducts || [];
+                p = products.find(x => x.id === productId);
+            }
 
             if (!p) {
-                // Fallback: If not found, show error
                 document.getElementById('productDetailContent').innerHTML = `
                     <div style="text-align: center; grid-column: span 2; padding: 5rem 0;">
                         <h2 style="font-family: 'Playfair Display', serif;">Product Not Found</h2>
@@ -74,14 +92,16 @@
                 return;
             }
 
+            const img = p.image || (p.images && p.images[0]) || '';
+
             const html = `
                 <div class="product-gallery">
-                    <img src="${p.image}" alt="${p.name}" class="main-image">
+                    <img src="${img}" alt="${p.name}" class="main-image">
                 </div>
                 <div class="product-meta">
                     <span class="category">${p.category}</span>
                     <h1>${p.name}</h1>
-                    <div class="price">₹${p.price.toLocaleString()}</div>
+                    <div class="price">₹${(p.discountPrice || p.price || 0).toLocaleString()}</div>
                     <p class="product-description">${p.description || 'Experience the pinnacle of luxury with this bespoke creation. Each stitch tells a story of heritage and modern elegance, curated specifically for the discerning Saahna client.'}</p>
                     
                     <div style="margin-bottom: 3rem;">

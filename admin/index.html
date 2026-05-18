@@ -87,7 +87,7 @@
         .section.active { display:block; }
 
         /* ── STAT CARDS ── */
-        .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; margin-bottom:2.5rem; }
+        .stats-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1.5rem; margin-bottom:2.5rem; }
         .stat-card {
             background:var(--white); border-radius:18px; padding:1.8rem;
             border:1px solid var(--border); position:relative; overflow:hidden;
@@ -309,6 +309,7 @@
             <button class="nav-item" onclick="showSection('orders',this)"><i class="fas fa-shopping-cart"></i> Orders</button>
             <button class="nav-item" onclick="showSection('enquiries',this)"><i class="fas fa-envelope"></i> Enquiries</button>
             <div class="nav-section-label">Account</div>
+            <button class="nav-item" onclick="showSection('security',this)"><i class="fas fa-shield-alt"></i> Security</button>
             <button class="nav-item danger" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </nav>
         <div class="sidebar-footer">SAAHNA SA &copy; 2025</div>
@@ -327,6 +328,16 @@
 
             <!-- ── DASHBOARD ── -->
             <div id="section-dashboard" class="section active">
+                <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                    <div style="display:flex; gap:0.8rem; align-items:center;">
+                        <span style="font-size:0.85rem; color:var(--muted); font-weight:600;">Show Stats:</span>
+                        <select id="statsPeriod" class="form-control" style="width:140px; padding:.4rem .8rem;" onchange="loadStats(this.value)">
+                            <option value="all">All Time</option>
+                            <option value="weekly">Last 7 Days</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-danger btn-sm" onclick="resetRevenue()"><i class="fas fa-undo"></i> Reset All Revenue</button>
+                </div>
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-card-icon" style="background:rgba(212,175,55,.1);"><i class="fas fa-wallet" style="color:#D4AF37;"></i></div>
@@ -347,6 +358,11 @@
                         <div class="stat-card-icon" style="background:rgba(255,0,85,.1);"><i class="fas fa-envelope-open-text" style="color:#FF0055;"></i></div>
                         <h3>Enquiries</h3>
                         <div class="stat-val" id="stat-enquiries">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon" style="background:rgba(212,175,55,.1);"><i class="fas fa-share-alt" style="color:#D4AF37;"></i></div>
+                        <h3>Total Shares</h3>
+                        <div class="stat-val" id="stat-shares">0</div>
                     </div>
                 </div>
                 <div class="panel">
@@ -565,12 +581,13 @@
                                     <th>Product</th>
                                     <th>Category</th>
                                     <th>Price</th>
+                                    <th>Shares</th>
                                     <th>Stock</th>
                                     <th style="text-align:center;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="productTableBody">
-                                <tr><td colspan="6" style="text-align:center;padding:3rem;color:var(--muted);">Loading products...</td></tr>
+                                <tr><td colspan="7" style="text-align:center;padding:3rem;color:var(--muted);">Loading products...</td></tr>
                             </tbody>
                         </table>
                         <div id="prodPagination"></div>
@@ -580,9 +597,12 @@
 
             <!-- ── ORDERS ── -->
             <div id="section-orders" class="section">
-                <div style="margin-bottom:1.5rem;">
-                    <h1 style="font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:.2rem;">Orders</h1>
-                    <p style="color:var(--muted);font-size:.85rem;">Manage and update customer orders</p>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+                    <div>
+                        <h1 style="font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:.2rem;">Orders</h1>
+                        <p style="color:var(--muted);font-size:.85rem;">Manage and update customer orders</p>
+                    </div>
+                    <button class="btn btn-outline-gold" onclick="downloadOrdersExcel()"><i class="fas fa-file-excel"></i> Export to Excel</button>
                 </div>
                 <div class="panel">
                     <div style="overflow-x:auto;">
@@ -608,11 +628,65 @@
 
             <!-- ── ENQUIRIES ── -->
             <div id="section-enquiries" class="section">
-                <div style="margin-bottom:1.5rem;">
-                    <h1 style="font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:.2rem;">Enquiries</h1>
-                    <p style="color:var(--muted);font-size:.85rem;">Customer messages and custom order requests</p>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+                    <div>
+                        <h1 style="font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:.2rem;">Enquiries</h1>
+                        <p style="color:var(--muted);font-size:.85rem;">Customer messages and custom order requests</p>
+                    </div>
+                    <button class="btn btn-outline-gold" onclick="downloadEnquiriesExcel()"><i class="fas fa-file-excel"></i> Export to Excel</button>
                 </div>
-                <div id="enquiryList"></div>
+                <div class="panel">
+                    <div style="overflow-x:auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Customer</th>
+                                    <th>Contact</th>
+                                    <th>Message</th>
+                                    <th>Custom Details</th>
+                                    <th>Image</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="enquiryTableBody">
+                                <tr><td colspan="7" style="text-align:center;padding:3rem;color:var(--muted);">Loading enquiries...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── SECURITY ── -->
+            <div id="section-security" class="section">
+                <div style="margin-bottom:1.5rem;">
+                    <h1 style="font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:.2rem;">Security Settings</h1>
+                    <p style="color:var(--muted);font-size:.85rem;">Manage your admin account and update your password</p>
+                </div>
+                <div class="panel" style="max-width:500px;">
+                    <div class="panel-header">
+                        <h2>Change Password</h2>
+                    </div>
+                    <div class="panel-body">
+                        <form id="changePasswordForm" onsubmit="handleChangePassword(event)">
+                            <div class="form-group" style="margin-bottom:1.5rem;">
+                                <label>Current Password</label>
+                                <input type="password" id="oldPass" class="form-control" placeholder="••••••••" required>
+                            </div>
+                            <div class="form-group" style="margin-bottom:1.5rem;">
+                                <label>New Password</label>
+                                <input type="password" id="newPass" class="form-control" placeholder="••••••••" required>
+                            </div>
+                            <div class="form-group" style="margin-bottom:2rem;">
+                                <label>Confirm New Password</label>
+                                <input type="password" id="confirmPass" class="form-control" placeholder="••••••••" required>
+                            </div>
+                            <button type="submit" class="btn btn-gold" style="width:100%;">
+                                <i class="fas fa-key"></i> Update Password
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
 
         </div><!-- /main-content -->
@@ -638,6 +712,7 @@
                         <select id="pCategory" class="form-control" required>
                             <option value="">Select Category</option>
                             <option value="Sarees">Sarees</option>
+                            <option value="Fusion Ware">Fusion Ware</option>
                             <option value="Men's Wear">Men's Wear</option>
                             <option value="Co - ord sets">Co - ord sets</option>
                             <option value="One - Piece Dress">One - Piece Dress</option>
@@ -660,8 +735,8 @@
                         <input type="number" id="pDiscountPrice" class="form-control" placeholder="0">
                     </div>
                     <div class="form-group">
-                        <label>Stock Quantity</label>
-                        <input type="number" id="pStock" class="form-control" placeholder="0" required>
+                        <label id="stockLabel">Stock Quantity</label>
+                        <input type="number" id="pStock" class="form-control" placeholder="0" step="any" required>
                     </div>
                 </div>
 
@@ -722,22 +797,6 @@
                     <input type="text" id="pImagesUrl" class="form-control" placeholder="https://...">
                 </div>
 
-                <h3 class="section-title">Visual Options</h3>
-                <div class="form-group" style="margin-bottom: 2rem;">
-                    <label>Product Colors</label>
-                    <div id="colorsContainer" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem;"></div>
-                    <button type="button" onclick="addColorRow()" class="btn btn-outline-gold" style="width:fit-content;"><i class="fas fa-plus"></i> Add Color Variant</button>
-                </div>
-
-                <h3 class="section-title">Bespoke Customizations</h3>
-                <div class="form-group" style="margin-bottom: 3rem;">
-                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-                        <input type="checkbox" id="pCustomEnabled" style="width: 20px; height: 20px; cursor: pointer;">
-                        <label for="pCustomEnabled" style="margin: 0; cursor: pointer; text-transform: none; color: #333; font-weight: 500;">Enable Customization Options</label>
-                    </div>
-                    <div id="customFieldsContainer" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem;"></div>
-                    <button type="button" onclick="addCustomFieldRow()" class="btn btn-outline-gold" style="width:fit-content;"><i class="fas fa-plus"></i> Add Customization Field</button>
-                </div>
 
                 <div style="display:flex; justify-content: flex-end; gap:1.5rem; margin-top: 2rem; border-top: 1px solid #eee; padding-top: 2rem;">
                     <button type="button" onclick="closeModal()" class="btn" style="background:rgba(0,0,0,.05);color:#555;">Cancel</button>
@@ -776,6 +835,16 @@
         const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
             ? 'http://localhost:5000/api' 
             : 'https://saahna-production.up.railway.app/api';
+        
+        // Dynamic Stock Label based on category
+        document.addEventListener('DOMContentLoaded', () => {
+            const pCat = document.getElementById('pCategory');
+            if(pCat) {
+                pCat.addEventListener('change', function() {
+                    document.getElementById('stockLabel').innerText = this.value === 'Fabrics' ? 'Available Meters' : 'Stock Quantity';
+                });
+            }
+        });
             
         let token = localStorage.getItem('sahnaa_admin_token');
         let allProducts = [];
@@ -789,47 +858,6 @@
         }
 
         // Helper functions for dynamic UI
-        function addColorRow(data = { name: '', hex: '#D4AF37' }) {
-            const container = document.getElementById('colorsContainer');
-            const div = document.createElement('div');
-            div.className = 'form-grid';
-            div.style.gridTemplateColumns = '2fr 1fr auto';
-            div.style.alignItems = 'end';
-            div.style.marginBottom = '0';
-            div.innerHTML = `
-                <div class="form-group">
-                    <label>Color Name</label>
-                    <input type="text" class="form-control color-name" value="${data.name}" placeholder="e.g. Royal Gold">
-                </div>
-                <div class="form-group">
-                    <label>Swatch</label>
-                    <input type="color" class="form-control color-hex" value="${data.hex}" style="height: 48px; padding: 5px;">
-                </div>
-                <button type="button" onclick="this.parentElement.remove()" class="btn btn-danger btn-sm" style=" padding: 0.8rem;"><i class="fas fa-trash"></i></button>
-            `;
-            container.appendChild(div);
-        }
-
-        function addCustomFieldRow(data = { name: '', extraPrice: 0 }) {
-            const container = document.getElementById('customFieldsContainer');
-            const div = document.createElement('div');
-            div.className = 'form-grid';
-            div.style.gridTemplateColumns = '2fr 1fr auto';
-            div.style.alignItems = 'end';
-            div.style.marginBottom = '0';
-            div.innerHTML = `
-                <div class="form-group">
-                    <label>Field Name</label>
-                    <input type="text" class="form-control custom-name" value="${data.name}" placeholder="e.g. Embroidery Text">
-                </div>
-                <div class="form-group">
-                    <label>Extra Price (₹)</label>
-                    <input type="number" class="form-control custom-price" value="${data.extraPrice}" placeholder="0">
-                </div>
-                <button type="button" onclick="this.parentElement.remove()" class="btn btn-danger btn-sm" style=" padding: 0.8rem;"><i class="fas fa-trash"></i></button>
-            `;
-            container.appendChild(div);
-        }
 
         async function handleLogin() {
             const email = document.getElementById('loginEmail').value.trim();
@@ -893,29 +921,52 @@
             if (name === 'homepage') loadHomepageEditor();
         }
 
-        async function loadStats() {
+        async function loadStats(period = 'all') {
             try {
-                const res = await fetch(`${API_URL}/stats`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const res = await fetch(`${API_URL}/stats?period=${period}`, { headers: { 'Authorization': `Bearer ${token}` } });
                 if (!res.ok) throw new Error('Failed to fetch stats');
                 const stats = await res.json();
                 document.getElementById('stat-revenue').innerText = `₹${(stats.revenue || 0).toLocaleString()}`;
                 document.getElementById('stat-orders').innerText = stats.totalOrders || 0;
                 document.getElementById('stat-products').innerText = stats.totalProducts || 0;
                 document.getElementById('stat-enquiries').innerText = stats.totalEnquiries || 0;
+                document.getElementById('stat-shares').innerText = stats.totalShares || 0;
             } catch (err) {
                 console.error("Dashboard stats load failed:", err);
-                // Optionally show error in UI
+            }
+        }
+
+        async function resetRevenue() {
+            if (!confirm('⚠️ WARNING: This will permanently delete ALL order history and reset your total revenue to zero. This action cannot be undone. Are you sure?')) return;
+            
+            const secondConfirm = confirm('Are you REALLY sure? Click OK to wipe all sales data.');
+            if (!secondConfirm) return;
+
+            try {
+                const res = await fetch(`${API_URL}/stats/reset`, { 
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` } 
+                });
+                if (res.ok) {
+                    showToast('Revenue and order history cleared.', 'success');
+                    loadStats();
+                    if (window.loadOrders) loadOrders();
+                } else {
+                    alert('Failed to reset revenue.');
+                }
+            } catch (err) {
+                alert('Connection error.');
             }
         }
 
         async function loadProducts() {
             const body = document.getElementById('productTableBody');
-            body.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:#888;"><i class="fas fa-spinner fa-spin"></i>&nbsp; Loading products...</td></tr>';
+            body.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:#888;"><i class="fas fa-spinner fa-spin"></i>&nbsp; Loading products...</td></tr>';
             try {
                 const res = await fetch(`${API_URL}/products`);
                 allProducts = await res.json();
             } catch(e) {
-                body.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:#ef4444;">Failed to load. Is the server running?</td></tr>';
+                body.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:#ef4444;">Failed to load. Is the server running?</td></tr>';
                 return;
             }
             document.getElementById('productCount').textContent = allProducts.length + ' products';
@@ -931,7 +982,7 @@
             var body = document.getElementById('productTableBody');
             var pg   = document.getElementById('prodPagination');
             if (!products || !products.length) {
-                body.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:3rem;color:#888;">No products found.</td></tr>';
+                body.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:3rem;color:#888;">No products found.</td></tr>';
                 pg.innerHTML = '';
                 return;
             }
@@ -945,12 +996,15 @@
                 var img   = (p.images && p.images[0]) ? p.images[0] : '';
                 var price = p.discountPrice || p.price;
                 var sc    = p.stock > 10 ? 'stock-ok' : p.stock > 0 ? 'stock-low' : 'stock-out';
-                var sl    = p.stock > 10 ? 'In Stock' : p.stock > 0 ? 'Low (' + p.stock + ')' : 'Out';
+                var isFabric = p.category === 'Fabrics';
+                var sl = p.stock > 10 ? 'In Stock' : p.stock > 0 ? 'Low (' + p.stock + ')' : 'Out';
+                if(isFabric && p.stock > 0) sl = p.stock + 'm';
                 rows += '<tr>';
                 rows += '<td>' + (img ? '<img src="' + img + '" class="product-thumb" loading="lazy" alt="">' : '<div class="product-thumb" style="background:#f0ede8;"></div>') + '</td>';
                 rows += '<td><div class="product-name-cell">' + p.name + '</div><div class="product-cat">' + p.category + '</div></td>';
                 rows += '<td style="color:var(--muted);font-size:.82rem;">' + p.category + '</td>';
                 rows += '<td><div class="price-cell">&#8377;' + price.toLocaleString() + '</div>' + (p.discountPrice && p.discountPrice < p.price ? '<div class="disc-price">&#8377;' + p.price.toLocaleString() + '</div>' : '') + '</td>';
+                rows += '<td style="text-align:center; font-weight:600; color:var(--primary-gold);"><i class="fas fa-share-alt" style="font-size:0.75rem; margin-right:4px; opacity:0.6;"></i>' + (p.shares || 0) + '</td>';
                 rows += '<td><span class="stock-badge ' + sc + '">' + sl + '</span></td>';
                 rows += '<td><div class="actions-cell" style="justify-content:center;"><button class="btn btn-edit btn-sm" onclick="editProduct(' + p.id + ')"><i class="fas fa-edit"></i> Edit</button><button class="btn btn-danger btn-sm" onclick="deleteProduct(' + p.id + ')"><i class="fas fa-trash"></i></button></div></td>';
                 rows += '</tr>';
@@ -989,9 +1043,7 @@
             document.getElementById('productForm').reset();
             document.getElementById('modalTitle').innerText = 'Add Product';
             editingProductId = null;
-            document.getElementById('colorsContainer').innerHTML = '';
-            document.getElementById('customFieldsContainer').innerHTML = '';
-            document.getElementById('pCustomEnabled').checked = false;
+            document.getElementById('stockLabel').innerText = 'Stock Quantity';
             document.getElementById('productModal').classList.add('open');
         }
         function closeModal() { document.getElementById('productModal').classList.remove('open'); }
@@ -1018,20 +1070,10 @@
             }
             
             // Dynamic UI Population
-            document.getElementById('colorsContainer').innerHTML = '';
-            if(p.colors && p.colors.length > 0) {
-                p.colors.forEach(c => addColorRow(c));
-            }
-
-            document.getElementById('customFieldsContainer').innerHTML = '';
-            if(p.customization) {
-                document.getElementById('pCustomEnabled').checked = p.customization.enabled || false;
-                if(p.customization.fields && p.customization.fields.length > 0) {
-                    p.customization.fields.forEach(f => addCustomFieldRow(f));
-                }
-            }
-            
             document.getElementById('pImagesUrl').value = p.images ? p.images.join(', ') : '';
+            
+            // Update stock label
+            document.getElementById('stockLabel').innerText = p.category === 'Fabrics' ? 'Available Meters' : 'Stock Quantity';
             
             document.getElementById('productModal').classList.add('open');
         }
@@ -1067,30 +1109,8 @@
 
                 const sizes = Array.from(document.querySelectorAll('#pSizesContainer input:checked')).map(cb => cb.value);
 
-                // Collect Dynamic Data
                 let colors = [];
-                const colorNames = document.querySelectorAll('.color-name');
-                const colorHexes = document.querySelectorAll('.color-hex');
-                colorNames.forEach((input, index) => {
-                    if (input.value) {
-                        colors.push({ name: input.value, hex: colorHexes[index].value, image: '' });
-                    }
-                });
-
-                let customization = {
-                    enabled: document.getElementById('pCustomEnabled').checked,
-                    fields: []
-                };
-                const customNames = document.querySelectorAll('.custom-name');
-                const customPrices = document.querySelectorAll('.custom-price');
-                customNames.forEach((input, index) => {
-                    if (input.value) {
-                        customization.fields.push({ 
-                            name: input.value, 
-                            extraPrice: parseFloat(customPrices[index].value) || 0 
-                        });
-                    }
-                });
+                let customization = { enabled: false, fields: [] };
 
                 let policies = {
                     returnPolicy: document.getElementById('pReturnPolicy').value,
@@ -1130,6 +1150,7 @@
                 
                 closeModal();
                 loadProducts();
+                loadStats(); // Update dashboard stats (total products)
                 document.getElementById('productForm').reset();
                 showToast('Product saved successfully!', 'success');
             } catch (err) {
@@ -1174,6 +1195,7 @@
         async function loadOrders() {
             const res = await fetch(`${API_URL}/orders`, { headers: { 'Authorization': `Bearer ${token}` } });
             const orders = await res.json();
+            window._allOrders = orders; // Store for export
             document.getElementById('orderTableBody').innerHTML = orders.map(o => `
                 <tr>
                     <td>#${o.id}</td>
@@ -1181,6 +1203,14 @@
                         <strong>${o.customerName}</strong><br>
                         <small style="color: #666;">${o.phone}</small><br>
                         <small style="color: #666;">${o.email}</small>
+                        <div style="margin-top:0.5rem; border-top:1px dashed #eee; padding-top:0.5rem;">
+                            ${JSON.parse(o.items || '[]').map(item => `
+                                <div style="font-size:0.72rem; color:#555;">
+                                    <i class="fas fa-caret-right" style="color:var(--gold); font-size:0.6rem;"></i>
+                                    ${item.name} — <strong>${item.quantity}${item.category === 'Fabrics' ? 'm' : ' pcs'}</strong>
+                                </div>
+                            `).join('')}
+                        </div>
                     </td>
                     <td>
                         <small style="color: #444; line-height: 1.4;">
@@ -1197,24 +1227,48 @@
         }
 
         async function loadEnquiries() {
-            const res = await fetch(`${API_URL}/enquiries`, { headers: { 'Authorization': `Bearer ${token}` } });
-            const enquiries = await res.json();
-            const list = document.getElementById('enquiryList');
-            if (!enquiries.length) {
-                list.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--muted);">No enquiries yet.</div>';
-                return;
+            const body = document.getElementById('enquiryTableBody');
+            body.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:#888;"><i class="fas fa-spinner fa-spin"></i>&nbsp; Loading...</td></tr>';
+            
+            try {
+                const res = await fetch(`${API_URL}/enquiries`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const enquiries = await res.json();
+                window._allEnquiries = enquiries; 
+                
+                if (!enquiries || !enquiries.length) {
+                    body.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:3rem;color:var(--muted);">No enquiries yet.</td></tr>';
+                    return;
+                }
+                body.innerHTML = enquiries.map(e => {
+                    let detailsText = '—';
+                    try {
+                        const d = JSON.parse(e.details || '{}');
+                        const entries = Object.entries(d);
+                        if(entries.length > 0) {
+                            detailsText = entries.map(([k,v]) => `<div style="font-size:0.75rem;"><strong style="color:var(--gold);">${k}:</strong> ${v}</div>`).join('');
+                        }
+                    } catch(err) { detailsText = e.details; }
+
+                    return `
+                        <tr>
+                            <td><span class="status-badge ${e.type === 'Custom' || e.type === 'Custom Order' ? 'status-paid' : 'status-pending'}" style="font-size:0.65rem;">${e.type || 'General'}</span></td>
+                            <td><strong>${e.name}</strong></td>
+                            <td>
+                                <div style="font-size:0.8rem;">${e.email || '—'}</div>
+                                <div style="font-size:0.8rem; color:#888;">${e.phone || '—'}</div>
+                            </td>
+                            <td><div style="max-width:250px; font-size:0.8rem; line-height:1.4; color:#555;">${e.message || '—'}</div></td>
+                            <td><div style="min-width:150px;">${detailsText}</div></td>
+                            <td>
+                                ${e.image ? `<a href="${e.image}" target="_blank"><img src="${e.image}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;border:1px solid #ddd;"></a>` : '<span style="color:#ccc;">None</span>'}
+                            </td>
+                            <td style="font-size:0.8rem; white-space:nowrap;">${new Date(e.createdAt).toLocaleDateString()}</td>
+                        </tr>
+                    `;
+                }).join('');
+            } catch(err) {
+                body.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--vivid);">Failed to load.</td></tr>';
             }
-            list.innerHTML = enquiries.map(e => `
-                <div class="enquiry-card">
-                    <span class="enquiry-type ${e.type === 'Custom' ? 'type-custom' : 'type-general'}">${e.type || 'General'}</span>
-                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:.8rem;">
-                        <div><span style="font-size:.65rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);display:block;margin-bottom:.2rem;">Name</span><strong style="font-size:.88rem;">${e.name}</strong></div>
-                        <div><span style="font-size:.65rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);display:block;margin-bottom:.2rem;">Contact</span><span style="font-size:.82rem;">${e.phone || '—'}<br>${e.email || '—'}</span></div>
-                        <div><span style="font-size:.65rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);display:block;margin-bottom:.2rem;">Date</span><span style="font-size:.82rem;">${new Date(e.createdAt).toLocaleDateString()}</span></div>
-                    </div>
-                    <div style="background:#faf8f5;border-radius:8px;padding:.8rem 1rem;font-size:.85rem;color:#555;line-height:1.6;">${e.message || '—'}</div>
-                </div>
-            `).join('');
         }
 
         function showToast(msg, type = 'success') {
@@ -1484,6 +1538,130 @@
                 const u = this.value.trim();
                 if (u && vid) { vid.src = u; vid.load(); div.style.display = u ? 'block' : 'none'; }
             });
+        }
+
+        async function handleChangePassword(e) {
+            e.preventDefault();
+            const oldPass = document.getElementById('oldPass').value;
+            const newPass = document.getElementById('newPass').value;
+            const confirmPass = document.getElementById('confirmPass').value;
+
+            if (newPass !== confirmPass) {
+                return showToast('New passwords do not match!', 'error');
+            }
+
+            if (newPass.length < 6) {
+                return showToast('Password must be at least 6 characters.', 'error');
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/admin/change-password`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ oldPassword: oldPass, newPassword: newPass })
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Password updated successfully!', 'success');
+                    document.getElementById('changePasswordForm').reset();
+                } else {
+                    showToast(data.error || 'Failed to update password.', 'error');
+                }
+            } catch (err) {
+                showToast('Connection error. Try again later.', 'error');
+            }
+        }
+
+        function downloadOrdersExcel() {
+            if (!window._allOrders || window._allOrders.length === 0) {
+                return alert('No orders to export.');
+            }
+
+            const headers = [
+                'Order ID', 'Date', 'Customer Name', 'Phone', 'Email', 
+                'Address', 'City', 'Country', 'Total Amount', 'Status', 'Payment ID', 'Items'
+            ];
+
+            const rows = window._allOrders.map(o => {
+                let items = [];
+                try {
+                    const parsedItems = JSON.parse(o.items || '[]');
+                    items = parsedItems.map(i => `${i.name} (${i.quantity}${i.category === 'Fabrics' ? 'm' : 'pcs'})`).join('; ');
+                } catch(e) { items = o.items; }
+
+                return [
+                    o.orderId || o.id,
+                    new Date(o.createdAt).toLocaleString(),
+                    o.customerName,
+                    o.phone,
+                    o.email,
+                    o.address.replace(/,/g, ' '), // Prevent CSV breaks
+                    o.city,
+                    o.country,
+                    o.totalAmount,
+                    o.status,
+                    o.paymentId,
+                    items.replace(/,/g, ' ')
+                ];
+            });
+
+            let csvContent = "data:text/csv;charset=utf-8," 
+                + headers.join(",") + "\n"
+                + rows.map(e => e.join(",")).join("\n");
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `saahna_orders_${new Date().toLocaleDateString().replace(/\//g, '-')}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('Orders exported successfully!', 'success');
+        }
+
+        function downloadEnquiriesExcel() {
+            if (!window._allEnquiries || window._allEnquiries.length === 0) {
+                return alert('No enquiries to export.');
+            }
+
+            const headers = [
+                'Type', 'Date', 'Name', 'Phone', 'Email', 'Message', 'Custom Details'
+            ];
+
+            const rows = window._allEnquiries.map(e => {
+                let detailsText = '';
+                try {
+                    const d = JSON.parse(e.details || '{}');
+                    detailsText = Object.entries(d).map(([k,v]) => `${k}: ${v}`).join(' | ');
+                } catch(err) { detailsText = e.details; }
+
+                return [
+                    e.type || 'General',
+                    new Date(e.createdAt).toLocaleString(),
+                    e.name,
+                    e.phone || '—',
+                    e.email || '—',
+                    (e.message || '—').replace(/,/g, ' ').replace(/\n/g, ' '),
+                    detailsText.replace(/,/g, ' ')
+                ];
+            });
+
+            let csvContent = "data:text/csv;charset=utf-8," 
+                + headers.join(",") + "\n"
+                + rows.map(r => r.join(",")).join("\n");
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `saahna_enquiries_${new Date().toLocaleDateString().replace(/\//g, '-')}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('Enquiries exported successfully!', 'success');
         }
     </script>
 </body>

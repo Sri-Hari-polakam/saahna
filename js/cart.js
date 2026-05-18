@@ -7,7 +7,8 @@ function saveCart() {
 function updateCartUI() {
     const counts = document.querySelectorAll('.cart-count');
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    counts.forEach(count => count.innerText = totalItems);
+    // Use Math.ceil to show total whole items/meters in badge
+    counts.forEach(count => count.innerText = Math.ceil(totalItems));
 }
 
 function injectCartHTML() {
@@ -53,16 +54,27 @@ function renderCart() {
         total += item.price * item.quantity;
         const div = document.createElement('div');
         div.className = 'cart-item';
+        const customInfo = item.customDetails ? `
+            <div style="font-size: 0.75rem; color: var(--primary-gold); background: #fdfaf0; padding: 5px 8px; border-radius: 6px; margin-top: 5px;">
+                <i class="fas fa-cut"></i> Custom: ${item.customDetails.fabric}<br>
+                <i class="fas fa-sticky-note"></i> ${item.customDetails.customNotes.substring(0, 30)}...
+            </div>
+        ` : '';
+        
+        const isFabric = item.category === 'Fabrics';
+        const qtyLabel = isFabric ? 'Meters' : 'Qty';
+
         div.innerHTML = `
             <div class="cart-item-img" style="background-image: url('${item.image}')"></div>
             <div class="cart-item-details">
                 <h4 style="margin: 0;">${item.name}</h4>
                 <p style="font-size: 0.8rem; color: #666; margin: 2px 0;">Size: ${item.size}</p>
+                ${customInfo}
                 <div style="display: flex; align-items: center; gap: 0.8rem; margin: 10px 0;">
                     <div class="quantity-controls-mini">
-                        <button onclick="updateQuantity(${index}, -1)" ${item.quantity <= 1 ? 'disabled' : ''}>-</button>
-                        <span>${item.quantity}</span>
-                        <button onclick="updateQuantity(${index}, 1)">+</button>
+                        <button onclick="updateQuantity(${index}, ${isFabric ? -0.5 : -1})" ${item.quantity <= (isFabric ? 0.5 : 1) ? 'disabled' : ''}>-</button>
+                        <span>${item.quantity}${isFabric ? 'm' : ''}</span>
+                        <button onclick="updateQuantity(${index}, ${isFabric ? 0.5 : 1})">+</button>
                     </div>
                     <span style="font-weight: 600;">₹${(item.price * item.quantity).toLocaleString()}</span>
                 </div>
@@ -85,7 +97,13 @@ window.removeFromCart = (index) => {
 
 window.updateQuantity = (index, change) => {
     cart[index].quantity += change;
-    if (cart[index].quantity < 1) cart[index].quantity = 1;
+    const isFabric = cart[index].category === 'Fabrics';
+    const minQty = isFabric ? 0.5 : 1;
+    if (cart[index].quantity < minQty) cart[index].quantity = minQty;
+    
+    // Round to avoid floating point issues (e.g. 0.1 + 0.2)
+    cart[index].quantity = Math.round(cart[index].quantity * 10) / 10;
+    
     saveCart();
     updateCartUI();
     renderCart();
@@ -96,12 +114,13 @@ function addToCart(productId, size = 'M', productData = null, quantity = 1) {
     const img = product.image || (product.images ? product.images[0] : 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&q=80&w=200');
     
     const existingItem = cart.find(item => item.id === productId && item.size === size);
+    const qtyToAdd = parseFloat(quantity);
     
     if (existingItem) {
-        existingItem.quantity += parseInt(quantity);
+        existingItem.quantity += qtyToAdd;
     } else {
         const availableSizes = product.sizes && product.sizes.length ? product.sizes : ['S','M','L','XL','Free Size'];
-        cart.push({ ...product, image: img, size, quantity: parseInt(quantity), availableSizes });
+        cart.push({ ...product, image: img, size, quantity: qtyToAdd, availableSizes });
     }
     
     saveCart();
@@ -110,6 +129,66 @@ function addToCart(productId, size = 'M', productData = null, quantity = 1) {
 }
 
 window.addToCart = addToCart;
+
+// Share Product Utility
+window.shareProduct = function(pid, event) {
+    if (event) event.stopPropagation();
+    
+    // Notify server of share
+    const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+        ? 'http://localhost:5000/api' 
+        : 'https://saahna-production.up.railway.app/api';
+        
+    fetch(`${API_URL}/products/${pid}/share`, { method: 'POST' }).catch(() => {});
+    
+    const baseUrl = window.location.origin + window.location.pathname.split('/').slice(0, -1).join('/');
+    const shareUrl = `${baseUrl}/product-details.html?id=${pid}`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'SAAHNA Luxury Boutique',
+            text: 'Check out this exquisite piece from SAAHNA!',
+            url: shareUrl
+        }).catch(err => {
+            copyToClipboard(shareUrl);
+        });
+    } else {
+        copyToClipboard(shareUrl);
+    }
+};
+
+function copyToClipboard(text) {
+    const dummy = document.createElement("textarea");
+    document.body.appendChild(dummy);
+    dummy.value = text;
+    dummy.select();
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
+    
+    // Show toast
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+        background: #1a1a1a; color: white; padding: 1rem 2rem; border-radius: 50px;
+        z-index: 9999; font-size: 0.9rem; letter-spacing: 1px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid var(--primary-gold);
+        animation: toastFade 3s forwards;
+    `;
+    toast.innerHTML = '<i class="fas fa-link" style="color:var(--primary-gold); margin-right: 10px;"></i> Link Copied to Clipboard';
+    
+    const style = document.createElement('style');
+    style.innerHTML = `
+        @keyframes toastFade {
+            0% { opacity: 0; transform: translate(-50%, 20px); }
+            15% { opacity: 1; transform: translate(-50%, 0); }
+            85% { opacity: 1; transform: translate(-50%, 0); }
+            100% { opacity: 0; transform: translate(-50%, -20px); }
+        }
+    `;
+    document.head.appendChild(style);
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
